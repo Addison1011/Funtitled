@@ -31,7 +31,7 @@ public class PlaceObject : MonoBehaviour
         EnhancedTouch.Touch.onFingerDown += FingerDown;
     }
 
-    private void OnDisable()
+    void OnDestroy()
     {
         EnhancedTouch.TouchSimulation.Disable();
         EnhancedTouch.EnhancedTouchSupport.Disable();
