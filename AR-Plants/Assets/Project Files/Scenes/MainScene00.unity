@@ -857,8 +857,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arCamera: {fileID: 2512387468973847745}
-  selectedPlant: {fileID: 3488148322313420835, guid: 3058437f23054f843865379f4fe15112,
-    type: 3}
+  selectedPlant: {fileID: 0}
+  plant: {fileID: 11400000, guid: c6bd224095f8f564fbb14dfc4dcc48ea, type: 2}
   yOffsetMeters: 0.02
   followLerp: 14
   holdToDragSeconds: 0.4

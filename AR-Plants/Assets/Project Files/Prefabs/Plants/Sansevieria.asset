@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d978a6e8899938d4187243d8e7b34c69, type: 3}
+  m_Name: Sansevieria
+  m_EditorClassIdentifier: 
+  plant_id: 0
+  plant_name: sansevieria
+  description: 
+  type: {fileID: 0}
+  stemType: {fileID: 0}
+  leafType: {fileID: 0}
+  rootType: {fileID: 11400000, guid: 020a1348cf3e76b45934a740fe911d83, type: 2}
+  icon: {fileID: 0}
+  prefab: {fileID: 3488148322313420835, guid: 3058437f23054f843865379f4fe15112, type: 3}

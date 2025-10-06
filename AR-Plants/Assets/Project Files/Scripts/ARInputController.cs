@@ -12,6 +12,7 @@ public class ARInputController : MonoBehaviour
     [Header("References")]
     [SerializeField] private Camera arCamera;                   // AR Camera
     [SerializeField] private GameObject selectedPlant;          // Prefab to place
+    [SerializeField] private PlantSO plant;
 
     [Header("Tuning")]
     [SerializeField] private float yOffsetMeters = 0.02f;       // lift to avoid z-fighting
@@ -47,6 +48,7 @@ public class ARInputController : MonoBehaviour
 
     private void Awake()
     {
+        selectedPlant = plant.prefab;
         aRRaycastManager = GetComponent<ARRaycastManager>();
         if (arCamera == null) arCamera = Camera.main;
     }
