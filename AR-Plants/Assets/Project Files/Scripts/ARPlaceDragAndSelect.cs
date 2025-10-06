@@ -16,7 +16,7 @@ public class ARPlaceDragAndSelect : MonoBehaviour
     [Header("Tuning")]
     [SerializeField] private float yOffsetMeters = 0.02f;       // lift to avoid z-fighting
     [SerializeField] private float followLerp = 14f;            // smoothing for drag
-
+    [SerializeField] private float smoothMovePlantProximity = 0.5f;  // radius around plant to consider it a position to smooth move to
     [Header("Hold / Tap Settings")]
     [Tooltip("Hold duration (seconds) required on the plant to start dragging.")]
     [SerializeField] private float holdToDragSeconds = 0.4f;
@@ -31,6 +31,7 @@ public class ARPlaceDragAndSelect : MonoBehaviour
 
     // Placement state
     private bool isPlantPlaced = false;
+    private bool smoothMoveEnabled = false; // whether to smooth move the plant on tap
     private GameObject activePlant;
 
     // Drag state
@@ -83,11 +84,17 @@ public class ARPlaceDragAndSelect : MonoBehaviour
             }
         }
 
-        if (isDragging && activePlant != null)
+        if (isDragging && activePlant != null || smoothMoveEnabled)
         {
             activePlant.transform.position =
                 Vector3.Lerp(activePlant.transform.position, desiredWorldPos, Time.deltaTime * followLerp);
+            if (activePlant.transform.position == desiredWorldPos)
+            {
+                smoothMoveEnabled = false; // stop smoothing once we reach the target
+            }
         }
+
+
     }
 
     //++++ Touch Handlers ++++
@@ -138,6 +145,7 @@ public class ARPlaceDragAndSelect : MonoBehaviour
         {
             if (TryARRaycastToAllowedPlane(finger.currentTouch.screenPosition, out Pose pose))
             {
+
                 if (!isPlantPlaced)
                 {
                     // Place new
@@ -148,9 +156,19 @@ public class ARPlaceDragAndSelect : MonoBehaviour
                     if (activePlant.GetComponent<Collider>() == null)
                         activePlant.AddComponent<BoxCollider>();
                 }
+                else if (
+                    Mathf.Abs(activePlant.transform.position.x - pose.position.x) <= smoothMovePlantProximity &&
+                        Mathf.Abs(activePlant.transform.position.z - pose.position.z) <= smoothMovePlantProximity)
+                {
+                    // Smooth move to the desired position
+                    smoothMoveEnabled = true;
+                    desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
+                }
                 else
                 {
                     // Move existing there
+                    activePlant.transform.position =
+                            Vector3.Lerp(activePlant.transform.position, desiredWorldPos, Time.deltaTime * followLerp);
                     activePlant.transform.position = pose.position + Vector3.up * yOffsetMeters;
                 }
             }
