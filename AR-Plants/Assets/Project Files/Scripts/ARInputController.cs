@@ -7,7 +7,7 @@ using UnityEngine.InputSystem.EnhancedTouch;
 using EnhancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 
 [RequireComponent(typeof(ARRaycastManager))]
-public class ARPlaceDragAndSelect : MonoBehaviour
+public class ARInputController : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Camera arCamera;                   // AR Camera
@@ -43,6 +43,7 @@ public class ARPlaceDragAndSelect : MonoBehaviour
     private float holdStartTime;
     private Vector2 holdStartScreenPos;
     private Finger holdFinger;
+
 
     private void Awake()
     {
@@ -84,15 +85,14 @@ public class ARPlaceDragAndSelect : MonoBehaviour
             }
         }
 
-        if (isDragging && activePlant != null || smoothMoveEnabled)
+
+        if (activePlant != null)
         {
             activePlant.transform.position =
                 Vector3.Lerp(activePlant.transform.position, desiredWorldPos, Time.deltaTime * followLerp);
-            if (activePlant.transform.position == desiredWorldPos)
-            {
-                smoothMoveEnabled = false; // stop smoothing once we reach the target
-            }
         }
+
+
 
 
     }
@@ -152,14 +152,15 @@ public class ARPlaceDragAndSelect : MonoBehaviour
                     isPlantPlaced = true;
                     activePlant = Instantiate(selectedPlant, pose.position, pose.rotation);
                     activePlant.transform.position += Vector3.up * yOffsetMeters;
+                    desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
+
 
                     if (activePlant.GetComponent<Collider>() == null)
                         activePlant.AddComponent<BoxCollider>();
                 }
                 else
                 {
-                    // Smooth move to the desired position
-                    smoothMoveEnabled = true;
+                    // Move existing
                     desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
                 }
             }

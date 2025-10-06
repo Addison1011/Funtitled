@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &4033122906378132247
+--- !u!1001 &4371040009869917554
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -26,17 +26,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: e3d9eba911a79e74cb69dfafece1bd6d,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -4.624182
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3d9eba911a79e74cb69dfafece1bd6d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3d9eba911a79e74cb69dfafece1bd6d,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.8678881
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e3d9eba911a79e74cb69dfafece1bd6d,
         type: 3}
@@ -76,10 +76,41 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: e3d9eba911a79e74cb69dfafece1bd6d,
         type: 3}
       propertyPath: m_Name
-      value: sansevieria_plant_large_potted
+      value: sansevieria_plant_large_potted 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e3d9eba911a79e74cb69dfafece1bd6d,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6971936978163459158}
   m_SourcePrefab: {fileID: 100100000, guid: e3d9eba911a79e74cb69dfafece1bd6d, type: 3}
+--- !u!1 &3488148322313420835 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e3d9eba911a79e74cb69dfafece1bd6d,
+    type: 3}
+  m_PrefabInstance: {fileID: 4371040009869917554}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &6971936978163459158
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3488148322313420835}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.4999957, y: 3.3637507, z: 1.7117951}
+  m_Center: {x: 0, y: 1.6818753, z: -0.104837805}
