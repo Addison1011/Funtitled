@@ -140,7 +140,7 @@ public class ARInputController : MonoBehaviour
         // Case A: we were holding on the plant but never transitioned to drag -> treat as a TAP on plant
         if (holdCandidate && !isDragging)
         {
-            OnPlantTapped(); // placeholder behavior
+            OnPlantTapped(finger); // placeholder behavior
         }
         // Case B: we were NOT holding on the plant (finger down wasn't on plant) -> treat as TAP on empty plane
         else if (!holdCandidate && !isDragging)
@@ -219,9 +219,20 @@ public class ARInputController : MonoBehaviour
     }
 
     // Placeholder tap behavior on the plant (short tap)
-    private void OnPlantTapped()
+    private void OnPlantTapped(Finger finger)
     {
+        Ray ray = arCamera.ScreenPointToRay(finger.currentTouch.screenPosition);
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f, ~0, QueryTriggerInteraction.Ignore))
+        {
+            // for thien
+            // 
+            Debug.Log(hit.collider.gameObject);
+        }
 
+        //if hit leaf
+        plant.part = PlantPart.Leaf;
+        //if
+        //else if....
         Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
     }
 
