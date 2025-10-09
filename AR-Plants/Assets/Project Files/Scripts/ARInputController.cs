@@ -221,6 +221,7 @@ public class ARInputController : MonoBehaviour
     // Placeholder tap behavior on the plant (short tap)
     private void OnPlantTapped()
     {
+
         Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
     }
 
