@@ -1,14 +1,8 @@
 using UnityEngine;
 
-public abstract class PlantDataSO : ScriptableObject
-{
-    public int id;
-    public string attributeName;
-    [TextArea] public string descriptionText;
-}
 
 [CreateAssetMenu(menuName = "Plants/Plant Type")]
-public class PlantTypeSO : PlantDataSO
+public class PlantTypeSO : ScriptableObject
 {
     public int typeID;
     public string typeName;

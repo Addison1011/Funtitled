@@ -6,7 +6,16 @@ using UnityEngine.XR.ARSubsystems;
 using UnityEngine.InputSystem.EnhancedTouch;
 using EnhancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 
+public enum PlantPart
+{
+    Stem,
+    Leaf,
+    Root,
+    None
+}
 [RequireComponent(typeof(ARRaycastManager))]
+
+
 public class ARInputController : MonoBehaviour
 {
     [Header("References")]

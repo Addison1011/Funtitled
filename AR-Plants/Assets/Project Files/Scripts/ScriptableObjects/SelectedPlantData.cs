@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+
 public class SelectedPlantData : MonoBehaviour
 {
 
     [Header("PlantSO Referenced")]
     public PlantSO plantSO;
 
-    public int selectedPart;
+    public PlantPart selectedPart;
     public StemTypeSO stemTypeSO;
     public LeafTypeSO leafTypeSO;
     public RootTypeSO rootTypeSO;
