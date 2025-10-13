@@ -11,8 +11,10 @@ public class ARInputController : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Camera arCamera;                   // AR Camera
-    [SerializeField] private GameObject selectedPlant;          // Prefab to place
-    [SerializeField] private PlantSO plant;
+    [SerializeField] private GameObject selectedPlantModel; // Prefab to place
+    private SelectedPlantData selectedPlantData;
+    [SerializeField] private GameObject selectedPlantDataHandle;
+    //[SerializeField] private PlantSO selectedPlant;
 
     [Header("Tuning")]
     [SerializeField] private float yOffsetMeters = 0.02f;       // lift to avoid z-fighting
@@ -29,6 +31,7 @@ public class ARInputController : MonoBehaviour
     public UnityEvent onPlantTapped; // hook UI, selection, etc.
 
     private ARRaycastManager aRRaycastManager;
+    [Header("Placement Area Toggle")]
     [SerializeField] private ARPlaneManager arPlaneManager;
     [SerializeField] private bool allowHorizontalUp = true;
     [SerializeField] private bool allowHorizontalDown = false;
@@ -37,7 +40,6 @@ public class ARInputController : MonoBehaviour
 
     // Placement state
     private bool isPlantPlaced = false;
-    private bool smoothMoveEnabled = false; // whether to smooth move the plant on tap
     private GameObject activePlant;
 
     // Drag state
@@ -53,7 +55,9 @@ public class ARInputController : MonoBehaviour
 
     private void Awake()
     {
-        selectedPlant = plant.prefab;
+        selectedPlantDataHandle = GameObject.FindWithTag("SelectedPlantData");
+        selectedPlantData = selectedPlantDataHandle.GetComponent<SelectedPlantData>();
+        selectedPlantModel = selectedPlantData.plantSO.prefab;
         aRRaycastManager = GetComponent<ARRaycastManager>();
         if (arCamera == null) arCamera = Camera.main;
     }
@@ -157,13 +161,13 @@ public class ARInputController : MonoBehaviour
                 {
                     // Place new
                     isPlantPlaced = true;
-                    activePlant = Instantiate(selectedPlant, pose.position, pose.rotation);
+                    activePlant = Instantiate(selectedPlantModel, pose.position, pose.rotation);
                     activePlant.transform.position += Vector3.up * yOffsetMeters;
                     desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
 
 
-                    if (activePlant.GetComponent<Collider>() == null)
-                        activePlant.AddComponent<BoxCollider>();
+                    /*if (activePlant.GetComponent<Collider>() == null)
+                        activePlant.AddComponent<BoxCollider>();*/
                 }
                 else
                 {
@@ -234,18 +238,21 @@ public class ARInputController : MonoBehaviour
     // Placeholder tap behavior on the plant (short tap)
     private void OnPlantTapped(Finger finger)
     {
+
         Ray ray = arCamera.ScreenPointToRay(finger.currentTouch.screenPosition);
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, ~0, QueryTriggerInteraction.Ignore))
         {
             // for thien
             // 
-            Debug.Log(hit.collider.gameObject);
+            if (hit.collider.gameObject.tag == "Stem")
+            {
+                selectedPlantData.selectedPart = PlantPart.Stem;
+            }
+
+
+            Debug.Log(hit.collider.gameObject.name);
         }
 
-        //if hit leaf
-        plant.part = PlantPart.Leaf;
-        //if
-        //else if....
         Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
     }
 

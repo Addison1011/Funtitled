@@ -1,12 +1,7 @@
 using UnityEngine;
 
 
-public enum PlantPart
-{
-    Stem,
-    Leaf,
-    Root
-}
+
 [CreateAssetMenu(menuName = "Plants/Plant")]
 public class PlantSO : ScriptableObject
 {
@@ -14,12 +9,11 @@ public class PlantSO : ScriptableObject
 
     [Header("Basic Info")]
     public int plant_id;
-    public PlantPart part;
     public string plant_name;
     [TextArea] public string description;
 
     [Header("Plant Classification")]
-    public PlantTypeSO type;         // corresponds to Type_typeID
+    public PlantTypeSO plantType;         // corresponds to Type_typeID
 
     [Header("Parts")]
     public StemTypeSO stemType;      // stemType_stemID
