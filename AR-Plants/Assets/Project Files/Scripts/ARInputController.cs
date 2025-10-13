@@ -64,7 +64,11 @@ public class ARInputController : MonoBehaviour
 
     private void Awake()
     {
-        selectedPlantDataHandle = GameObject.FindWithTag("SelectedPlantData");
+        if (GameObject.FindWithTag("SelectedPlantData") != null)
+        {
+            selectedPlantDataHandle = GameObject.FindWithTag("SelectedPlantData");
+        }
+
         selectedPlantData = selectedPlantDataHandle.GetComponent<SelectedPlantData>();
         selectedPlantModel = selectedPlantData.plantSO.prefab;
         aRRaycastManager = GetComponent<ARRaycastManager>();

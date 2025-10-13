@@ -865,7 +865,6 @@ MonoBehaviour:
   selectedPlantModel: {fileID: 0}
   selectedPlantDataHandle: {fileID: 8721433867133575463, guid: dc657ea7f7b3b6545892c6d6e50c5d59,
     type: 3}
-  selectedPlant: {fileID: 0}
   yOffsetMeters: 0.02
   followLerp: 14
   holdToDragSeconds: 0.4

@@ -27,7 +27,7 @@ public class SelectedPlantData : MonoBehaviour
         leafTypeSO = plantSO.leafType;
         rootTypeSO = plantSO.rootType;
         plantTypeSO = plantSO.plantType;
-        SceneManager.LoadScene("MainScene00");
+        //SceneManager.LoadScene("MainScene00");
     }
 
     // Update is called once per frame
