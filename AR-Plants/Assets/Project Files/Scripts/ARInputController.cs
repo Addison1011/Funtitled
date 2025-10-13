@@ -24,10 +24,15 @@ public class ARInputController : MonoBehaviour
     [Tooltip("Max finger movement (pixels) still considered a tap/hold (pre-drag).")]
     [SerializeField] private float tapSlopPixels = 12f;
 
+
     [Header("Tap Callback")]
     public UnityEvent onPlantTapped; // hook UI, selection, etc.
 
     private ARRaycastManager aRRaycastManager;
+    [SerializeField] private ARPlaneManager arPlaneManager;
+    [SerializeField] private bool allowHorizontalUp = true;
+    [SerializeField] private bool allowHorizontalDown = false;
+    [SerializeField] private bool allowVertical = false;
     private readonly List<ARRaycastHit> hits = new();
 
     // Placement state
@@ -175,7 +180,6 @@ public class ARInputController : MonoBehaviour
     }
 
     // helper method to raycast and find a valid plane
-    // only accept planes whose pose Y-rotation == 270.
     private bool TryARRaycastToAllowedPlane(Vector2 screenPos, out Pose pose)
     {
         pose = default;
@@ -183,13 +187,22 @@ public class ARInputController : MonoBehaviour
         if (!aRRaycastManager.Raycast(screenPos, hits, TrackableType.PlaneWithinPolygon))
             return false;
 
-        // Use the closest hit that passes the rotation check
         foreach (var hit in hits)
         {
-            var p = hit.pose;
-            if (Mathf.Approximately(NormalizeAngle(p.rotation.eulerAngles.y), 270f))
+            var plane = arPlaneManager?.GetPlane(hit.trackableId);
+            if (plane == null) continue;
+
+            var align = plane.alignment; // UnityEngine.XR.ARSubsystems.PlaneAlignment
+
+            bool placementAllowed =
+                (allowHorizontalUp && align == PlaneAlignment.HorizontalUp) ||
+                (allowHorizontalDown && align == PlaneAlignment.HorizontalDown) ||
+                (allowVertical && align == PlaneAlignment.Vertical);
+
+            if (placementAllowed)
             {
-                pose = p;
+                pose = hit.pose;
+                pose.position += Vector3.up * yOffsetMeters;
                 return true;
             }
         }
