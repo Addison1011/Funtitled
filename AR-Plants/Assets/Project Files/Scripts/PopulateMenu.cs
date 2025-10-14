@@ -3,15 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
+using System.IO;
 
 public class PopulateMenu : MonoBehaviour
 {
     [SerializeField] private Transform m_Content;
     [SerializeField] private GameObject m_ButtonPrefab;
+
+    [SerializeField] private string path;
     [SerializeField] private int m_NumPlants; //! Later make this number of plants!
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        m_NumPlants = Directory.GetFiles(path).Length;
         for (int i = 0; i < m_NumPlants; i++)
         {
             GameObject button = Instantiate(m_ButtonPrefab);

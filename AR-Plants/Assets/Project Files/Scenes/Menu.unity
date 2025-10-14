@@ -632,6 +632,7 @@ MonoBehaviour:
   m_Content: {fileID: 27622957}
   m_ButtonPrefab: {fileID: 7854953394140387456, guid: ac50372b8a6541d4f9ec31796206e987,
     type: 3}
+  path: Assets/Project Files/Prefabs/Plants
   m_NumPlants: 10
 --- !u!4 &449409914
 Transform:
