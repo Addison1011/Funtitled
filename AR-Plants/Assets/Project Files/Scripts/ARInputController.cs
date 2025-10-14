@@ -11,6 +11,7 @@ public enum PlantPart
     Stem,
     Leaf,
     Root,
+    Flower,
     None
 }
 [RequireComponent(typeof(ARRaycastManager))]
@@ -261,9 +262,26 @@ public class ARInputController : MonoBehaviour
             {
                 selectedPlantData.selectedPart = PlantPart.Stem;
             }
+            else if (hit.collider.gameObject.tag == "Leaf")
+            {
+                selectedPlantData.selectedPart = PlantPart.Leaf;
+            }
+            else if (hit.collider.gameObject.tag == "Root")
+            {
+                selectedPlantData.selectedPart = PlantPart.Root;
+            }
+            else if (hit.collider.gameObject.tag == "Flower")
+            {
+                selectedPlantData.selectedPart = PlantPart.Flower;
+            }
+            else
+            {
+                selectedPlantData.selectedPart = PlantPart.None;
+            }
 
 
-            Debug.Log(hit.collider.gameObject.name);
+
+                Debug.Log(hit.collider.gameObject.name);
         }
 
         Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
