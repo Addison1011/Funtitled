@@ -32,3 +32,9 @@ public class RootTypeSO : ScriptableObject
     public string rootName;
     [TextArea] public string description;
 }
+public class FlowerTypeSO : ScriptableObject
+{
+    public int flowerID;
+    public string flowerName;
+    [TextArea] public string description;
+}
