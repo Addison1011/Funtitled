@@ -12,7 +12,7 @@ public class PopulateMenu : MonoBehaviour
     [SerializeField] private GameObject m_ButtonPrefab;
 
     [SerializeField] private string path;
-    [SerializeField] private int m_NumPlants;
+    private int m_NumPlants;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
