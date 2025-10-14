@@ -12,11 +12,12 @@ public class PopulateMenu : MonoBehaviour
     [SerializeField] private GameObject m_ButtonPrefab;
 
     [SerializeField] private string path;
-    [SerializeField] private int m_NumPlants; //! Later make this number of plants!
+    [SerializeField] private int m_NumPlants;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        m_NumPlants = Directory.GetFiles(path).Length;
+
+        m_NumPlants = Directory.GetFiles(path).Length; //number of plant folders in Prefabs/Plants
         for (int i = 0; i < m_NumPlants; i++)
         {
             GameObject button = Instantiate(m_ButtonPrefab);
