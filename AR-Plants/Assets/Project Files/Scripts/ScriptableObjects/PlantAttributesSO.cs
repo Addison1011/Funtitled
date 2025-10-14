@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 [CreateAssetMenu(menuName = "Plants/Plant Type")]
 public class PlantTypeSO : ScriptableObject
 {
@@ -12,7 +13,7 @@ public class PlantTypeSO : ScriptableObject
 public class StemTypeSO : ScriptableObject
 {
     public int stemID;
-    public string name;
+    public string stemName;
     [TextArea] public string description;
 }
 
@@ -20,7 +21,7 @@ public class StemTypeSO : ScriptableObject
 public class LeafTypeSO : ScriptableObject
 {
     public int leafID;
-    public string name;
+    public string leafName;
     [TextArea] public string description;
 }
 
@@ -28,6 +29,6 @@ public class LeafTypeSO : ScriptableObject
 public class RootTypeSO : ScriptableObject
 {
     public int rootID;
-    public string name;
+    public string rootName;
     [TextArea] public string description;
 }
