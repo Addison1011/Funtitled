@@ -12,6 +12,7 @@ public class PopulateMenu : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Debug.Log("start");
         for (int i = 0; i < m_NumPlants; i++)
         {
             GameObject button = Instantiate(m_ButtonPrefab);
@@ -20,7 +21,7 @@ public class PopulateMenu : MonoBehaviour
             button.transform.SetParent(m_Content);
 
             //here will be where the data for each plant will be loaded
-            button.GetComponentInChildren<TMP_Text>().text= "Plant " + (i + 1);
+            button.GetComponentInChildren<TMP_Text>().text = "Plant " + (i + 1);
         }
     }
 }

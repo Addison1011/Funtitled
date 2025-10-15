@@ -5,6 +5,7 @@ using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 using UnityEngine.InputSystem.EnhancedTouch;
 using EnhancedTouch = UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.XR.ARCore;
 
 public enum PlantPart
 {
@@ -19,6 +20,7 @@ public enum PlantPart
 
 public class ARInputController : MonoBehaviour
 {
+    public ArSession arSession;
     [Header("References")]
     [SerializeField] private Camera arCamera;                   // AR Camera
     [SerializeField] private GameObject selectedPlantModel; // Prefab to place
@@ -65,6 +67,8 @@ public class ARInputController : MonoBehaviour
 
     private void Awake()
     {
+
+        EnsureCamera();
         if (GameObject.FindWithTag("SelectedPlantData") != null)
         {
             selectedPlantDataHandle = GameObject.FindWithTag("SelectedPlantData");
@@ -73,11 +77,11 @@ public class ARInputController : MonoBehaviour
         selectedPlantData = selectedPlantDataHandle.GetComponent<SelectedPlantData>();
         selectedPlantModel = selectedPlantData.plantSO.prefab;
         aRRaycastManager = GetComponent<ARRaycastManager>();
-        if (arCamera == null) arCamera = Camera.main;
     }
 
     private void OnEnable()
     {
+        EnsureCamera();
         EnhancedTouchSupport.Enable();
         EnhancedTouch.Touch.onFingerDown += OnFingerDown;
         EnhancedTouch.Touch.onFingerMove += OnFingerMove;
@@ -90,6 +94,7 @@ public class ARInputController : MonoBehaviour
         EnhancedTouch.Touch.onFingerMove -= OnFingerMove;
         EnhancedTouch.Touch.onFingerUp -= OnFingerUp;
         EnhancedTouchSupport.Disable();
+        arCamera = null;
     }
 
     private void Update()
@@ -116,9 +121,6 @@ public class ARInputController : MonoBehaviour
             activePlant.transform.position =
                 Vector3.Lerp(activePlant.transform.position, desiredWorldPos, Time.deltaTime * followLerp);
         }
-
-
-
 
     }
 
@@ -227,17 +229,12 @@ public class ARInputController : MonoBehaviour
         return false;
     }
 
-    // Normalize angle to be within 0-360 degrees
-    private static float NormalizeAngle(float degrees)
-    {
-        degrees %= 360f;
-        if (degrees < 0f) degrees += 360f;
-        return degrees;
-    }
-
     // Raycast from screen to check if we tapped the active plant
     private bool HitActivePlant(Vector2 screenPos)
     {
+        EnsureCamera();
+        if (!arCamera || activePlant == null) return false;
+
         if (arCamera == null || activePlant == null) return false;
 
         Ray ray = arCamera.ScreenPointToRay(screenPos);
@@ -252,6 +249,9 @@ public class ARInputController : MonoBehaviour
     // Placeholder tap behavior on the plant (short tap)
     private void OnPlantTapped(Finger finger)
     {
+        EnsureCamera();
+        // Unity’s destroyed objects compare equal to null
+        if (!arCamera) return;
 
         Ray ray = arCamera.ScreenPointToRay(finger.currentTouch.screenPosition);
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, ~0, QueryTriggerInteraction.Ignore))
@@ -281,10 +281,22 @@ public class ARInputController : MonoBehaviour
 
 
 
-                Debug.Log(hit.collider.gameObject.name);
+            Debug.Log(hit.collider.gameObject.name);
         }
 
         Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
+    }
+
+    private void EnsureCamera()
+    {
+        if (!arCamera)
+        {
+            var main = Camera.main;
+            if (main) { arCamera = main; return; }
+
+            var tagged = GameObject.FindWithTag("MainCamera");
+            if (tagged) arCamera = tagged.GetComponent<Camera>();
+        }
     }
 
 
