@@ -3,25 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
+using System.IO;
 
 public class PopulateMenu : MonoBehaviour
 {
-    [SerializeField] private Transform m_Content;
-    [SerializeField] private GameObject m_ButtonPrefab;
-    [SerializeField] private int m_NumPlants; //! Later make this number of plants!
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        Debug.Log("start");
-        for (int i = 0; i < m_NumPlants; i++)
+        [SerializeField] private Transform m_Content;
+        [SerializeField] private GameObject m_ButtonPrefab;
+
+        [SerializeField] private string path;
+        private int m_NumPlants;
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        void Start()
         {
-            GameObject button = Instantiate(m_ButtonPrefab);
+                Debug.Log("start");
+                for (int i = 0; i < m_NumPlants; i++)
+                {
+                        GameObject button = Instantiate(m_ButtonPrefab);
 
-            //parent the item to the content panel
-            button.transform.SetParent(m_Content);
+                        //parent the item to the content panel
+                        button.transform.SetParent(m_Content);
 
-            //here will be where the data for each plant will be loaded
-            button.GetComponentInChildren<TMP_Text>().text = "Plant " + (i + 1);
+                        //here will be where the data for each plant will be loaded
+                        button.GetComponentInChildren<TMP_Text>().text = "Plant " + (i + 1);
+                }
         }
-    }
 }
