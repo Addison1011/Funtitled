@@ -1,0 +1,161 @@
+/* Main Card Container */
+.plant-card {
+    width: 375px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 24px;
+    border-width: 4px;
+    border-color: rgb(31, 41, 55);
+    overflow: hidden;
+    margin: 20px auto;
+}
+
+/* Header Section */
+.header-section {
+    position: relative;
+    width: 100%;
+    height: 256px;
+    background-color: rgb(243, 244, 246);
+}
+
+.header-image {
+    width: 100%;
+    height: 100%;
+   /* background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Echinocactus_grusonii_%28aka%29.jpg/500px-Echinocactus_grusonii_%28aka%29.jpg'); */
+    -unity-background-scale-mode: scale-and-crop;
+}
+
+.back-button {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    border-width: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-button:hover {
+    background-color: rgb(255, 255, 255);
+}
+
+.back-icon {
+    font-size: 20px;
+    color: rgb(75, 85, 99);
+    -unity-font-style: bold;
+}
+
+/* Content Container */
+.content-container {
+    padding: 24px;
+}
+
+/* Title Section */
+.title-section {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.title-group {
+    flex: 1;
+    margin-right: 12px;
+}
+
+.common-name {
+    font-size: 24px;
+    color: rgb(17, 24, 39);
+    -unity-font-style: bold;
+    margin-bottom: 4px;
+    white-space: normal;
+}
+
+.scientific-name {
+    font-size: 14px;
+    color: rgb(107, 114, 128);
+    -unity-font-style: italic;
+    white-space: normal;
+}
+
+/* AR Button */
+.ar-button {
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 16px;
+    border-width: 2px;
+    border-color: rgb(209, 213, 219);
+    border-radius: 8px;
+    background-color: rgb(255, 255, 255);
+    flex-shrink: 0;
+}
+
+.ar-button:hover {
+    background-color: rgb(249, 250, 251);
+}
+
+.camera-icon {
+    width: 16px;
+    height: 16px;
+   /* background-image: url('https://webstockreview.net/images/camera-png-icon-1.png'); */
+    margin-right: 8px;
+}
+
+.ar-label {
+    font-size: 14px;
+    color: rgb(17, 24, 39);
+    -unity-font-style: bold;
+}
+
+/* Description */
+.description {
+    font-size: 16px;
+    color: rgb(55, 65, 81);
+    line-height: 24px;
+    white-space: normal;
+    margin-bottom: 16px;
+}
+
+/* Map Section */
+.map-section {
+    position: relative;
+    width: 100%;
+    height: 192px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.map-image {
+    width: 100%;
+    height: 100%;
+    /* background-image: url('https://www.ecosia.org/2be675ee-c39f-40a3-9c36-037b1e037d18'); */
+    -unity-background-scale-mode: scale-and-crop;
+}
+
+/* Location Badge */
+.location-badge {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 4px 12px;
+    border-radius: 16px;
+}
+
+.pin-icon {
+    width: 16px;
+    height: 16px;
+   
+    margin-right: 4px;
+    -unity-background-image-tint-color: rgb(239, 68, 68);
+}
+
+.location-text {
+    font-size: 14px;
+    color: rgb(55, 65, 81);
+    -unity-font-style: bold;
+}
