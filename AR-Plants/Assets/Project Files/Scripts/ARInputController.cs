@@ -6,13 +6,25 @@ using UnityEngine.XR.ARSubsystems;
 using UnityEngine.InputSystem.EnhancedTouch;
 using EnhancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 
+public enum PlantPart
+{
+    Stem,
+    Leaf,
+    Root,
+    Flower,
+    None
+}
 [RequireComponent(typeof(ARRaycastManager))]
+
+
 public class ARInputController : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Camera arCamera;                   // AR Camera
-    [SerializeField] private GameObject selectedPlant;          // Prefab to place
-    [SerializeField] private PlantSO plant;
+    [SerializeField] private GameObject selectedPlantModel; // Prefab to place
+    private SelectedPlantData selectedPlantData;
+    [SerializeField] private GameObject selectedPlantDataHandle;
+    //[SerializeField] private PlantSO selectedPlant;
 
     [Header("Tuning")]
     [SerializeField] private float yOffsetMeters = 0.02f;       // lift to avoid z-fighting
@@ -24,15 +36,20 @@ public class ARInputController : MonoBehaviour
     [Tooltip("Max finger movement (pixels) still considered a tap/hold (pre-drag).")]
     [SerializeField] private float tapSlopPixels = 12f;
 
+
     [Header("Tap Callback")]
     public UnityEvent onPlantTapped; // hook UI, selection, etc.
 
     private ARRaycastManager aRRaycastManager;
+    [Header("Placement Area Toggle")]
+    [SerializeField] private ARPlaneManager arPlaneManager;
+    [SerializeField] private bool allowHorizontalUp = true;
+    [SerializeField] private bool allowHorizontalDown = false;
+    [SerializeField] private bool allowVertical = false;
     private readonly List<ARRaycastHit> hits = new();
 
     // Placement state
     private bool isPlantPlaced = false;
-    private bool smoothMoveEnabled = false; // whether to smooth move the plant on tap
     private GameObject activePlant;
 
     // Drag state
@@ -48,7 +65,13 @@ public class ARInputController : MonoBehaviour
 
     private void Awake()
     {
-        selectedPlant = plant.prefab;
+        if (GameObject.FindWithTag("SelectedPlantData") != null)
+        {
+            selectedPlantDataHandle = GameObject.FindWithTag("SelectedPlantData");
+        }
+
+        selectedPlantData = selectedPlantDataHandle.GetComponent<SelectedPlantData>();
+        selectedPlantModel = selectedPlantData.plantSO.prefab;
         aRRaycastManager = GetComponent<ARRaycastManager>();
         if (arCamera == null) arCamera = Camera.main;
     }
@@ -140,7 +163,7 @@ public class ARInputController : MonoBehaviour
         // Case A: we were holding on the plant but never transitioned to drag -> treat as a TAP on plant
         if (holdCandidate && !isDragging)
         {
-            OnPlantTapped(); // placeholder behavior
+            OnPlantTapped(finger); // placeholder behavior
         }
         // Case B: we were NOT holding on the plant (finger down wasn't on plant) -> treat as TAP on empty plane
         else if (!holdCandidate && !isDragging)
@@ -152,13 +175,13 @@ public class ARInputController : MonoBehaviour
                 {
                     // Place new
                     isPlantPlaced = true;
-                    activePlant = Instantiate(selectedPlant, pose.position, pose.rotation);
+                    activePlant = Instantiate(selectedPlantModel, pose.position, pose.rotation);
                     activePlant.transform.position += Vector3.up * yOffsetMeters;
                     desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
 
 
-                    if (activePlant.GetComponent<Collider>() == null)
-                        activePlant.AddComponent<BoxCollider>();
+                    /*if (activePlant.GetComponent<Collider>() == null)
+                        activePlant.AddComponent<BoxCollider>();*/
                 }
                 else
                 {
@@ -175,7 +198,6 @@ public class ARInputController : MonoBehaviour
     }
 
     // helper method to raycast and find a valid plane
-    // only accept planes whose pose Y-rotation == 270.
     private bool TryARRaycastToAllowedPlane(Vector2 screenPos, out Pose pose)
     {
         pose = default;
@@ -183,13 +205,22 @@ public class ARInputController : MonoBehaviour
         if (!aRRaycastManager.Raycast(screenPos, hits, TrackableType.PlaneWithinPolygon))
             return false;
 
-        // Use the closest hit that passes the rotation check
         foreach (var hit in hits)
         {
-            var p = hit.pose;
-            if (Mathf.Approximately(NormalizeAngle(p.rotation.eulerAngles.y), 270f))
+            var plane = arPlaneManager?.GetPlane(hit.trackableId);
+            if (plane == null) continue;
+
+            var align = plane.alignment; // UnityEngine.XR.ARSubsystems.PlaneAlignment
+
+            bool placementAllowed =
+                (allowHorizontalUp && align == PlaneAlignment.HorizontalUp) ||
+                (allowHorizontalDown && align == PlaneAlignment.HorizontalDown) ||
+                (allowVertical && align == PlaneAlignment.Vertical);
+
+            if (placementAllowed)
             {
-                pose = p;
+                pose = hit.pose;
+                pose.position += Vector3.up * yOffsetMeters;
                 return true;
             }
         }
@@ -219,10 +250,41 @@ public class ARInputController : MonoBehaviour
     }
 
     // Placeholder tap behavior on the plant (short tap)
-    private void OnPlantTapped()
+    private void OnPlantTapped(Finger finger)
     {
-        if (onPlantTapped != null) onPlantTapped.Invoke();
-        else Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
+
+        Ray ray = arCamera.ScreenPointToRay(finger.currentTouch.screenPosition);
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f, ~0, QueryTriggerInteraction.Ignore))
+        {
+            // for thien
+            // 
+            if (hit.collider.gameObject.tag == "Stem")
+            {
+                selectedPlantData.selectedPart = PlantPart.Stem;
+            }
+            else if (hit.collider.gameObject.tag == "Leaf")
+            {
+                selectedPlantData.selectedPart = PlantPart.Leaf;
+            }
+            else if (hit.collider.gameObject.tag == "Root")
+            {
+                selectedPlantData.selectedPart = PlantPart.Root;
+            }
+            else if (hit.collider.gameObject.tag == "Flower")
+            {
+                selectedPlantData.selectedPart = PlantPart.Flower;
+            }
+            else
+            {
+                selectedPlantData.selectedPart = PlantPart.None;
+            }
+
+
+
+                Debug.Log(hit.collider.gameObject.name);
+        }
+
+        Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
     }
 
 

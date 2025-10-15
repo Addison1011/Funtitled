@@ -7,6 +7,7 @@ TagManager:
   - Trunk
   - Branch
   - Leaves
+  - SelectedPlantData
   layers:
   - Default
   - TransparentFX
