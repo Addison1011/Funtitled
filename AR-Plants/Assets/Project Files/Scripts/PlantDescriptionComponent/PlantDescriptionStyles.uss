@@ -1,5 +1,5 @@
-/* Main Card Container */
-.plant-card {
+
+.plant-description {
     width: 375px;
     background-color: rgb(255, 255, 255);
     border-radius: 24px;
@@ -20,7 +20,7 @@
 .header-image {
     width: 100%;
     height: 100%;
-   /* background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Echinocactus_grusonii_%28aka%29.jpg/500px-Echinocactus_grusonii_%28aka%29.jpg'); */
+    background-image: url('Images/golden_barrel_cactus.jpg');
     -unity-background-scale-mode: scale-and-crop;
 }
 
@@ -99,7 +99,7 @@
 .camera-icon {
     width: 16px;
     height: 16px;
-   /* background-image: url('https://webstockreview.net/images/camera-png-icon-1.png'); */
+    background-image: url('Images/camera-icon.png');
     margin-right: 8px;
 }
 
@@ -113,7 +113,7 @@
 .description {
     font-size: 16px;
     color: rgb(55, 65, 81);
-    line-height: 24px;
+    min-height: 24px;
     white-space: normal;
     margin-bottom: 16px;
 }
@@ -130,7 +130,7 @@
 .map-image {
     width: 100%;
     height: 100%;
-    /* background-image: url('https://www.ecosia.org/2be675ee-c39f-40a3-9c36-037b1e037d18'); */
+    background-image: url('Images/mexico_map.png'); 
     -unity-background-scale-mode: scale-and-crop;
 }
 
