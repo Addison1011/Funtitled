@@ -21,7 +21,7 @@ public class DatabaseManager : MonoBehaviour
 
         foreach (var plant in plantsInfo)
         {
-            Debug.Log("Plant Part: " + plant.plantName);
+            Debug.Log("Plant Part: " + plant.plantName + " Description: " + plant.plantDesc);
         }
     }
 
