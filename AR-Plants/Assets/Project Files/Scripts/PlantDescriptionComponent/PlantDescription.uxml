@@ -1,0 +1,47 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <Style src="PlantDescriptionStyles.uss" />
+    <ui:VisualElement name="Plant" class="plant-description">
+        
+        <!-- Header Section with Image -->
+        <ui:VisualElement name="HeaderSection" class="header-section">
+            <ui:VisualElement name="HeaderImage" class="header-image" />
+            <ui:Button name="BackButton" class="back-button">
+                <ui:Label text="&lt;" class="back-icon" />
+            </ui:Button>
+        </ui:VisualElement>
+        
+        <!-- Content Container -->
+        <ui:VisualElement name="ContentContainer" class="content-container">
+            
+            <!-- Title Section -->
+            <ui:VisualElement name="TitleSection" class="title-section">
+                <ui:VisualElement name="TitleGroup" class="title-group">
+                    <ui:Label text="Golden Barrel Cactus" name="CommonName" class="common-name" />
+                    <ui:Label text="Kroenleinia grusonii" name="ScientificName" class="scientific-name" />
+                </ui:VisualElement>
+                
+                <ui:Button name="ARButton" class="ar-button">
+                    <ui:VisualElement name="CameraIcon" class="camera-icon" />
+                    <ui:Label text="View in AR" class="ar-label" />
+                </ui:Button>
+            </ui:VisualElement>
+            
+            <!-- Description Text -->
+            <ui:Label name="Description" class="description" 
+                text="Kroenleinia grusonii, popularly known as the golden barrel cactus, golden ball, &quot;mother-in-law's cushion&quot; or &quot;mother-in-law's chair&quot;, is a species of barrel cactus which is endemic to east-central Mexico." />
+            
+            <!-- Map Section -->
+            <ui:VisualElement name="MapSection" class="map-section">
+                <ui:VisualElement name="MapImage" class="map-image" />
+                <ui:VisualElement name="LocationBadge" class="location-badge">
+                    <ui:VisualElement name="PinIcon" class="pin-icon" />
+                    <ui:Label text="Mexico" class="location-text" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            
+        </ui:VisualElement>
+        
+    </ui:VisualElement>
+    
+    <Style src="PlantDescriptionStyles.uss" />
+</ui:UXML>
