@@ -8,6 +8,13 @@ using System.IO;
 using System.Linq;
 using Mono.Cecil.Cil;
 
+public class PlantInfo
+{
+    [PrimaryKey, AutoIncrement]
+    public int plantID { get; set; }
+    public string plantName { get; set; }
+}
+
 public class PopulateMenu : MonoBehaviour
 {
     [SerializeField] private Transform m_Content;
@@ -24,26 +31,21 @@ public class PopulateMenu : MonoBehaviour
         string dbName = "PlantInfoDB.db";
         string dbPath = Path.Combine(Application.streamingAssetsPath, dbName);
 
-        Debug.Log("DB Path: " + dbPath);
+        //Debug.Log("DB Path: " + dbPath);
 
         _connection = new SQLiteConnection(dbPath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create);
-        Debug.Log("Database opened");
+        //Debug.Log("Database opened");
 
         plants = _connection.Table<PlantInfo>().ToList();
 
-        foreach (var plant in plants)
-        {
-            Debug.Log("Plant Part: " + plant.plantName);
-        }
+        // foreach (var plant in plants)
+        // {
+        //     Debug.Log("Plant Part: " + plant.plantName);
+        // }
 
     }
 
-    public class PlantInfo
-    {
-        [PrimaryKey, AutoIncrement]
-        public int plantID { get; set; }
-        public string plantName { get; set; }
-    }
+
     void Start()
     {
         for (int i = 0; i < plants.Count(); i++)
@@ -53,8 +55,30 @@ public class PopulateMenu : MonoBehaviour
             //parent the item to the content panel
             button.transform.SetParent(m_Content);
 
-            //here will be where the data for each plant will be loaded
-            button.GetComponentInChildren<TMP_Text>().text= plants[i].plantName;
+            //local copy
+            PlantInfo currentPlant = plants[i];
+
+            //set the text on the button
+            var text = button.GetComponentInChildren<TMP_Text>();
+            if (text != null)
+            {
+                text.text = currentPlant.plantName;
+            }
+
+            //load data onto the button for later use
+            var dataLoader = button.GetComponent<LoadDatabaseInfo>();
+            if (dataLoader != null)
+            {
+                dataLoader.plantInfo = currentPlant;
+            }
+
+            //get the actual button component within the prefab
+            Button uiButton = button.GetComponent<Button>();
+            if (uiButton != null && dataLoader != null)
+            {
+                //register the prefab's handler which will use dataLoader.plantInfo
+                uiButton.onClick.AddListener(dataLoader.OnClick);
+            }
         }
     }
 }
