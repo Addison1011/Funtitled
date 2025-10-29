@@ -20,7 +20,7 @@ public enum PlantPart
 
 public class ARInputController : MonoBehaviour
 {
-    public ArSession arSession;
+    public ARSession arSession;
     [Header("References")]
     [SerializeField] private Camera arCamera;                   // AR Camera
     [SerializeField] private GameObject selectedPlantModel; // Prefab to place
@@ -73,6 +73,7 @@ public class ARInputController : MonoBehaviour
         {
             selectedPlantDataHandle = GameObject.FindWithTag("SelectedPlantData");
         }
+
 
         selectedPlantData = selectedPlantDataHandle.GetComponent<SelectedPlantData>();
         selectedPlantModel = selectedPlantData.plantSO.prefab;
@@ -188,7 +189,7 @@ public class ARInputController : MonoBehaviour
                 else
                 {
                     // Move existing
-                    desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
+                    //desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
                 }
             }
         }
@@ -198,6 +199,19 @@ public class ARInputController : MonoBehaviour
         isDragging = false;
         holdFinger = null;
     }
+
+    public void RefreshSession()
+    {
+        arSession.Reset();
+        isPlantPlaced = false;
+        if (activePlant != null)
+        {
+            Destroy(activePlant);
+            activePlant = null;
+        }
+    }
+
+
 
     // helper method to raycast and find a valid plane
     private bool TryARRaycastToAllowedPlane(Vector2 screenPos, out Pose pose)
