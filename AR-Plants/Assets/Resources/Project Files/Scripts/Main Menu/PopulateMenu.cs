@@ -8,53 +8,77 @@ using System.IO;
 using System.Linq;
 using Mono.Cecil.Cil;
 
+public class PlantInfo
+{
+    [PrimaryKey, AutoIncrement]
+    public int plantID { get; set; }
+    public string plantName { get; set; }
+}
+
 public class PopulateMenu : MonoBehaviour
 {
-        [SerializeField] private Transform m_Content;
-        [SerializeField] private GameObject m_ButtonPrefab;
+    [SerializeField] private Transform m_Content;
+    [SerializeField] private GameObject m_ButtonPrefab;
 
-        [SerializeField] private string path;
-        private int m_NumPlants;
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        private SQLiteConnection _connection;
-        private List<PlantInfo> plants;
+    [SerializeField] private string path;
+    private int m_NumPlants;
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private SQLiteConnection _connection;
+    private List<PlantInfo> plants;
 
-        void Awake()
+    void Awake()
+    {
+        string dbName = "PlantInfoDB.db";
+        string dbPath = Path.Combine(Application.streamingAssetsPath, dbName);
+
+        //Debug.Log("DB Path: " + dbPath);
+
+        _connection = new SQLiteConnection(dbPath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create);
+        //Debug.Log("Database opened");
+
+        plants = _connection.Table<PlantInfo>().ToList();
+
+        // foreach (var plant in plants)
+        // {
+        //     Debug.Log("Plant Part: " + plant.plantName);
+        // }
+
+    }
+
+
+    void Start()
+    {
+        for (int i = 0; i < plants.Count(); i++)
         {
-                string dbName = "PlantInfoDB.db";
-                string dbPath = Path.Combine(Application.streamingAssetsPath, dbName);
+            GameObject button = Instantiate(m_ButtonPrefab);
 
-                Debug.Log("DB Path: " + dbPath);
+            //parent the item to the content panel
+            button.transform.SetParent(m_Content);
 
-                _connection = new SQLiteConnection(dbPath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create);
-                Debug.Log("Database opened");
+            //local copy
+            PlantInfo currentPlant = plants[i];
 
-                plants = _connection.Table<PlantInfo>().ToList();
+            //set the text on the button
+            var text = button.GetComponentInChildren<TMP_Text>();
+            if (text != null)
+            {
+                text.text = currentPlant.plantName;
+            }
 
-                foreach (var plant in plants)
-                {
-                        Debug.Log("Plant Part: " + plant.plantName);
-                }
+            //load data onto the button for later use
+            var dataLoader = button.GetComponent<LoadDatabaseInfo>();
+            if (dataLoader != null)
+            {
+                dataLoader.plantInfo = currentPlant;
+            }
 
+            //get the actual button component within the prefab
+            Button uiButton = button.GetComponent<Button>();
+            if (uiButton != null && dataLoader != null)
+            {
+                //register the prefab's handler which will use dataLoader.plantInfo
+                uiButton.onClick.AddListener(dataLoader.OnClick);
+            }
         }
-
-        public class PlantInfo
-        {
-                [PrimaryKey, AutoIncrement]
-                public int plantID { get; set; }
-                public string plantName { get; set; }
-        }
-        void Start()
-        {
-                for (int i = 0; i < plants.Count(); i++)
-                {
-                        GameObject button = Instantiate(m_ButtonPrefab);
-
-                        //parent the item to the content panel
-                        button.transform.SetParent(m_Content);
-
-                        //here will be where the data for each plant will be loaded
-                        button.GetComponentInChildren<TMP_Text>().text = plants[i].plantName;
-                }
-        }
+    }
 }
