@@ -7,6 +7,7 @@ public class SelectedPlantData : MonoBehaviour
     public static SelectedPlantData Instance;
     [Header("PlantSO Referenced")]
     public PlantSO plantSO;
+    public PlantInfo plantInfo;
 
     public PlantPart selectedPart;
     public StemTypeSO stemTypeSO;
@@ -15,8 +16,10 @@ public class SelectedPlantData : MonoBehaviour
     public PlantTypeSO plantTypeSO;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    //Singleton
     void Awake()
     {
+
         if (Instance == null)
         {
             Instance = this;
@@ -26,6 +29,7 @@ public class SelectedPlantData : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
     }
 
     void Start()

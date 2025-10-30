@@ -12,12 +12,14 @@ public class LoadDatabaseInfo : MonoBehaviour
 
     public void OnClick()
     {
-        Debug.Log("Button clicked for " + plantInfo.plantName + " with ID: " + plantInfo.plantID);
+        SelectedPlantData data = GameObject.FindGameObjectWithTag("SelectedPlantData").GetComponent<SelectedPlantData>();
+        data.plantInfo = plantInfo;
+        Debug.Log("Button clicked for " + data.plantInfo.plantName + " with ID: " + data.plantInfo.plantID);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

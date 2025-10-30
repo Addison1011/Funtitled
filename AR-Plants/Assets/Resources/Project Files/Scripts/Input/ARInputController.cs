@@ -25,6 +25,7 @@ public class ARInputController : MonoBehaviour
     [SerializeField] private Camera arCamera;                   // AR Camera
     [SerializeField] private GameObject selectedPlantModel; // Prefab to place
     private SelectedPlantData selectedPlantData;
+
     [SerializeField] private GameObject selectedPlantDataHandle;
     //[SerializeField] private PlantSO selectedPlant;
 
