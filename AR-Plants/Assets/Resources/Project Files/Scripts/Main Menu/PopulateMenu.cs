@@ -13,6 +13,12 @@ public class PlantInfo
     [PrimaryKey, AutoIncrement]
     public int plantID { get; set; }
     public string plantName { get; set; }
+    public string scientificName { get; set; }
+    public string plantDesc { get; set; }
+    public string stem { get; set; }
+    public string leaf { get; set; }
+    public string flower { get; set; }
+    public string typeID { get; set; }
 }
 
 public class PopulateMenu : MonoBehaviour
@@ -38,6 +44,7 @@ public class PopulateMenu : MonoBehaviour
 
         plants = _connection.Table<PlantInfo>().ToList();
 
+
         // foreach (var plant in plants)
         // {
         //     Debug.Log("Plant Part: " + plant.plantName);
@@ -48,6 +55,7 @@ public class PopulateMenu : MonoBehaviour
 
     void Start()
     {
+        Debug.Log(plants[0]);
         for (int i = 0; i < plants.Count(); i++)
         {
             GameObject button = Instantiate(m_ButtonPrefab);
