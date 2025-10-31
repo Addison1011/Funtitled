@@ -76,9 +76,16 @@ public class ARInputController : MonoBehaviour
         }
 
 
+        //Gets the SelectedPlantData script from the SelectedPlantData GameObject
         selectedPlantData = selectedPlantDataHandle.GetComponent<SelectedPlantData>();
-        selectedPlantModel = selectedPlantData.plantSO.prefab;
+        //selectedPlantModel = selectedPlantData.plantSO.prefab;
+        selectedPlantModel = Resources.Load<GameObject>("Monstera"); //default plant
         aRRaycastManager = GetComponent<ARRaycastManager>();
+    }
+
+    void Start()
+    {
+
     }
 
     private void OnEnable()

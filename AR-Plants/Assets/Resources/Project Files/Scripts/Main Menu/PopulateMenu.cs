@@ -19,6 +19,8 @@ public class PlantInfo
     public string leaf { get; set; }
     public string flower { get; set; }
     public string typeID { get; set; }
+
+    public string plantModelName = "Monstera";
 }
 
 public class PopulateMenu : MonoBehaviour

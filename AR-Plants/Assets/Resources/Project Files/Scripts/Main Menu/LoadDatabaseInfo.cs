@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class LoadDatabaseInfo : MonoBehaviour
 {
     public PlantInfo plantInfo;
@@ -13,9 +13,13 @@ public class LoadDatabaseInfo : MonoBehaviour
     public void OnClick()
     {
         SelectedPlantData data = GameObject.FindGameObjectWithTag("SelectedPlantData").GetComponent<SelectedPlantData>();
-        data.plantInfo = plantInfo;
+        data.plantInfo = this.plantInfo;
         Debug.Log("Button clicked for " + data.plantInfo.plantName + " with ID: " + data.plantInfo.plantID);
-        Debug.Log(plantInfo.scientificName);
+
+
+        Debug.Log(data.plantInfo.plantModelName);
+
+        SceneManager.LoadScene("MainScene00");
     }
     // Update is called once per frame
     void Update()
