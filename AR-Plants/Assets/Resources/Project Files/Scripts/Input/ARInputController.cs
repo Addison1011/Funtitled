@@ -6,6 +6,8 @@ using UnityEngine.XR.ARSubsystems;
 using UnityEngine.InputSystem.EnhancedTouch;
 using EnhancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.XR.ARCore;
+using System.Collections;
+using UnityEngine.InputSystem;
 
 public enum PlantPart
 {
@@ -27,7 +29,7 @@ public class ARInputController : MonoBehaviour
     private SelectedPlantData selectedPlantData;
 
     [SerializeField] private GameObject selectedPlantDataHandle;
-    //[SerializeField] private PlantSO selectedPlant;
+
 
     [Header("Tuning")]
     [SerializeField] private float yOffsetMeters = 0.02f;       // lift to avoid z-fighting
@@ -38,6 +40,7 @@ public class ARInputController : MonoBehaviour
     [SerializeField] private float holdToDragSeconds = 0.4f;
     [Tooltip("Max finger movement (pixels) still considered a tap/hold (pre-drag).")]
     [SerializeField] private float tapSlopPixels = 12f;
+
 
 
     [Header("Tap Callback")]
@@ -78,7 +81,7 @@ public class ARInputController : MonoBehaviour
 
         //Gets the SelectedPlantData script from the SelectedPlantData GameObject
         selectedPlantData = selectedPlantDataHandle.GetComponent<SelectedPlantData>();
-        //selectedPlantModel = selectedPlantData.plantSO.prefab;
+
         selectedPlantModel = Resources.Load<GameObject>(selectedPlantData.plantInfo.plantModelName); //default plant
         aRRaycastManager = GetComponent<ARRaycastManager>();
     }
@@ -210,10 +213,12 @@ public class ARInputController : MonoBehaviour
 
     public void RefreshSession()
     {
+
         arSession.Reset();
         isPlantPlaced = false;
         if (activePlant != null)
         {
+
             Destroy(activePlant);
             activePlant = null;
         }
@@ -278,8 +283,7 @@ public class ARInputController : MonoBehaviour
         Ray ray = arCamera.ScreenPointToRay(finger.currentTouch.screenPosition);
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, ~0, QueryTriggerInteraction.Ignore))
         {
-            // for thien
-            // 
+
             if (hit.collider.gameObject.tag == "Stem")
             {
                 selectedPlantData.selectedPart = PlantPart.Stem;
@@ -320,6 +324,5 @@ public class ARInputController : MonoBehaviour
             if (tagged) arCamera = tagged.GetComponent<Camera>();
         }
     }
-
 
 }
