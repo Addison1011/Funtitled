@@ -2474,7 +2474,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arSession: {fileID: 1167446572}
   arCamera: {fileID: 2512387468973847745}
-  selectedPlantModel: {fileID: 0}
+  selectedPlantModel: {fileID: 1226110223090914691, guid: 8b4208451c66bef4587a963ea8d6cf16,
+    type: 3}
   selectedPlantDataHandle: {fileID: 8721433867133575463, guid: dc657ea7f7b3b6545892c6d6e50c5d59,
     type: 3}
   yOffsetMeters: 0.02

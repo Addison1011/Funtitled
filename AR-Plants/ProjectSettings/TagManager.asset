@@ -4,10 +4,10 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Trunk
-  - Branch
-  - Leaves
   - SelectedPlantData
+  - Bark
+  - Flower
+  - Leaf
   layers:
   - Default
   - TransparentFX

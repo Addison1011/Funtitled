@@ -14,10 +14,10 @@ public class LoadDatabaseInfo : MonoBehaviour
     {
         SelectedPlantData data = GameObject.FindGameObjectWithTag("SelectedPlantData").GetComponent<SelectedPlantData>();
         data.plantInfo = this.plantInfo;
-        Debug.Log("Button clicked for " + data.plantInfo.plantName + " with ID: " + data.plantInfo.plantID);
+        Debug.Log("Button clicked for " + data.plantInfo.plantName + " with ID: " + data.plantInfo.plantID + ". " + data.plantInfo.scientificName);
 
 
-        Debug.Log(data.plantInfo.plantModelName);
+        Debug.Log(data.plantInfo.scientificName);
 
         SceneManager.LoadScene("MainScene00");
     }

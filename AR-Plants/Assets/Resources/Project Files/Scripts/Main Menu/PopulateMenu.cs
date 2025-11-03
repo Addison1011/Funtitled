@@ -20,7 +20,8 @@ public class PlantInfo
     public string flower { get; set; }
     public string typeID { get; set; }
 
-    public string plantModelName = "Monstera";
+    //public string plantModelName = "Nerium oleander";
+    //public string plantModelName = "Monstera";
 }
 
 public class PopulateMenu : MonoBehaviour

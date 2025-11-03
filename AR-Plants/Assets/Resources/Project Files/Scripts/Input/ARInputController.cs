@@ -82,7 +82,7 @@ public class ARInputController : MonoBehaviour
         //Gets the SelectedPlantData script from the SelectedPlantData GameObject
         selectedPlantData = selectedPlantDataHandle.GetComponent<SelectedPlantData>();
 
-        selectedPlantModel = Resources.Load<GameObject>(selectedPlantData.plantInfo.plantModelName); //default plant
+        selectedPlantModel = Resources.Load<GameObject>(selectedPlantData.plantInfo.scientificName); //default plant
         aRRaycastManager = GetComponent<ARRaycastManager>();
     }
 
@@ -189,6 +189,7 @@ public class ARInputController : MonoBehaviour
                 {
                     // Place new
                     isPlantPlaced = true;
+                    Debug.Log("rotation: " + pose.rotation.eulerAngles);
                     activePlant = Instantiate(selectedPlantModel, pose.position, pose.rotation);
                     activePlant.transform.position += Vector3.up * yOffsetMeters;
                     desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
@@ -200,7 +201,7 @@ public class ARInputController : MonoBehaviour
                 else
                 {
                     // Move existing
-                    //desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
+                    desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
                 }
             }
         }
