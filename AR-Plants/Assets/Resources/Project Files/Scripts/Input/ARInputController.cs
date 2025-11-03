@@ -8,7 +8,7 @@ using EnhancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.XR.ARCore;
 using System.Collections;
 using UnityEngine.InputSystem;
-
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 public enum PlantPart
 {
     Stem,
@@ -34,6 +34,8 @@ public class ARInputController : MonoBehaviour
     [Header("Tuning")]
     [SerializeField] private float yOffsetMeters = 0.02f;       // lift to avoid z-fighting
     [SerializeField] private float followLerp = 14f;            // smoothing for drag
+    [SerializeField] private float initialPinchDistance;
+    [SerializeField] private Vector3 initialScale;
 
     [Header("Hold / Tap Settings")]
     [Tooltip("Hold duration (seconds) required on the plant to start dragging.")]
@@ -326,4 +328,32 @@ public class ARInputController : MonoBehaviour
         }
     }
 
+    private void resizePlantModelOnPinch()
+    {
+        if (EnhancedTouch.Touch.activeTouches.Count == 2)
+        {
+            EnhancedTouch.Touch touch0 = EnhancedTouch.Touch.activeTouches[0];
+            EnhancedTouch.Touch touch1 = EnhancedTouch.Touch.activeTouches[1];
+            // Ignore if Touch Canceled or Ended
+            if (touch0.phase == TouchPhase.Ended || touch0.phase == TouchPhase.Canceled ||
+               touch1.phase == TouchPhase.Ended || touch1.phase == TouchPhase.Canceled)
+            {
+                return;
+            }
+            // if touch began, record initial distance and scale
+            if (touch0.phase == TouchPhase.Began || touch1.phase == TouchPhase.Began)
+            {
+                initialPinchDistance = Vector2.Distance(touch0.screenPosition, touch1.screenPosition);
+                initialScale = transform.localScale;
+            }
+            else
+            {
+                float currentPinchDistance = Vector2.Distance(touch0.screenPosition, touch1.screenPosition);
+                if (Mathf.Approximately(initialPinchDistance, 0))
+                    return; // prevent division by zero
+                float scaleFactor = currentPinchDistance / initialPinchDistance;
+                transform.localScale = initialScale * scaleFactor;
+            }
+        }
+    }
 }
