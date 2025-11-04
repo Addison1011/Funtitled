@@ -19,7 +19,6 @@ public enum PlantPart
 }
 [RequireComponent(typeof(ARRaycastManager))]
 
-
 public class ARInputController : MonoBehaviour
 {
     public ARSession arSession;
@@ -29,6 +28,9 @@ public class ARInputController : MonoBehaviour
     private SelectedPlantData selectedPlantData;
 
     [SerializeField] private GameObject selectedPlantDataHandle;
+    private ParticleSystem placementEffect;
+    private AudioSource placementSound;
+
 
 
     [Header("Tuning")]
@@ -86,6 +88,8 @@ public class ARInputController : MonoBehaviour
 
         selectedPlantModel = Resources.Load<GameObject>(selectedPlantData.plantInfo.scientificName); //default plant
         aRRaycastManager = GetComponent<ARRaycastManager>();
+        placementEffect = selectedPlantModel.GetComponentInChildren<ParticleSystem>();
+        placementSound = selectedPlantModel.GetComponentInChildren<AudioSource>();
     }
 
     void Start()
@@ -143,6 +147,7 @@ public class ARInputController : MonoBehaviour
     {
         Vector2 screenPos = finger.currentTouch.screenPosition;
 
+
         // If plant exists and touch is on the plant -> start HOLD candidate
         if (isPlantPlaced && activePlant != null && HitActivePlant(screenPos))
         {
@@ -195,6 +200,8 @@ public class ARInputController : MonoBehaviour
                     activePlant = Instantiate(selectedPlantModel, pose.position, pose.rotation);
                     activePlant.transform.position += Vector3.up * yOffsetMeters;
                     desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
+                    activePlant.GetComponentInChildren<AudioSource>().Play();
+                    activePlant.GetComponentInChildren<ParticleSystem>().Play();
 
 
                     /*if (activePlant.GetComponent<Collider>() == null)
@@ -203,7 +210,7 @@ public class ARInputController : MonoBehaviour
                 else
                 {
                     // Move existing
-                    desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
+                    //desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
                 }
             }
         }
@@ -221,7 +228,6 @@ public class ARInputController : MonoBehaviour
         isPlantPlaced = false;
         if (activePlant != null)
         {
-
             Destroy(activePlant);
             activePlant = null;
         }
