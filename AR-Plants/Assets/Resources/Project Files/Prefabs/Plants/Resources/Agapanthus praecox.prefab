@@ -155,7 +155,7 @@ PrefabInstance:
     - target: {fileID: 7407756339908614020, guid: f29d2845e30097449b12976c9c2c3baf,
         type: 3}
       propertyPath: m_TagString
-      value: Bark
+      value: Stem
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

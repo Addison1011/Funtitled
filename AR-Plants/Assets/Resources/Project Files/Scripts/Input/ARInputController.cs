@@ -39,6 +39,8 @@ public class ARInputController : MonoBehaviour
     [SerializeField] private float followLerp = 14f;            // smoothing for drag
     [SerializeField] private float initialPinchDistance;
     [SerializeField] private Vector3 initialScale;
+    public Color emissionColor = Color.white;
+    public float emissionIntensity = 1f;
 
     [Header("Hold / Tap Settings")]
     [Tooltip("Hold duration (seconds) required on the plant to start dragging.")]
@@ -306,6 +308,9 @@ public class ARInputController : MonoBehaviour
             if (hit.collider.gameObject.tag == "Stem")
             {
                 selectedPlantData.selectedPart = PlantPart.Stem;
+                hit.collider.gameObject.GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
+                hit.collider.gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", emissionColor * emissionIntensity);
+
             }
             else if (hit.collider.gameObject.tag == "Leaf")
             {
@@ -319,9 +324,13 @@ public class ARInputController : MonoBehaviour
             {
                 selectedPlantData.selectedPart = PlantPart.Flower;
             }
-            else
+            else if (hit.collider.gameObject.tag != "Flower" && hit.collider.gameObject.tag != "Stem" && hit.collider.gameObject.tag != "Leaf" && hit.collider.gameObject.tag != "Root")
             {
-                selectedPlantData.selectedPart = PlantPart.None;
+                /*selectedPlantData.selectedPart = PlantPart.None;
+                hit.collider.gameObject.GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
+                activePlant.FindObjectWithTag("Stem").GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
+                FindObjectWithTag("Leaf").GetComponent<Renderer>().material.DisableKeyword("_EMISSION");*/
+
             }
 
 
@@ -331,6 +340,7 @@ public class ARInputController : MonoBehaviour
 
         Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
     }
+
 
     private void EnsureCamera()
     {

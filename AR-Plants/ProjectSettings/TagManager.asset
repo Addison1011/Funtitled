@@ -8,6 +8,7 @@ TagManager:
   - Bark
   - Flower
   - Leaf
+  - Stem
   layers:
   - Default
   - TransparentFX
