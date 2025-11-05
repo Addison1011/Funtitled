@@ -9,6 +9,8 @@ TagManager:
   - Flower
   - Leaf
   - Stem
+  - PlantDescription
+  - GameManager
   layers:
   - Default
   - TransparentFX
