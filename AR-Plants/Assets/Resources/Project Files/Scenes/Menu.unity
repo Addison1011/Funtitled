@@ -456,6 +456,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 864373724}
   - {fileID: 1977394166}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -780,8 +781,8 @@ GameObject:
   - component: {fileID: 864373724}
   - component: {fileID: 864373723}
   m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
+  m_Name: PlantDescription
+  m_TagString: PlantDescription
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -814,12 +815,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 864373722}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 540, y: 1200, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 227745662}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1325791685
 PrefabInstance:
@@ -1699,4 +1700,3 @@ SceneRoots:
   - {fileID: 227745662}
   - {fileID: 2048993326}
   - {fileID: 1325791685}
-  - {fileID: 864373724}

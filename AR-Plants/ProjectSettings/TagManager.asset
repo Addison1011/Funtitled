@@ -9,6 +9,7 @@ TagManager:
   - Flower
   - Leaf
   - Stem
+  - PlantDescription
   layers:
   - Default
   - TransparentFX
