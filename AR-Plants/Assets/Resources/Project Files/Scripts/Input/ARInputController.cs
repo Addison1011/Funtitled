@@ -152,10 +152,7 @@ public class ARInputController : MonoBehaviour
 
 
 
-        if (HitActivePlant(finger.currentTouch.screenPosition))
-        {
-            resizePlantModelOnPinch();
-        }
+
         // If plant exists and touch is on the plant -> start HOLD candidate
         if (isPlantPlaced && activePlant != null && HitActivePlant(screenPos))
         {
@@ -177,7 +174,7 @@ public class ARInputController : MonoBehaviour
 
     private void OnFingerMove(Finger finger)
     {
-        resizePlantModelOnPinch();
+
         if (!isDragging || activePlant == null || finger != holdFinger) return;
 
         if (TryARRaycastToAllowedPlane(finger.currentTouch.screenPosition, out Pose planePose))
@@ -355,57 +352,6 @@ public class ARInputController : MonoBehaviour
         }
     }
 
-    private void resizePlantModelOnPinch()
-    {
-        if (EnhancedTouch.Touch.activeTouches.Count == 2)
-        {
-            EnhancedTouch.Touch touch0 = EnhancedTouch.Touch.activeTouches[0];
-            EnhancedTouch.Touch touch1 = EnhancedTouch.Touch.activeTouches[1];
-            float maxSize = selectedPlantData.plantInfo.maxSize;
-            float minSize = selectedPlantData.plantInfo.minSize;
-
-            /*if (activePlant.transform.localScale.x < selectedPlantData.plantInfo.minSize &&
-            activePlant.transform.localScale.y < selectedPlantData.plantInfo.minSize &&
-            activePlant.transform.localScale.z < selectedPlantData.plantInfo.minSize)
-            {
-                activePlant.transform.localScale = new Vector3(minSize, minSize, minSize);
-            }
-
-            if (activePlant.transform.localScale.x > selectedPlantData.plantInfo.maxSize &&
-            activePlant.transform.localScale.y > selectedPlantData.plantInfo.maxSize &&
-            activePlant.transform.localScale.z > selectedPlantData.plantInfo.maxSize)
-            {
-                activePlant.transform.localScale = new Vector3(maxSize, maxSize, maxSize);
-            }*/
 
 
-
-            Debug.Log("ScaleX: " + activePlant.transform.localScale.x + " ScaleY: " + activePlant.transform.localScale.y + " ScaleZ: " + activePlant.transform.localScale.z);
-            //Debug.Log("can scale: " + canScale);
-
-            if (HitActivePlant(touch0.screenPosition) || HitActivePlant(touch1.screenPosition))
-            {
-                // Ignore if Touch Canceled or Ended 
-                if (touch0.phase == TouchPhase.Ended || touch0.phase == TouchPhase.Canceled ||
-                   touch1.phase == TouchPhase.Ended || touch1.phase == TouchPhase.Canceled)
-                {
-                    return;
-                }
-                // if touch began, record initial distance and scale
-                if (touch0.phase == TouchPhase.Began || touch1.phase == TouchPhase.Began)
-                {
-                    initialPinchDistance = Vector2.Distance(touch0.screenPosition, touch1.screenPosition);
-                    initialScale = activePlant.transform.localScale;
-                }
-                else
-                {
-                    float currentPinchDistance = Vector2.Distance(touch0.screenPosition, touch1.screenPosition);
-                    if (Mathf.Approximately(initialPinchDistance, 0))
-                        return; // prevent division by zero
-                    float scaleFactor = currentPinchDistance / initialPinchDistance;
-                    activePlant.transform.localScale = initialScale * scaleFactor;
-                }
-            }
-        }
-    }
 }
