@@ -383,7 +383,29 @@ public class ARInputController : MonoBehaviour
             Debug.Log("ScaleX: " + activePlant.transform.localScale.x + " ScaleY: " + activePlant.transform.localScale.y + " ScaleZ: " + activePlant.transform.localScale.z);
             //Debug.Log("can scale: " + canScale);
 
-
+            if (HitActivePlant(touch0.screenPosition) || HitActivePlant(touch1.screenPosition))
+            {
+                // Ignore if Touch Canceled or Ended 
+                if (touch0.phase == TouchPhase.Ended || touch0.phase == TouchPhase.Canceled ||
+                   touch1.phase == TouchPhase.Ended || touch1.phase == TouchPhase.Canceled)
+                {
+                    return;
+                }
+                // if touch began, record initial distance and scale
+                if (touch0.phase == TouchPhase.Began || touch1.phase == TouchPhase.Began)
+                {
+                    initialPinchDistance = Vector2.Distance(touch0.screenPosition, touch1.screenPosition);
+                    initialScale = activePlant.transform.localScale;
+                }
+                else
+                {
+                    float currentPinchDistance = Vector2.Distance(touch0.screenPosition, touch1.screenPosition);
+                    if (Mathf.Approximately(initialPinchDistance, 0))
+                        return; // prevent division by zero
+                    float scaleFactor = currentPinchDistance / initialPinchDistance;
+                    activePlant.transform.localScale = initialScale * scaleFactor;
+                }
+            }
         }
     }
 }
