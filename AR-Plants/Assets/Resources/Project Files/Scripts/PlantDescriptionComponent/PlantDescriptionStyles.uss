@@ -1,0 +1,152 @@
+.plant-description {
+    width: auto;
+    background-color: rgb(255, 255, 255);
+    border-radius: 24px;
+    border-width: 4px;
+    border-color: rgb(31, 41, 55);
+    overflow: hidden;
+    margin: 20px auto;
+}
+
+.header-section {
+    position: relative;
+    width: 100%;
+    height: 256px;
+    background-color: rgb(243, 244, 246);
+}
+
+.header-image {
+    width: 100%;
+    height: 100%;
+    background-image: url("project://database/Assets/Resources/Project%20Files/Scripts/PlantDescriptionComponent/Images/golden_barrel_cactus.jpg?fileID=2800000&guid=20e11ec6954c58847b60eb8df357edf6&type=3#golden_barrel_cactus");
+    -unity-background-scale-mode: scale-and-crop;
+}
+
+.back-button {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    border-width: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-button:hover {
+    background-color: rgb(255, 255, 255);
+}
+
+.back-icon {
+    font-size: 20px;
+    color: rgb(75, 85, 99);
+    -unity-font-style: bold;
+}
+
+.content-container {
+    padding: 24px;
+}
+
+.title-section {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.title-group {
+    flex: 1;
+    margin-right: 12px;
+}
+
+.common-name {
+    font-size: 24px;
+    color: rgb(17, 24, 39);
+    -unity-font-style: bold;
+    margin-bottom: 4px;
+    white-space: normal;
+}
+
+.scientific-name {
+    font-size: 14px;
+    color: rgb(107, 114, 128);
+    -unity-font-style: italic;
+    white-space: normal;
+}
+
+.ar-button {
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 16px;
+    border-width: 2px;
+    border-color: rgb(209, 213, 219);
+    border-radius: 8px;
+    background-color: rgb(255, 255, 255);
+    flex-shrink: 0;
+}
+
+.ar-button:hover {
+    background-color: rgb(249, 250, 251);
+}
+
+.camera-icon {
+    width: 16px;
+    height: 16px;
+    background-image: url("project://database/Assets/Resources/Project%20Files/Scripts/PlantDescriptionComponent/Images/camera-icon.png?fileID=2800000&guid=f63e9cb0f5303bb4ab0c9764556957ff&type=3#camera-icon");
+    margin-right: 8px;
+}
+
+.ar-label {
+    font-size: 14px;
+    color: rgb(17, 24, 39);
+    -unity-font-style: bold;
+}
+
+.description {
+    font-size: 16px;
+    color: rgb(55, 65, 81);
+    min-height: 24px;
+    white-space: normal;
+    margin-bottom: 16px;
+}
+
+.map-section {
+    position: relative;
+    width: 100%;
+    height: 192px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.map-image {
+    width: 100%;
+    height: 100%;
+    background-image: url("project://database/Assets/Resources/Project%20Files/Scripts/PlantDescriptionComponent/Images/mexico_map.png?fileID=2800000&guid=afc746122dcc065459e56f1b679fb6cb&type=3#mexico_map");
+    -unity-background-scale-mode: scale-and-crop;
+}
+
+.location-badge {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 4px 12px;
+    border-radius: 16px;
+}
+
+.pin-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+    -unity-background-image-tint-color: rgb(239, 68, 68);
+}
+
+.location-text {
+    font-size: 14px;
+    color: rgb(55, 65, 81);
+    -unity-font-style: bold;
+}

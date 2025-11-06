@@ -4,15 +4,18 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Trunk
-  - Branch
-  - Leaves
   - SelectedPlantData
+  - Bark
+  - Flower
+  - Leaf
+  - Stem
+  - PlantDescription
+  - GameManager
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Background
   - Water
   - UI
   - 
