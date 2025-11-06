@@ -1,0 +1,365 @@
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
+using UnityEngine.InputSystem.EnhancedTouch;
+using EnhancedTouch = UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.XR.ARCore;
+using System.Collections;
+using UnityEngine.InputSystem;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
+public enum PlantPart
+{
+    Stem,
+    Leaf,
+    Root,
+    Flower,
+    None
+}
+[RequireComponent(typeof(ARRaycastManager))]
+
+public class ARInputController : MonoBehaviour
+{
+    public ARSession arSession;
+    [Header("References")]
+    [SerializeField] private Camera arCamera;                   // AR Camera
+    [SerializeField] private GameObject selectedPlantModel; // Prefab to place
+    private SelectedPlantData selectedPlantData;
+
+    [SerializeField] private GameObject selectedPlantDataHandle;
+    private ParticleSystem placementEffect;
+    private AudioSource placementSound;
+
+
+
+    [Header("Tuning")]
+    [SerializeField] private float yOffsetMeters = 0.02f;       // lift to avoid z-fighting
+    [SerializeField] private float followLerp = 14f;            // smoothing for drag
+    [SerializeField] private float initialPinchDistance;
+    [SerializeField] private Vector3 initialScale;
+
+    [Header("Hold / Tap Settings")]
+    [Tooltip("Hold duration (seconds) required on the plant to start dragging.")]
+    [SerializeField] private float holdToDragSeconds = 0.4f;
+    [Tooltip("Max finger movement (pixels) still considered a tap/hold (pre-drag).")]
+    [SerializeField] private float tapSlopPixels = 12f;
+
+
+
+    [Header("Tap Callback")]
+    public UnityEvent onPlantTapped; // hook UI, selection, etc.
+
+    private ARRaycastManager aRRaycastManager;
+    [Header("Placement Area Toggle")]
+    [SerializeField] private ARPlaneManager arPlaneManager;
+    [SerializeField] private bool allowHorizontalUp = true;
+    [SerializeField] private bool allowHorizontalDown = false;
+    [SerializeField] private bool allowVertical = false;
+    private readonly List<ARRaycastHit> hits = new();
+
+    // Placement state
+    private bool isPlantPlaced = false;
+    private GameObject activePlant;
+
+    // Drag state
+    private bool isDragging = false;
+    private Vector3 desiredWorldPos;
+
+    // Hold-to-drag state
+    private bool holdCandidate = false;               // currently holding on plant (might become drag)
+    private float holdStartTime;
+    private Vector2 holdStartScreenPos;
+    private Finger holdFinger;
+
+
+    private void Awake()
+    {
+
+        EnsureCamera();
+        if (GameObject.FindWithTag("SelectedPlantData") != null)
+        {
+            selectedPlantDataHandle = GameObject.FindWithTag("SelectedPlantData");
+        }
+
+
+        //Gets the SelectedPlantData script from the SelectedPlantData GameObject
+        selectedPlantData = selectedPlantDataHandle.GetComponent<SelectedPlantData>();
+
+        selectedPlantModel = Resources.Load<GameObject>(selectedPlantData.plantInfo.scientificName); //default plant
+        aRRaycastManager = GetComponent<ARRaycastManager>();
+        placementEffect = selectedPlantModel.GetComponentInChildren<ParticleSystem>();
+        placementSound = selectedPlantModel.GetComponentInChildren<AudioSource>();
+    }
+
+    void Start()
+    {
+
+    }
+
+    private void OnEnable()
+    {
+        EnsureCamera();
+        EnhancedTouchSupport.Enable();
+        EnhancedTouch.Touch.onFingerDown += OnFingerDown;
+        EnhancedTouch.Touch.onFingerMove += OnFingerMove;
+        EnhancedTouch.Touch.onFingerUp += OnFingerUp;
+    }
+
+    private void OnDisable()
+    {
+        EnhancedTouch.Touch.onFingerDown -= OnFingerDown;
+        EnhancedTouch.Touch.onFingerMove -= OnFingerMove;
+        EnhancedTouch.Touch.onFingerUp -= OnFingerUp;
+        EnhancedTouchSupport.Disable();
+        arCamera = null;
+    }
+
+    private void Update()
+    {
+        // Promote hold -> drag when time & slop constraints satisfied
+        if (holdCandidate && !isDragging && holdFinger != null)
+        {
+            float heldFor = Time.time - holdStartTime;
+            float moved = (holdFinger.currentTouch.screenPosition - holdStartScreenPos).magnitude;
+
+            if (moved <= tapSlopPixels && heldFor >= holdToDragSeconds)
+            {
+                // Begin dragging
+                isDragging = true;
+
+                if (TryARRaycastToAllowedPlane(holdFinger.currentTouch.screenPosition, out Pose pose))
+                    desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
+            }
+        }
+
+
+        if (activePlant != null)
+        {
+            activePlant.transform.position =
+                Vector3.Lerp(activePlant.transform.position, desiredWorldPos, Time.deltaTime * followLerp);
+        }
+
+    }
+
+    //++++ Touch Handlers ++++
+    private void OnFingerDown(Finger finger)
+    {
+        Vector2 screenPos = finger.currentTouch.screenPosition;
+
+
+        // If plant exists and touch is on the plant -> start HOLD candidate
+        if (isPlantPlaced && activePlant != null && HitActivePlant(screenPos))
+        {
+            holdCandidate = true;
+            holdStartTime = Time.time;
+            holdStartScreenPos = screenPos;
+            holdFinger = finger;
+            return;
+        }
+
+        // Otherwise, we are NOT touching the plant here.
+        // We won't move/place immediately; we'll confirm it's a TAP on finger up.
+        holdCandidate = false;
+        holdFinger = finger; // remember so we can check on FingerUp
+    }
+
+    private void OnFingerMove(Finger finger)
+    {
+        if (!isDragging || activePlant == null || finger != holdFinger) return;
+
+        if (TryARRaycastToAllowedPlane(finger.currentTouch.screenPosition, out Pose planePose))
+        {
+            desiredWorldPos = planePose.position + Vector3.up * yOffsetMeters;
+            // align rotation:
+            // activePlant.transform.rotation = planePose.rotation;
+        }
+    }
+
+    private void OnFingerUp(Finger finger)
+    {
+        if (finger != holdFinger)
+            return;
+
+        // Case A: we were holding on the plant but never transitioned to drag -> treat as a TAP on plant
+        if (holdCandidate && !isDragging)
+        {
+            OnPlantTapped(finger); // placeholder behavior
+        }
+        // Case B: we were NOT holding on the plant (finger down wasn't on plant) -> treat as TAP on empty plane
+        else if (!holdCandidate && !isDragging)
+        {
+            if (TryARRaycastToAllowedPlane(finger.currentTouch.screenPosition, out Pose pose))
+            {
+
+                if (!isPlantPlaced)
+                {
+                    // Place new
+                    isPlantPlaced = true;
+                    Debug.Log("rotation: " + pose.rotation.eulerAngles);
+                    activePlant = Instantiate(selectedPlantModel, pose.position, pose.rotation);
+                    activePlant.transform.position += Vector3.up * yOffsetMeters;
+                    desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
+                    activePlant.GetComponentInChildren<AudioSource>().Play();
+                    activePlant.GetComponentInChildren<ParticleSystem>().Play();
+
+
+                    /*if (activePlant.GetComponent<Collider>() == null)
+                        activePlant.AddComponent<BoxCollider>();*/
+                }
+                else
+                {
+                    // Move existing
+                    //desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
+                }
+            }
+        }
+
+        // Reset states
+        holdCandidate = false;
+        isDragging = false;
+        holdFinger = null;
+    }
+
+    public void RefreshSession()
+    {
+
+        arSession.Reset();
+        isPlantPlaced = false;
+        if (activePlant != null)
+        {
+            Destroy(activePlant);
+            activePlant = null;
+        }
+    }
+
+
+
+    // helper method to raycast and find a valid plane
+    private bool TryARRaycastToAllowedPlane(Vector2 screenPos, out Pose pose)
+    {
+        pose = default;
+
+        if (!aRRaycastManager.Raycast(screenPos, hits, TrackableType.PlaneWithinPolygon))
+            return false;
+
+        foreach (var hit in hits)
+        {
+            var plane = arPlaneManager?.GetPlane(hit.trackableId);
+            if (plane == null) continue;
+
+            var align = plane.alignment; // UnityEngine.XR.ARSubsystems.PlaneAlignment
+
+            bool placementAllowed =
+                (allowHorizontalUp && align == PlaneAlignment.HorizontalUp) ||
+                (allowHorizontalDown && align == PlaneAlignment.HorizontalDown) ||
+                (allowVertical && align == PlaneAlignment.Vertical);
+
+            if (placementAllowed)
+            {
+                pose = hit.pose;
+                pose.position += Vector3.up * yOffsetMeters;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Raycast from screen to check if we tapped the active plant
+    private bool HitActivePlant(Vector2 screenPos)
+    {
+        EnsureCamera();
+        if (!arCamera || activePlant == null) return false;
+
+        if (arCamera == null || activePlant == null) return false;
+
+        Ray ray = arCamera.ScreenPointToRay(screenPos);
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f, ~0, QueryTriggerInteraction.Ignore))
+        {
+            return hit.collider != null &&
+                   (hit.collider.gameObject == activePlant || hit.collider.transform.IsChildOf(activePlant.transform));
+        }
+        return false;
+    }
+
+    // Placeholder tap behavior on the plant (short tap)
+    private void OnPlantTapped(Finger finger)
+    {
+        EnsureCamera();
+        // Unity’s destroyed objects compare equal to null
+        if (!arCamera) return;
+
+        Ray ray = arCamera.ScreenPointToRay(finger.currentTouch.screenPosition);
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f, ~0, QueryTriggerInteraction.Ignore))
+        {
+
+            if (hit.collider.gameObject.tag == "Stem")
+            {
+                selectedPlantData.selectedPart = PlantPart.Stem;
+            }
+            else if (hit.collider.gameObject.tag == "Leaf")
+            {
+                selectedPlantData.selectedPart = PlantPart.Leaf;
+            }
+            else if (hit.collider.gameObject.tag == "Root")
+            {
+                selectedPlantData.selectedPart = PlantPart.Root;
+            }
+            else if (hit.collider.gameObject.tag == "Flower")
+            {
+                selectedPlantData.selectedPart = PlantPart.Flower;
+            }
+            else
+            {
+                selectedPlantData.selectedPart = PlantPart.None;
+            }
+
+
+
+            Debug.Log(hit.collider.gameObject.name);
+        }
+
+        Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
+    }
+
+    private void EnsureCamera()
+    {
+        if (!arCamera)
+        {
+            var main = Camera.main;
+            if (main) { arCamera = main; return; }
+
+            var tagged = GameObject.FindWithTag("MainCamera");
+            if (tagged) arCamera = tagged.GetComponent<Camera>();
+        }
+    }
+
+    private void resizePlantModelOnPinch()
+    {
+        if (EnhancedTouch.Touch.activeTouches.Count == 2)
+        {
+            EnhancedTouch.Touch touch0 = EnhancedTouch.Touch.activeTouches[0];
+            EnhancedTouch.Touch touch1 = EnhancedTouch.Touch.activeTouches[1];
+            // Ignore if Touch Canceled or Ended
+            if (touch0.phase == TouchPhase.Ended || touch0.phase == TouchPhase.Canceled ||
+               touch1.phase == TouchPhase.Ended || touch1.phase == TouchPhase.Canceled)
+            {
+                return;
+            }
+            // if touch began, record initial distance and scale
+            if (touch0.phase == TouchPhase.Began || touch1.phase == TouchPhase.Began)
+            {
+                initialPinchDistance = Vector2.Distance(touch0.screenPosition, touch1.screenPosition);
+                initialScale = transform.localScale;
+            }
+            else
+            {
+                float currentPinchDistance = Vector2.Distance(touch0.screenPosition, touch1.screenPosition);
+                if (Mathf.Approximately(initialPinchDistance, 0))
+                    return; // prevent division by zero
+                float scaleFactor = currentPinchDistance / initialPinchDistance;
+                transform.localScale = initialScale * scaleFactor;
+            }
+        }
+    }
+}
