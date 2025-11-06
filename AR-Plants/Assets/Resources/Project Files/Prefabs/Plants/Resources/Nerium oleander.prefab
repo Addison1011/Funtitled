@@ -200,7 +200,7 @@ PrefabInstance:
     - target: {fileID: 3760603880439709601, guid: 5e0c3607f8a7217428d4a8d51176de38,
         type: 3}
       propertyPath: m_TagString
-      value: Bark
+      value: Stem
       objectReference: {fileID: 0}
     - target: {fileID: 5941029565030734966, guid: 5e0c3607f8a7217428d4a8d51176de38,
         type: 3}

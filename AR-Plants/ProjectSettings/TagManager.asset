@@ -8,11 +8,14 @@ TagManager:
   - Bark
   - Flower
   - Leaf
+  - Stem
+  - PlantDescription
+  - GameManager
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Background
   - Water
   - UI
   - 

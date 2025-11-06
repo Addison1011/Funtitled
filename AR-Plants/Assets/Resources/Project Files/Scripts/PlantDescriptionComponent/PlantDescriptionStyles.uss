@@ -1,6 +1,5 @@
-
 .plant-description {
-    width: 375px;
+    width: auto;
     background-color: rgb(255, 255, 255);
     border-radius: 24px;
     border-width: 4px;
@@ -9,7 +8,6 @@
     margin: 20px auto;
 }
 
-/* Header Section */
 .header-section {
     position: relative;
     width: 100%;
@@ -20,7 +18,7 @@
 .header-image {
     width: 100%;
     height: 100%;
-    background-image: url('Images/golden_barrel_cactus.jpg');
+    background-image: url("project://database/Assets/Resources/Project%20Files/Scripts/PlantDescriptionComponent/Images/golden_barrel_cactus.jpg?fileID=2800000&guid=20e11ec6954c58847b60eb8df357edf6&type=3#golden_barrel_cactus");
     -unity-background-scale-mode: scale-and-crop;
 }
 
@@ -47,12 +45,10 @@
     -unity-font-style: bold;
 }
 
-/* Content Container */
 .content-container {
     padding: 24px;
 }
 
-/* Title Section */
 .title-section {
     flex-direction: row;
     justify-content: space-between;
@@ -80,7 +76,6 @@
     white-space: normal;
 }
 
-/* AR Button */
 .ar-button {
     flex-direction: row;
     align-items: center;
@@ -99,7 +94,7 @@
 .camera-icon {
     width: 16px;
     height: 16px;
-    background-image: url('Images/camera-icon.png');
+    background-image: url("project://database/Assets/Resources/Project%20Files/Scripts/PlantDescriptionComponent/Images/camera-icon.png?fileID=2800000&guid=f63e9cb0f5303bb4ab0c9764556957ff&type=3#camera-icon");
     margin-right: 8px;
 }
 
@@ -109,7 +104,6 @@
     -unity-font-style: bold;
 }
 
-/* Description */
 .description {
     font-size: 16px;
     color: rgb(55, 65, 81);
@@ -118,7 +112,6 @@
     margin-bottom: 16px;
 }
 
-/* Map Section */
 .map-section {
     position: relative;
     width: 100%;
@@ -130,11 +123,10 @@
 .map-image {
     width: 100%;
     height: 100%;
-    background-image: url('Images/mexico_map.png'); 
+    background-image: url("project://database/Assets/Resources/Project%20Files/Scripts/PlantDescriptionComponent/Images/mexico_map.png?fileID=2800000&guid=afc746122dcc065459e56f1b679fb6cb&type=3#mexico_map");
     -unity-background-scale-mode: scale-and-crop;
 }
 
-/* Location Badge */
 .location-badge {
     position: absolute;
     bottom: 12px;
@@ -149,7 +141,6 @@
 .pin-icon {
     width: 16px;
     height: 16px;
-   
     margin-right: 4px;
     -unity-background-image-tint-color: rgb(239, 68, 68);
 }
