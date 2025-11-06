@@ -561,10 +561,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1300, y: 600}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -628,7 +628,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   infoPanel: {fileID: 1263335757}
-  hiddenPosition: {x: 0, y: -800}
+  hiddenPosition: {x: 0, y: -1050}
   shownPosition: {x: 0, y: 0}
   slidespeed: 500
 --- !u!1 &957430251
@@ -2492,6 +2492,8 @@ MonoBehaviour:
   followLerp: 14
   initialPinchDistance: 0
   initialScale: {x: 0, y: 0, z: 0}
+  emissionColor: {r: 1, g: 1, b: 1, a: 1}
+  emissionIntensity: 1
   holdToDragSeconds: 0.15
   tapSlopPixels: 12
   onPlantTapped:
