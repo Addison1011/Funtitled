@@ -2490,10 +2490,8 @@ MonoBehaviour:
     type: 3}
   yOffsetMeters: 0.02
   followLerp: 14
-  initialPinchDistance: 0
-  initialScale: {x: 0, y: 0, z: 0}
-  emissionColor: {r: 1, g: 1, b: 1, a: 1}
-  emissionIntensity: 1
+  emissionColor: {r: 0.003921569, g: 0.39607844, b: 0.9882353, a: 1}
+  emissionIntensity: 0.25
   holdToDragSeconds: 0.15
   tapSlopPixels: 12
   onPlantTapped:

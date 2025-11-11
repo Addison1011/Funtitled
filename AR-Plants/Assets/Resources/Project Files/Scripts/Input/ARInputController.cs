@@ -37,8 +37,8 @@ public class ARInputController : MonoBehaviour
     [Header("Tuning")]
     [SerializeField] private float yOffsetMeters = 0.02f;       // lift to avoid z-fighting
     [SerializeField] private float followLerp = 14f;            // smoothing for drag
-    [SerializeField] private float initialPinchDistance;
-    [SerializeField] private Vector3 initialScale;
+    private float initialPinchDistance;
+    private Vector3 initialScale;
     public Color emissionColor = Color.white;
     public float emissionIntensity = 1f;
 
@@ -156,6 +156,10 @@ public class ARInputController : MonoBehaviour
         {
             resizePlantModelOnPinch();
         }
+        else
+        {
+            // DisableAllEmission(activePlant);
+        }
         // If plant exists and touch is on the plant -> start HOLD candidate
         if (isPlantPlaced && activePlant != null && HitActivePlant(screenPos))
         {
@@ -201,21 +205,14 @@ public class ARInputController : MonoBehaviour
         // Case B: we were NOT holding on the plant (finger down wasn't on plant) -> treat as TAP on empty plane
         else if (!holdCandidate && !isDragging)
         {
+
             if (TryARRaycastToAllowedPlane(finger.currentTouch.screenPosition, out Pose pose))
             {
 
                 if (!isPlantPlaced)
                 {
                     // Place new
-                    isPlantPlaced = true;
-                    Debug.Log("rotation: " + pose.rotation.eulerAngles);
-                    activePlant = Instantiate(selectedPlantModel, pose.position, pose.rotation);
-                    activePlant.transform.position += Vector3.up * yOffsetMeters;
-                    desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
-                    activePlant.GetComponentInChildren<AudioSource>().Play();
-                    activePlant.GetComponentInChildren<ParticleSystem>().Play();
-
-
+                    PlacePlant(pose);
                     /*if (activePlant.GetComponent<Collider>() == null)
                         activePlant.AddComponent<BoxCollider>();*/
                 }
@@ -233,6 +230,32 @@ public class ARInputController : MonoBehaviour
         holdFinger = null;
     }
 
+    private void RemovePlant()
+    {
+        AudioSource audio = activePlant.GetComponentInChildren<AudioSource>();
+        ParticleSystem particleSystem = activePlant.GetComponentInChildren<ParticleSystem>();
+        audio.Play();
+        particleSystem.Play();
+        audio.transform.parent = null;
+        particleSystem.transform.parent = null;
+        Destroy(particleSystem.gameObject, 3f);
+        Destroy(audio.gameObject, audio.clip.length);
+        Destroy(activePlant);
+        activePlant = null;
+    }
+
+    private void PlacePlant(Pose pose)
+    {
+        // Place new
+        isPlantPlaced = true;
+        Debug.Log("rotation: " + pose.rotation.eulerAngles);
+        activePlant = Instantiate(selectedPlantModel, pose.position, pose.rotation);
+        activePlant.transform.position += Vector3.up * yOffsetMeters;
+        desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
+        activePlant.GetComponentInChildren<AudioSource>().Play();
+        activePlant.GetComponentInChildren<ParticleSystem>().Play();
+    }
+
     public void RefreshSession()
     {
 
@@ -240,9 +263,13 @@ public class ARInputController : MonoBehaviour
         isPlantPlaced = false;
         if (activePlant != null)
         {
-            Destroy(activePlant);
-            activePlant = null;
+            RemovePlant();
         }
+    }
+
+    void PlayPlacementSound()
+    {
+
     }
 
 
@@ -308,25 +335,42 @@ public class ARInputController : MonoBehaviour
             if (hit.collider.gameObject.tag == "Stem")
             {
                 selectedPlantData.selectedPart = PlantPart.Stem;
-                //hit.collider.gameObject.GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
-                //hit.collider.gameObject.GetComponent<Renderer>().material.SetColor("_EmissionColor", emissionColor * emissionIntensity);
+                /*
+                DisableAllEmission(activePlant);
+                EnableEmissionOnHitObject(hit);
+                */
 
             }
             else if (hit.collider.gameObject.tag == "Leaf")
             {
+
                 selectedPlantData.selectedPart = PlantPart.Leaf;
+                /*
+                DisableAllEmission(activePlant);
+                EnableEmissionOnHitObject(hit);
+                */
+
             }
             else if (hit.collider.gameObject.tag == "Root")
             {
                 selectedPlantData.selectedPart = PlantPart.Root;
+                /*
+                DisableAllEmission(activePlant);
+                EnableEmissionOnHitObject(hit);
+                */
             }
             else if (hit.collider.gameObject.tag == "Flower")
             {
                 selectedPlantData.selectedPart = PlantPart.Flower;
+                /*
+                DisableAllEmission(activePlant);
+                EnableEmissionOnHitObject(hit);
+                */
             }
-            else if (hit.collider.gameObject.tag != "Flower" && hit.collider.gameObject.tag != "Stem" && hit.collider.gameObject.tag != "Leaf" && hit.collider.gameObject.tag != "Root")
+            else
             {
                 selectedPlantData.selectedPart = PlantPart.None;
+                DisableAllEmission(activePlant);
                 /*selectedPlantData.selectedPart = PlantPart.None;
                 hit.collider.gameObject.GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
                 activePlant.FindObjectWithTag("Stem").GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
@@ -340,6 +384,24 @@ public class ARInputController : MonoBehaviour
         }
 
         Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
+    }
+
+    private void EnableEmissionOnHitObject(RaycastHit hit)
+    {
+        Renderer hitRenderer = hit.collider.gameObject.GetComponent<Renderer>();
+        hitRenderer.material.SetColor("_EmissionColor", emissionColor * emissionIntensity);
+        hitRenderer.material.EnableKeyword("_EMISSION");
+    }
+
+    private void DisableAllEmission(GameObject activePlant)
+    {
+        if (activePlant == null) return;
+
+        Renderer[] renderers = activePlant.GetComponentsInChildren<Renderer>();
+        foreach (Renderer rend in renderers)
+        {
+            rend.material.DisableKeyword("_EMISSION");
+        }
     }
 
 
