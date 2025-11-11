@@ -158,7 +158,7 @@ public class ARInputController : MonoBehaviour
         }
         else
         {
-            // DisableAllEmission(activePlant);
+            DisableAllEmission(activePlant);
         }
         // If plant exists and touch is on the plant -> start HOLD candidate
         if (isPlantPlaced && activePlant != null && HitActivePlant(screenPos))
@@ -335,37 +335,28 @@ public class ARInputController : MonoBehaviour
             if (hit.collider.gameObject.tag == "Stem")
             {
                 selectedPlantData.selectedPart = PlantPart.Stem;
-                /*
-                DisableAllEmission(activePlant);
-                EnableEmissionOnHitObject(hit);
-                */
+                
 
             }
             else if (hit.collider.gameObject.tag == "Leaf")
             {
 
                 selectedPlantData.selectedPart = PlantPart.Leaf;
-                /*
-                DisableAllEmission(activePlant);
-                EnableEmissionOnHitObject(hit);
-                */
+                
+                
 
             }
             else if (hit.collider.gameObject.tag == "Root")
             {
                 selectedPlantData.selectedPart = PlantPart.Root;
-                /*
-                DisableAllEmission(activePlant);
-                EnableEmissionOnHitObject(hit);
-                */
+               
+                
             }
             else if (hit.collider.gameObject.tag == "Flower")
             {
                 selectedPlantData.selectedPart = PlantPart.Flower;
-                /*
-                DisableAllEmission(activePlant);
-                EnableEmissionOnHitObject(hit);
-                */
+                
+                
             }
             else
             {
