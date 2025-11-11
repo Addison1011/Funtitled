@@ -137,7 +137,7 @@ public class ARInputController : MonoBehaviour
         }
 
 
-        if (activePlant != null)
+        else if (activePlant != null)
         {
             activePlant.transform.position =
                 Vector3.Lerp(activePlant.transform.position, desiredWorldPos, Time.deltaTime * followLerp);
