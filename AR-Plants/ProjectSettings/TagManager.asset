@@ -11,6 +11,7 @@ TagManager:
   - Stem
   - PlantDescription
   - GameManager
+  - Fruit
   layers:
   - Default
   - TransparentFX
