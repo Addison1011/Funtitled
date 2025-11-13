@@ -250,7 +250,7 @@ PrefabInstance:
     - target: {fileID: 2533923102707568794, guid: d2f08fa4aef35ca4696ad7ef7665bc0e,
         type: 3}
       propertyPath: m_TagString
-      value: Fruit
+      value: Flower
       objectReference: {fileID: 0}
     - target: {fileID: 3184560296204535637, guid: d2f08fa4aef35ca4696ad7ef7665bc0e,
         type: 3}

@@ -22,7 +22,7 @@ public class PlantInfo
     public string typeID { get; set; }
 
     public float maxSize = 2;
-    public float minSize = .5f;
+    public float minSize = .3f;
 
     //public string plantModelName = "Nerium oleander";
     //public string plantModelName = "Monstera";

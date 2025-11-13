@@ -120,6 +120,7 @@ public class ARInputController : MonoBehaviour
 
     private void Update()
     {
+        ClampPlantSize();
         // Promote hold -> drag when time & slop constraints satisfied
         if (holdCandidate && !isDragging && holdFinger != null)
         {
@@ -267,11 +268,6 @@ public class ARInputController : MonoBehaviour
         }
     }
 
-    void PlayPlacementSound()
-    {
-
-    }
-
 
 
     // helper method to raycast and find a valid plane
@@ -335,8 +331,10 @@ public class ARInputController : MonoBehaviour
             if (hit.collider.gameObject.tag == "Stem")
             {
                 selectedPlantData.selectedPart = PlantPart.Stem;
+
                 DisableAllEmission(activePlant);
-                EnableEmissionOnHitObject(hit);
+                EnableEmissionsOnHitObject("Stem");
+
 
             }
             else if (hit.collider.gameObject.tag == "Leaf")
@@ -344,33 +342,28 @@ public class ARInputController : MonoBehaviour
 
                 selectedPlantData.selectedPart = PlantPart.Leaf;
                 DisableAllEmission(activePlant);
-                EnableEmissionOnHitObject(hit);
-                
+                EnableEmissionsOnHitObject("Leaf");
+
 
             }
             else if (hit.collider.gameObject.tag == "Root")
             {
                 selectedPlantData.selectedPart = PlantPart.Root;
                 DisableAllEmission(activePlant);
-                EnableEmissionOnHitObject(hit);
-                
+                EnableEmissionsOnHitObject("Root");
+
             }
             else if (hit.collider.gameObject.tag == "Flower")
             {
                 selectedPlantData.selectedPart = PlantPart.Flower;
                 DisableAllEmission(activePlant);
-                EnableEmissionOnHitObject(hit);
-                
+                EnableEmissionsOnHitObject("Flower");
+
             }
             else
             {
                 selectedPlantData.selectedPart = PlantPart.None;
                 DisableAllEmission(activePlant);
-                /*selectedPlantData.selectedPart = PlantPart.None;
-                hit.collider.gameObject.GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
-                activePlant.FindObjectWithTag("Stem").GetComponent<Renderer>().material.DisableKeyword("_EMISSION");
-                FindObjectWithTag("Leaf").GetComponent<Renderer>().material.DisableKeyword("_EMISSION");*/
-
             }
 
 
@@ -381,11 +374,22 @@ public class ARInputController : MonoBehaviour
         Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
     }
 
-    private void EnableEmissionOnHitObject(RaycastHit hit)
+    private void EnableEmissionsOnHitObject(string hitPartTag)
     {
-        Renderer hitRenderer = hit.collider.gameObject.GetComponent<Renderer>();
-        hitRenderer.material.SetColor("_EmissionColor", emissionColor * emissionIntensity);
-        hitRenderer.material.EnableKeyword("_EMISSION");
+        //enable all leaf mesh emmisions if there are multiple leaf meshes
+
+
+        //GameObject.FindGameObjectsWithTag(hitPartTag);
+        Renderer[] renderers = activePlant.GetComponentsInChildren<Renderer>();
+        foreach (Renderer rend in renderers)
+        {
+            if (rend.gameObject.tag == hitPartTag)
+            {
+                rend.material.SetColor("_EmissionColor", emissionColor * emissionIntensity);
+                rend.material.EnableKeyword("_EMISSION");
+            }
+        }
+
     }
 
     private void DisableAllEmission(GameObject activePlant)
@@ -412,28 +416,33 @@ public class ARInputController : MonoBehaviour
         }
     }
 
+    private void ClampPlantSize()
+    {
+        if (activePlant != null)
+        {
+            if (activePlant.transform.localScale.x < selectedPlantData.plantInfo.minSize &&
+                activePlant.transform.localScale.y < selectedPlantData.plantInfo.minSize &&
+                activePlant.transform.localScale.z < selectedPlantData.plantInfo.minSize)
+            {
+                float minSize = selectedPlantData.plantInfo.minSize;
+                activePlant.transform.localScale = new Vector3(minSize, minSize, minSize);
+            }
+            else if (activePlant.transform.localScale.x > selectedPlantData.plantInfo.maxSize &&
+                activePlant.transform.localScale.y > selectedPlantData.plantInfo.maxSize &&
+                activePlant.transform.localScale.z > selectedPlantData.plantInfo.maxSize)
+            {
+                float maxSize = selectedPlantData.plantInfo.maxSize;
+                activePlant.transform.localScale = new Vector3(maxSize, maxSize, maxSize);
+            }
+        }
+    }
+
     private void resizePlantModelOnPinch()
     {
         if (EnhancedTouch.Touch.activeTouches.Count == 2)
         {
             EnhancedTouch.Touch touch0 = EnhancedTouch.Touch.activeTouches[0];
             EnhancedTouch.Touch touch1 = EnhancedTouch.Touch.activeTouches[1];
-            float maxSize = selectedPlantData.plantInfo.maxSize;
-            float minSize = selectedPlantData.plantInfo.minSize;
-
-            /*if (activePlant.transform.localScale.x < selectedPlantData.plantInfo.minSize &&
-            activePlant.transform.localScale.y < selectedPlantData.plantInfo.minSize &&
-            activePlant.transform.localScale.z < selectedPlantData.plantInfo.minSize)
-            {
-                activePlant.transform.localScale = new Vector3(minSize, minSize, minSize);
-            }
-
-            if (activePlant.transform.localScale.x > selectedPlantData.plantInfo.maxSize &&
-            activePlant.transform.localScale.y > selectedPlantData.plantInfo.maxSize &&
-            activePlant.transform.localScale.z > selectedPlantData.plantInfo.maxSize)
-            {
-                activePlant.transform.localScale = new Vector3(maxSize, maxSize, maxSize);
-            }*/
 
 
 
