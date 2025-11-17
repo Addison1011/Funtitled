@@ -26,11 +26,11 @@ public class ARInputController : MonoBehaviour
     [Header("References")]
     [SerializeField] private Camera arCamera;                   // AR Camera
     [SerializeField] private GameObject selectedPlantModel; // Prefab to place
+    [SerializeField] private SoundManager soundManager;
     private SelectedPlantData selectedPlantData;
 
     [SerializeField] private GameObject selectedPlantDataHandle;
     private ParticleSystem placementEffect;
-    private AudioSource placementSound;
 
 
 
@@ -92,7 +92,7 @@ public class ARInputController : MonoBehaviour
         selectedPlantModel = Resources.Load<GameObject>(selectedPlantData.plantInfo.scientificName); //default plant
         aRRaycastManager = GetComponent<ARRaycastManager>();
         placementEffect = selectedPlantModel.GetComponentInChildren<ParticleSystem>();
-        placementSound = selectedPlantModel.GetComponentInChildren<AudioSource>();
+        soundManager = SoundManager.Instance;
     }
 
     void Start()
@@ -233,14 +233,11 @@ public class ARInputController : MonoBehaviour
 
     private void RemovePlant()
     {
-        AudioSource audio = activePlant.GetComponentInChildren<AudioSource>();
         ParticleSystem particleSystem = activePlant.GetComponentInChildren<ParticleSystem>();
-        audio.Play();
+        soundManager.PlayPlantRemovalSound();
         particleSystem.Play();
-        audio.transform.parent = null;
         particleSystem.transform.parent = null;
         Destroy(particleSystem.gameObject, 3f);
-        Destroy(audio.gameObject, audio.clip.length);
         Destroy(activePlant);
         activePlant = null;
     }
@@ -253,7 +250,7 @@ public class ARInputController : MonoBehaviour
         activePlant = Instantiate(selectedPlantModel, pose.position, pose.rotation);
         activePlant.transform.position += Vector3.up * yOffsetMeters;
         desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
-        activePlant.GetComponentInChildren<AudioSource>().Play();
+        soundManager.PlayPlantPlacementSound();
         activePlant.GetComponentInChildren<ParticleSystem>().Play();
     }
 

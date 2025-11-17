@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1233149941 &-8677394020168120068
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Music03_{-8677394020168120068}
+  m_AudioClip: {fileID: 8300000, guid: 58b4b4808d93bdf49944e0e442c87e04, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &-5023962415719296368
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Music05_{-5023962415719296368}
+  m_AudioClip: {fileID: 8300000, guid: 7033054be96273649bd1831802b03024, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &2234929965726236704
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Music01_{2234929965726236704}
+  m_AudioClip: {fileID: 8300000, guid: b92da9af2fd120c4eabee622606ad2f2, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1307931743 &6418180475301049370
+AudioRandomContainer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MusicRandomizer
+  m_Volume: 0
+  m_Pitch: 0
+  m_AutomaticTriggerTime: 0
+  m_LoopCount: 1
+  m_VolumeRandomizationRange: {x: 0, y: 0}
+  m_PitchRandomizationRange: {x: 0, y: 0}
+  m_AutomaticTriggerTimeRandomizationRange: {x: 0, y: 0}
+  m_LoopCountRandomizationRange: {x: 0, y: 0}
+  m_Elements:
+  - {fileID: 2234929965726236704}
+  - {fileID: 8044145889633465278}
+  - {fileID: -8677394020168120068}
+  - {fileID: 6903864992847591799}
+  - {fileID: -5023962415719296368}
+  - {fileID: 9136080570274310596}
+  m_AvoidRepeatingLast: 0
+  m_PlaybackMode: 1
+  m_TriggerMode: 1
+  m_AutomaticTriggerMode: 1
+  m_LoopMode: 0
+  m_VolumeRandomizationEnabled: 0
+  m_PitchRandomizationEnabled: 0
+  m_AutomaticTriggerTimeRandomizationEnabled: 0
+  m_LoopCountRandomizationEnabled: 0
+--- !u!1233149941 &6903864992847591799
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Music04_{6903864992847591799}
+  m_AudioClip: {fileID: 8300000, guid: 4a26f6350141055459f9dbadce9c2a88, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &8044145889633465278
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Music02_{8044145889633465278}
+  m_AudioClip: {fileID: 8300000, guid: c9ae2eabaf0875e4eaf5bac4c2f1d052, type: 3}
+  m_Volume: 0
+  m_Enabled: 1
+--- !u!1233149941 &9136080570274310596
+AudioContainerElement:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Music06_{9136080570274310596}
+  m_AudioClip: {fileID: 8300000, guid: da51c10e9ac7c4e4281bf5b8a61b8732, type: 3}
+  m_Volume: 0
+  m_Enabled: 1

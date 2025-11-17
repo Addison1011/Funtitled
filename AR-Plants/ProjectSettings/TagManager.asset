@@ -12,6 +12,8 @@ TagManager:
   - PlantDescription
   - GameManager
   - Fruit
+  - BackgroundSound
+  - InteractionSound
   layers:
   - Default
   - TransparentFX
