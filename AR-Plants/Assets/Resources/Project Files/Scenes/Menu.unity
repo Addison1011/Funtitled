@@ -1685,7 +1685,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: da51c10e9ac7c4e4281bf5b8a61b8732, type: 3}
   interactionSoundClips:
   - {fileID: 8300000, guid: 3b44e094cea014e44b8d4c7d31a7739f, type: 3}
+  - {fileID: 8300000, guid: 837adc312518b21498ea8217d2c78069, type: 3}
   - {fileID: 8300000, guid: b46dfc1f9a1735c41ac2800e18f6e486, type: 3}
+  - {fileID: 8300000, guid: 12d2a551efc4e53419ed47bc1d372d11, type: 3}
   soundSettings: 1
 --- !u!82 &1880578493
 AudioSource:

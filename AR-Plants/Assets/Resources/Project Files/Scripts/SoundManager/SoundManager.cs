@@ -119,15 +119,22 @@ public class SoundManager : MonoBehaviour
         interactionSoundSource.Play();
     }
 
-    public void PlayPlantRemovalSound()
+
+    public void PlayEnterARButtonSound()
     {
-        interactionSoundSource.clip = GetInteractionSoundClip("PlantPlacementSound");
+        interactionSoundSource.clip = GetInteractionSoundClip("EnterARButtonSound");
         interactionSoundSource.Play();
     }
 
-    public void PlayMenuButtonClickSound()
+    public void PlayRefreshARSceneSound()
     {
-        interactionSoundSource.clip = GetInteractionSoundClip("MenuButtonClickSound");
+        interactionSoundSource.clip = GetInteractionSoundClip("RefreshARSceneSound");
+        interactionSoundSource.Play();
+    }
+
+    public void PlayDefaultButtonSound()
+    {
+        interactionSoundSource.clip = GetInteractionSoundClip("DefaultButtonSound");
         interactionSoundSource.Play();
     }
 }

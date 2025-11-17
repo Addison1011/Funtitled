@@ -234,7 +234,10 @@ public class ARInputController : MonoBehaviour
     private void RemovePlant()
     {
         ParticleSystem particleSystem = activePlant.GetComponentInChildren<ParticleSystem>();
-        soundManager.PlayPlantRemovalSound();
+
+        soundManager.PlayRefreshARSceneSound();
+
+
         particleSystem.Play();
         particleSystem.transform.parent = null;
         Destroy(particleSystem.gameObject, 3f);
@@ -262,6 +265,11 @@ public class ARInputController : MonoBehaviour
         if (activePlant != null)
         {
             RemovePlant();
+            //SoundManager.Instance.PlayRefreshARSceneSound();
+        }
+        else
+        {
+            SoundManager.Instance.PlayRefreshARSceneSound();
         }
     }
 

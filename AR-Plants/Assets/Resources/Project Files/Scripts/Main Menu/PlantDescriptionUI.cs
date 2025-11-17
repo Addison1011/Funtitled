@@ -46,13 +46,18 @@ public class PlantDescriptionUI : MonoBehaviour
     {
         Debug.Log("Button 'myButton' was clicked!");
         GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter += 1;
+        SoundManager.Instance.PlayEnterARButtonSound();
         SceneManager.LoadScene("MainScene00");
     }
 
     private void OnBackButtonClicked()
     {
         Debug.Log("Button 'myButton' was clicked!");
-
+        SoundManager.Instance.PlayDefaultButtonSound();
         Destroy(this.gameObject);
     }
+
+
+
+
 }
