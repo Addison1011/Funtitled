@@ -35,6 +35,7 @@ public class ExitButtonFunctionality : MonoBehaviour
     public void OnExitButtonPressed()
     {
         //EndARSession();
+        SoundManager.Instance.PlayDefaultButtonSound();
         ReturnToMainMenu();
     }
 
