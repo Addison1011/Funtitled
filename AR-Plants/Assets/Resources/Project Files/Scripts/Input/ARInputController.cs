@@ -92,6 +92,8 @@ public class ARInputController : MonoBehaviour
         selectedPlantModel = Resources.Load<GameObject>(selectedPlantData.plantInfo.scientificName); //default plant
         aRRaycastManager = GetComponent<ARRaycastManager>();
         placementEffect = selectedPlantModel.GetComponentInChildren<ParticleSystem>();
+
+
         soundManager = SoundManager.Instance;
     }
 
@@ -159,7 +161,8 @@ public class ARInputController : MonoBehaviour
         }
         else
         {
-            DisableAllEmission(activePlant);
+            DisableAllSelectionEffects(activePlant);
+            //DisableAllEmission(activePlant);
         }
         // If plant exists and touch is on the plant -> start HOLD candidate
         if (isPlantPlaced && activePlant != null && HitActivePlant(screenPos))
@@ -233,7 +236,7 @@ public class ARInputController : MonoBehaviour
 
     private void RemovePlant()
     {
-        ParticleSystem particleSystem = activePlant.GetComponentInChildren<ParticleSystem>();
+        ParticleSystem particleSystem = GameObject.FindGameObjectWithTag("PlacementEffect").GetComponent<ParticleSystem>();
 
         soundManager.PlayRefreshARSceneSound();
 
@@ -254,7 +257,9 @@ public class ARInputController : MonoBehaviour
         activePlant.transform.position += Vector3.up * yOffsetMeters;
         desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
         soundManager.PlayPlantPlacementSound();
-        activePlant.GetComponentInChildren<ParticleSystem>().Play();
+        //activePlant.Get
+        //activePlant.GetComponentInChildren<ParticleSystem>().Play();
+        GameObject.FindGameObjectWithTag("PlacementEffect").GetComponent<ParticleSystem>().Play();
     }
 
     public void RefreshSession()
@@ -335,10 +340,15 @@ public class ARInputController : MonoBehaviour
 
             if (hit.collider.gameObject.tag == "Stem")
             {
+
+
                 selectedPlantData.selectedPart = PlantPart.Stem;
                 SoundManager.Instance.PlaySelectBranchSound();
-                DisableAllEmission(activePlant);
-                EnableEmissionsOnHitObject("Stem");
+                DisableAllSelectionEffects(activePlant);
+                hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
+
+                //DisableAllEmission(activePlant);
+                //EnableEmissionsOnHitObject("Stem");
 
 
             }
@@ -348,8 +358,11 @@ public class ARInputController : MonoBehaviour
                 selectedPlantData.selectedPart = PlantPart.Leaf;
                 SoundManager.Instance.PlaySelectLeafSound();
 
-                DisableAllEmission(activePlant);
-                EnableEmissionsOnHitObject("Leaf");
+                DisableAllSelectionEffects(activePlant);
+                hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
+
+                // DisableAllEmission(activePlant);
+                //EnableEmissionsOnHitObject("Leaf");
 
 
             }
@@ -358,23 +371,28 @@ public class ARInputController : MonoBehaviour
                 selectedPlantData.selectedPart = PlantPart.Root;
                 SoundManager.Instance.PlaySelectPlantPartSound();
 
-                DisableAllEmission(activePlant);
-                EnableEmissionsOnHitObject("Root");
+                DisableAllSelectionEffects(activePlant);
+                hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
+                //DisableAllEmission(activePlant);
+                //EnableEmissionsOnHitObject("Root");
 
             }
             else if (hit.collider.gameObject.tag == "Flower")
             {
                 selectedPlantData.selectedPart = PlantPart.Flower;
                 SoundManager.Instance.PlaySelectFlowerSound();
-
-                DisableAllEmission(activePlant);
-                EnableEmissionsOnHitObject("Flower");
+                DisableAllSelectionEffects(activePlant);
+                hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
+                //DisableAllEmission(activePlant);
+                //EnableEmissionsOnHitObject("Flower");
 
             }
             else
             {
                 selectedPlantData.selectedPart = PlantPart.None;
-                DisableAllEmission(activePlant);
+                DisableAllSelectionEffects(activePlant);
+
+                //DisableAllEmission(activePlant);
             }
 
 
@@ -385,6 +403,17 @@ public class ARInputController : MonoBehaviour
         Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
     }
 
+    private void DisableAllSelectionEffects(GameObject hitObject)
+    {
+        if (activePlant == null) return;
+
+        GameObject[] effects = GameObject.FindGameObjectsWithTag("SelectionEffect");
+        foreach (GameObject eff in effects)
+        {
+            eff.GetComponent<ParticleSystem>().Stop();
+        }
+    }
+
     private void EnableEmissionsOnHitObject(string hitPartTag)
     {
         //enable all leaf mesh emmisions if there are multiple leaf meshes
@@ -392,6 +421,8 @@ public class ARInputController : MonoBehaviour
 
         //GameObject.FindGameObjectsWithTag(hitPartTag);
         Renderer[] renderers = activePlant.GetComponentsInChildren<Renderer>();
+
+
         foreach (Renderer rend in renderers)
         {
             if (rend.gameObject.tag == hitPartTag)

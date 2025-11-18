@@ -14,6 +14,8 @@ TagManager:
   - Fruit
   - BackgroundSound
   - InteractionSound
+  - SelectionEffect
+  - PlacementEffect
   layers:
   - Default
   - TransparentFX
