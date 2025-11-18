@@ -336,7 +336,7 @@ public class ARInputController : MonoBehaviour
             if (hit.collider.gameObject.tag == "Stem")
             {
                 selectedPlantData.selectedPart = PlantPart.Stem;
-
+                SoundManager.Instance.PlaySelectBranchSound();
                 DisableAllEmission(activePlant);
                 EnableEmissionsOnHitObject("Stem");
 
@@ -346,6 +346,8 @@ public class ARInputController : MonoBehaviour
             {
 
                 selectedPlantData.selectedPart = PlantPart.Leaf;
+                SoundManager.Instance.PlaySelectLeafSound();
+
                 DisableAllEmission(activePlant);
                 EnableEmissionsOnHitObject("Leaf");
 
@@ -354,6 +356,8 @@ public class ARInputController : MonoBehaviour
             else if (hit.collider.gameObject.tag == "Root")
             {
                 selectedPlantData.selectedPart = PlantPart.Root;
+                SoundManager.Instance.PlaySelectPlantPartSound();
+
                 DisableAllEmission(activePlant);
                 EnableEmissionsOnHitObject("Root");
 
@@ -361,6 +365,8 @@ public class ARInputController : MonoBehaviour
             else if (hit.collider.gameObject.tag == "Flower")
             {
                 selectedPlantData.selectedPart = PlantPart.Flower;
+                SoundManager.Instance.PlaySelectFlowerSound();
+
                 DisableAllEmission(activePlant);
                 EnableEmissionsOnHitObject("Flower");
 
