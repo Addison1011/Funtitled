@@ -22,12 +22,14 @@ public class PlantDescriptionUI : MonoBehaviour
         // Find the button by its name
         Button arButton = root.Q<Button>("ARButton");
         Button backButton = root.Q<Button>("BackButton");
+        Button view3DButton = root.Q<Button>("View3DButton");
 
         // Register the event handler for the 'clicked' event
         if (arButton != null && backButton != null)
         {
             arButton.clicked += OnARButtonClicked;
             backButton.clicked += OnBackButtonClicked;
+            view3DButton.clicked += OnView3DButtonClicked;
         }
     }
 
@@ -55,6 +57,14 @@ public class PlantDescriptionUI : MonoBehaviour
         Debug.Log("Button 'myButton' was clicked!");
         SoundManager.Instance.PlayDefaultButtonSound();
         Destroy(this.gameObject);
+    }
+
+    private void OnView3DButtonClicked()
+    {
+        Debug.Log("Button 'myButton' was clicked!");
+        GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter += 1;
+        SoundManager.Instance.PlayEnterARButtonSound();
+        SceneManager.LoadScene("View3D");
     }
 
 

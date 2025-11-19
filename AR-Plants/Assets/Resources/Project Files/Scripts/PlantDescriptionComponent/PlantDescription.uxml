@@ -13,10 +13,16 @@
                     <ui:Label text="Golden Barrel Cactus" name="CommonName" class="common-name" style="font-size: 45px;" />
                     <ui:Label text="Kroenleinia grusonii" name="ScientificName" class="scientific-name" style="font-size: 40px;" />
                 </ui:VisualElement>
-                <ui:Button name="ARButton" class="ar-button" style="height: 154px; width: 282px;">
-                    <ui:VisualElement name="CameraIcon" class="camera-icon" style="height: 70px; width: 90px;" />
-                    <ui:Label text="View in AR" class="ar-label" style="height: 70px; width: 136px; font-size: 22px;" />
-                </ui:Button>
+                <ui:VisualElement name="ButtonGroup" class="title-group" style="flex-direction: column; align-self: auto; align-items: flex-end;">
+                    <ui:Button name="View3DButton" class="ar-button" style="height: 154px; width: 282px;">
+                        <ui:VisualElement name="CameraIcon" class="camera-icon" style="height: 70px; width: 90px;" />
+                        <ui:Label text="View 3D" class="ar-label" style="height: 70px; width: 136px; font-size: 22px;" />
+                    </ui:Button>
+                    <ui:Button name="ARButton" class="ar-button" style="height: 154px; width: 282px;">
+                        <ui:VisualElement name="CameraIcon" class="camera-icon" style="height: 70px; width: 90px;" />
+                        <ui:Label text="View in AR" class="ar-label" style="height: 70px; width: 136px; font-size: 22px;" />
+                    </ui:Button>
+                </ui:VisualElement>
             </ui:VisualElement>
             <ui:Label name="PlantDescription" text="Kroenleinia grusonii, popularly known as the golden barrel cactus, golden ball, &quot;mother-in-law&apos;s cushion&quot; or &quot;mother-in-law&apos;s chair&quot;, is a species of barrel cactus which is endemic to east-central Mexico." class="description" style="font-size: 40px;" />
             <ui:VisualElement name="MapSection" class="map-section" style="height: 515px;">
