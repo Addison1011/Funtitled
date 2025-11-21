@@ -1,18 +1,16 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <ui:VisualElement name="plant-card" class="plant-card" style="font-size: 28px; height: 280px;">
-        <ui:VisualElement name="card-header" class="card-header">
-            <ui:Label text="Desert Beauty" class="card-title" style="font-size: 35px;" />
+        <ui:VisualElement name="name" class="card-header">
+            <ui:Label text="Desert Beauty" class="card-title" style="font-size: 35px;">
+                <ui:Button name="PlantDescriptionButton" style="width: 76px; align-self: flex-end; background-image: url(&quot;project://database/Assets/Samples/XR%20Interaction%20Toolkit/3.1.2/XR%20Device%20Simulator/XRInteractionSimulator/UI/Translate/TranslateRight@2x.png?fileID=2800000&amp;guid=eb5a85b675ed34acf9efd6d574df4ceb&amp;type=3#TranslateRight@2x&quot;); background-color: rgba(188, 188, 188, 0); height: 62px; cursor: initial;" />
+            </ui:Label>
         </ui:VisualElement>
         <ui:VisualElement name="card-content" class="card-content">
-            <ui:VisualElement name="info-row" class="info-row" style="font-size: 40px;">
+            <ui:VisualElement name="species" class="info-row" style="font-size: 40px;">
                 <ui:Label text="Species:" class="info-label" style="font-size: 20px;" />
                 <ui:Label text="Echinocactus grusonii" class="info-value" style="font-size: 20px;" />
             </ui:VisualElement>
-            <ui:VisualElement name="info-row" class="info-row">
-                <ui:Label text="Region:" class="info-label" style="font-size: 20px;" />
-                <ui:Label text="Living Room Window" class="info-value" style="font-size: 20px;" />
-            </ui:VisualElement>
-            <ui:Label text="*A stunning golden barrel cactus with bright yellow spines. Thrives in bright sunlight and requires minimal watering." class="info-note" style="font-size: 18px;" />
+            <ui:VisualElement name="info-row" class="info-row" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

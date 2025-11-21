@@ -18,7 +18,7 @@ public class PopulateMenuTest : MonoBehaviour
     private SQLiteConnection _connection;
     private List<PlantInfo> plants;
 
-    [SerializeField] private VisualTreeAsset buttonTemplate;
+    [SerializeField] private VisualTreeAsset plantCardTemplate;
     [SerializeField] private GameObject mainMenuPrefab;
     [SerializeField] private string buttonHandelName;
     [SerializeField] private string contentHandelName;
@@ -87,20 +87,15 @@ public class PopulateMenuTest : MonoBehaviour
             PlantInfo currentPlant = plants[i];
 
             // Create a new button from the template
-            VisualElement newButtonInstance = buttonTemplate.CloneTree();
+            VisualElement newPlantCardInstance = plantCardTemplate.CloneTree();
 
-            Button button = newButtonInstance.Q<Button>(buttonHandelName);
+            Button button = newPlantCardInstance.Q<Button>(buttonHandelName);
 
-            if (button == null)
-            {
-                Debug.LogError("Button not found in cloned template. Check buttonHandelName.");
-                continue;
-            }
 
-            button.text = currentPlant.plantName;
+            // button.text = currentPlant.plantName;
 
             // Add the button to the content container
-            content.Add(newButtonInstance);
+            content.Add(newPlantCardInstance);
 
             // Creates a new GameObject holding its own LoadDatabaseInfo script pertaining to the specific plant in the itteration
             // This allows each button to have its own data loader instance
@@ -111,7 +106,7 @@ public class PopulateMenuTest : MonoBehaviour
             dataLoader.plantInfo = currentPlant;
 
             //Wire button to its corresponding data loader instance
-            button.clicked += dataLoader.OnClick;
+            //button.clicked += dataLoader.OnClick;
         }
     }
 
