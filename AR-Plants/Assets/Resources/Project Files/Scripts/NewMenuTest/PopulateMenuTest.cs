@@ -20,7 +20,7 @@ public class PopulateMenuTest : MonoBehaviour
 
     [SerializeField] private VisualTreeAsset plantCardTemplate;
     [SerializeField] private GameObject mainMenuPrefab;
-    [SerializeField] private string buttonHandelName;
+    //[SerializeField] private string buttonHandelName;
     [SerializeField] private string contentHandelName;
 
     //Chat gpt error fix. pulling database from web request for android compatibility
@@ -88,11 +88,15 @@ public class PopulateMenuTest : MonoBehaviour
 
             // Create a new button from the template
             VisualElement newPlantCardInstance = plantCardTemplate.CloneTree();
+            Label plantNameLabel = newPlantCardInstance.Q<Label>("PlantName");
 
-            Button button = newPlantCardInstance.Q<Button>(buttonHandelName);
+            Label scientificNameLabel = newPlantCardInstance.Q<Label>("ScientificName");
+
+            Button button = newPlantCardInstance.Q<Button>("PlantDescriptionButton");
 
 
-            // button.text = currentPlant.plantName;
+            scientificNameLabel.text = currentPlant.scientificName;
+            plantNameLabel.text = currentPlant.plantName;
 
             // Add the button to the content container
             content.Add(newPlantCardInstance);
@@ -106,7 +110,7 @@ public class PopulateMenuTest : MonoBehaviour
             dataLoader.plantInfo = currentPlant;
 
             //Wire button to its corresponding data loader instance
-            //button.clicked += dataLoader.OnClick;
+            button.clicked += dataLoader.OnClick;
         }
     }
 
