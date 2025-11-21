@@ -79,11 +79,11 @@ public class PopulateMenu : MonoBehaviour
         plants = _connection.Table<PlantInfo>().ToList();
 
         // goes back to previous plant description if going back to main menu from AR scene
-        Debug.Log("SceneCounter:" + GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter);
+        /*Debug.Log("SceneCounter:" + GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter);
         if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter >= 1)
         {
             Instantiate(Resources.Load<GameObject>("PlantDescription"));
-        }
+        }*/
 
     }
 
