@@ -1788,6 +1788,28 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5455775847853768688, guid: 208aa5d8f9c177349a5964b28bdcefa6,
+        type: 3}
+      propertyPath: buttonTemplate
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: 134c37af02ca63e4d9cbfa7f449854ea,
+        type: 3}
+    - target: {fileID: 5455775847853768688, guid: 208aa5d8f9c177349a5964b28bdcefa6,
+        type: 3}
+      propertyPath: mainMenuPrefab
+      value: 
+      objectReference: {fileID: 8495111359452637586, guid: 08ea47203da917a4b9e1e4b03fff9083,
+        type: 3}
+    - target: {fileID: 5455775847853768688, guid: 208aa5d8f9c177349a5964b28bdcefa6,
+        type: 3}
+      propertyPath: buttonHandelName
+      value: plant-card
+      objectReference: {fileID: 0}
+    - target: {fileID: 5455775847853768688, guid: 208aa5d8f9c177349a5964b28bdcefa6,
+        type: 3}
+      propertyPath: contentHandelName
+      value: content
+      objectReference: {fileID: 0}
     - target: {fileID: 7747856193695490439, guid: 208aa5d8f9c177349a5964b28bdcefa6,
         type: 3}
       propertyPath: m_Content
