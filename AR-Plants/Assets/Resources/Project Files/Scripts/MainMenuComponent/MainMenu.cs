@@ -21,6 +21,8 @@ public class UIEventHandler : MonoBehaviour
 
         VisualElement content = root.Q<VisualElement>("content");
 
+        // VisualElement newCard = new root.Q<VisualElement>("plant-card");
+
     }
 
 
