@@ -19,6 +19,7 @@ public class PopulateMenuTest : MonoBehaviour
     private List<PlantInfo> plants;
 
     [SerializeField] private VisualTreeAsset buttonTemplate;
+    [SerializeField] private GameObject mainMenuPrefab;
     [SerializeField] private string buttonHandelName;
     [SerializeField] private string contentHandelName;
 
@@ -63,10 +64,10 @@ public class PopulateMenuTest : MonoBehaviour
 
         // goes back to previous plant description if going back to main menu from AR scene
         Debug.Log("SceneCounter:" + GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter);
-        if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter >= 1)
+        /*if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter >= 1)
         {
             Instantiate(Resources.Load<GameObject>("PlantDescription"));
-        }
+        }*/
 
     }
 
@@ -74,7 +75,7 @@ public class PopulateMenuTest : MonoBehaviour
     void OnEnable()
     {
         // Instantiate UI and data holder prefabs and keep references
-        GameObject mainMenu = Instantiate(Resources.Load<GameObject>("MainMenuNew"));
+        GameObject mainMenu = Instantiate(mainMenuPrefab);
         plantButtonDataHolder = Instantiate(Resources.Load<GameObject>("PlantButtonDataHolder"));
 
         // Get the root and content container
@@ -87,6 +88,7 @@ public class PopulateMenuTest : MonoBehaviour
 
             // Create a new button from the template
             VisualElement newButtonInstance = buttonTemplate.CloneTree();
+
             Button button = newButtonInstance.Q<Button>(buttonHandelName);
 
             if (button == null)
