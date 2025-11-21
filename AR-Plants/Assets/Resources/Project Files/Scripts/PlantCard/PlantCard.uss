@@ -1,0 +1,83 @@
+/* Plant Card Styles */
+.plant-card {
+    background-color: rgb(255, 255, 255);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-width: 1px;
+    border-color: rgb(220, 220, 220);
+}
+
+.card-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(240, 240, 240);
+}
+
+.card-title {
+    font-size: 18px;
+    -unity-font-style: bold;
+    color: rgb(40, 40, 40);
+    flex-grow: 1;
+}
+
+.menu-button {
+    width: 30px;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    padding: 0;
+    margin: 0;
+    cursor: link;
+}
+
+.menu-button:hover {
+    background-color: rgb(240, 240, 240);
+    border-radius: 6px;
+}
+
+.menu-icon {
+    font-size: 24px;
+    color: rgb(40, 40, 40);
+    -unity-text-align: middle-center;
+    rotate: 90deg;
+}
+
+/* Card Content */
+.card-content {
+    padding-top: 5px;
+}
+
+.info-row {
+    flex-direction: row;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+
+.info-label {
+    font-size: 14px;
+    -unity-font-style: bold;
+    color: rgb(40, 40, 40);
+    margin-right: 5px;
+    min-width: 60px;
+}
+
+.info-value {
+    font-size: 14px;
+    color: rgb(60, 60, 60);
+    flex-shrink: 1;
+    flex-grow: 1;
+    white-space: normal;
+}
+
+.info-note {
+    font-size: 12px;
+    color: rgb(120, 120, 120);
+    -unity-font-style: italic;
+    margin-top: 10px;
+    white-space: normal;
+}

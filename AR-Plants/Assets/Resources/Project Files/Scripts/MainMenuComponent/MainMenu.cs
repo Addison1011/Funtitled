@@ -11,46 +11,15 @@ public class UIEventHandler : MonoBehaviour
 
 
 
-    private Label m_Label;
-
-    private int m_ButtonClickCount = 0;
-
-    private Toggle m_Toggle;
-
-    private Button m_Button;
-
-
-
     public void Start()
 
     {
 
-        var rootElement = m_UIDocument.rootVisualElement;
+        Instantiate(Resources.Load<GameObject>("MainMenu"));
+        var root = GameObject.FindGameObjectWithTag("MainMenu").GetComponent<UIDocument>().rootVisualElement;
+        VisualElement plantCard = root.Q<VisualElement>("plant-card");
 
-
-
-        m_Button = rootElement.Q<Button>("EventButton");
-
-
-
-        m_Button.clickable.clicked += OnButtonClicked;
-
-
-
-
-
-        m_Toggle = rootElement.Query<Toggle>("ColorToggle");
-
-
-
-
-        m_Toggle.RegisterValueChangedCallback(OnToggleValueChanged);
-
-
-
-        m_Label = rootElement.Q<Label>("IncrementLabel");
-
-        m_Label.text = m_ButtonClickCount.ToString();
+        VisualElement content = root.Q<VisualElement>("content");
 
     }
 
@@ -59,33 +28,18 @@ public class UIEventHandler : MonoBehaviour
     private void OnDestroy()
 
     {
-
-        m_Button.clickable.clicked -= OnButtonClicked;
-
-        m_Toggle.UnregisterValueChangedCallback(OnToggleValueChanged);
-
     }
-
 
 
     private void OnButtonClicked()
 
     {
 
-        m_ButtonClickCount++;
 
-        m_Label.text = m_ButtonClickCount.ToString();
 
     }
 
 
 
-    private void OnToggleValueChanged(ChangeEvent<bool> evt)
-
-    {
-
-        Debug.Log("New toggle value is: " + evt.newValue);
-
-    }
 
 }

@@ -654,6 +654,7 @@ GameObject:
   m_Component:
   - component: {fileID: 449409914}
   - component: {fileID: 449409915}
+  - component: {fileID: 449409916}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -692,6 +693,19 @@ MonoBehaviour:
   m_ButtonPrefab: {fileID: 7854953394140387456, guid: ac50372b8a6541d4f9ec31796206e987,
     type: 3}
   path: Assets/Project Files/Prefabs/Plants
+--- !u!114 &449409916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 449409912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98f35ca71c7102a4480048988686190a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UIDocument: {fileID: 0}
 --- !u!1 &708112632
 GameObject:
   m_ObjectHideFlags: 0
