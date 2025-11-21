@@ -34,16 +34,6 @@ public class PlantDescriptionUI : MonoBehaviour
         }
     }
 
-    /*void OnDisable()
-    {
-        // Unregister the event handler to prevent memory leaks
-        Button arButton = GetComponent<UIDocument>().rootVisualElement.Q<Button>("ARButton");
-        if (arButton != null)
-        {
-            arButton.clicked -= OnARButtonClicked;
-        }
-    }*/
-
     // This method will be called when the button is pressed
     private void OnARButtonClicked()
     {
