@@ -16,6 +16,7 @@ TagManager:
   - InteractionSound
   - SelectionEffect
   - PlacementEffect
+  - MainMenuNew
   layers:
   - Default
   - TransparentFX

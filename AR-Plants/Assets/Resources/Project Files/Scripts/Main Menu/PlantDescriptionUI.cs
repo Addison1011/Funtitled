@@ -10,7 +10,8 @@ public class PlantDescriptionUI : MonoBehaviour
     void OnEnable()
     {
         // Load the UXML and get the root VisualElement
-        VisualElement root = GetComponent<UIDocument>().rootVisualElement;
+        VisualElement root = GameObject.FindGameObjectWithTag("PlantDescription").GetComponent<UIDocument>().rootVisualElement;
+
         plantInfo = GameObject.FindGameObjectWithTag("SelectedPlantData").GetComponent<SelectedPlantData>().plantInfo;
         Label commonNameLabel = root.Q<Label>("CommonName");
         Label scientificNameLabel = root.Q<Label>("ScientificName");
