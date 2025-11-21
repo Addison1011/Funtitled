@@ -684,7 +684,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 449409912}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4800d21eec10b504c9171c90a784c4a6, type: 3}
   m_Name: 
@@ -705,6 +705,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7fdcfde84f8d234facfc71b4443173e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  plantButtonDataHolder: {fileID: 7956072063401152461, guid: 7e7cc2ecf9b0f2d48aba9bd9097d540b,
+    type: 3}
   buttonTemplate: {fileID: 9197481963319205126, guid: 4d337e2b7746c434b8c808afeaccd15a,
     type: 3}
   buttonHandelName: plant-button

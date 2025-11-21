@@ -1,3 +1,5 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <engine:Button text="Button" name="plant-button" style="height: 214px; right: 0; left: 0; width: auto;" />
+    <engine:Button text="Button" name="plant-button" style="height: 214px; right: 0; left: 0; width: auto;">
+        <engine:Label text="Label" name="test" />
+    </engine:Button>
 </engine:UXML>

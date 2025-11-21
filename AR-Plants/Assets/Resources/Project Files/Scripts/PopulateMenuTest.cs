@@ -1,35 +1,116 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using SQLite4Unity3d;
+using System.IO;
+using System.Linq;
+
 
 public class PopulateMenuTest : MonoBehaviour
 {
 
+    [SerializeField] private GameObject plantButtonDataHolder;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private SQLiteConnection _connection;
+    private List<PlantInfo> plants;
+
     [SerializeField] private VisualTreeAsset buttonTemplate;
     [SerializeField] private string buttonHandelName;
     [SerializeField] private string contentHandelName;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    //Chat gpt error fix. pulling database from web request for android compatibility
+    void Awake()
     {
-        Instantiate(Resources.Load<GameObject>("MainMenuNew"));
-        VisualElement root = GameObject.FindGameObjectWithTag("MainMenuNew").GetComponent<UIDocument>().rootVisualElement;
-        VisualElement content = root.Q<VisualElement>(contentHandelName);
+        string dbName = "PlantInfoDB.db";
+        string persistentPath = Path.Combine(Application.persistentDataPath, dbName);
 
+        // First-run copy from StreamingAssets -> persistentDataPath
+        if (!File.Exists(persistentPath))
+        {
+#if UNITY_ANDROID
+            // StreamingAssets on Android must be read via UnityWebRequest
+            string srcPath = Path.Combine(Application.streamingAssetsPath, dbName);
+            // srcPath will be like "jar:file:///.../assets/PlantInfoDB.db"
+            var req = UnityEngine.Networking.UnityWebRequest.Get(srcPath);
+            var op = req.SendWebRequest();
+            while (!op.isDone) { }  // simple blocking copy during Awake()
+            if (req.result != UnityEngine.Networking.UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Failed to copy DB from StreamingAssets: " + req.error);
+            }
+            else
+            {
+                File.WriteAllBytes(persistentPath, req.downloadHandler.data);
+            }
+#else
+                // Desktop/editor/iOS etc.
+                string srcPath = Path.Combine(Application.streamingAssetsPath, dbName);
+                File.Copy(srcPath, persistentPath, overwrite: true);
+#endif
+        }
 
-        VisualElement newButtonInstance = buttonTemplate.CloneTree();
+        // Open the DB from a real filesystem location
+        _connection = new SQLite4Unity3d.SQLiteConnection(
+            persistentPath,
+            SQLite4Unity3d.SQLiteOpenFlags.ReadWrite | SQLite4Unity3d.SQLiteOpenFlags.Create
+        );
 
-        Button button = newButtonInstance.Q<Button>(buttonHandelName);
+        plants = _connection.Table<PlantInfo>().ToList();
 
-
-
-
-        content.Add(button);
+        // goes back to previous plant description if going back to main menu from AR scene
+        Debug.Log("SceneCounter:" + GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter);
+        if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter >= 1)
+        {
+            Instantiate(Resources.Load<GameObject>("PlantDescription"));
+        }
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
 
+    void OnEnable()
+    {
+        // Instantiate UI and data holder prefabs and keep references
+        GameObject mainMenu = Instantiate(Resources.Load<GameObject>("MainMenuNew"));
+        plantButtonDataHolder = Instantiate(Resources.Load<GameObject>("PlantButtonDataHolder"));
+
+        // Get the root and content container
+        var root = mainMenu.GetComponent<UIDocument>().rootVisualElement;
+        var content = root.Q<VisualElement>(contentHandelName);
+
+        for (int i = 0; i < plants.Count; i++)
+        {
+            PlantInfo currentPlant = plants[i];
+
+            // Create a new button from the template
+            VisualElement newButtonInstance = buttonTemplate.CloneTree();
+            Button button = newButtonInstance.Q<Button>(buttonHandelName);
+
+            if (button == null)
+            {
+                Debug.LogError("Button not found in cloned template. Check buttonHandelName.");
+                continue;
+            }
+
+            button.text = currentPlant.plantName;
+
+            // Add the button to the content container
+            content.Add(newButtonInstance);
+
+            // Creates a new GameObject holding its own LoadDatabaseInfo script pertaining to the specific plant in the itteration
+            // This allows each button to have its own data loader instance
+            GameObject dataObj = new GameObject($"PlantData_{currentPlant.plantName}");
+            dataObj.transform.SetParent(plantButtonDataHolder.transform, false);
+
+            LoadDatabaseInfo dataLoader = dataObj.AddComponent<LoadDatabaseInfo>();
+            dataLoader.plantInfo = currentPlant;
+
+            //Wire button to its corresponding data loader instance
+            button.clicked += dataLoader.OnClick;
+        }
     }
+
 }
