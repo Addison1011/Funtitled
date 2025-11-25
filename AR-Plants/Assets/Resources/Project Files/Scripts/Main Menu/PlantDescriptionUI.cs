@@ -9,6 +9,7 @@ public class PlantDescriptionUI : MonoBehaviour
     private PlantInfo plantInfo;
     void OnEnable()
     {
+        PlantInfo plantInfo = GameObject.FindGameObjectWithTag("SelectedPlantData").GetComponent<SelectedPlantData>().plantInfo;
         // Load the UXML and get the root VisualElement
         VisualElement root = GameObject.FindGameObjectWithTag("PlantDescription").GetComponent<UIDocument>().rootVisualElement;
 
@@ -39,7 +40,7 @@ public class PlantDescriptionUI : MonoBehaviour
     {
         Debug.Log("Button 'myButton' was clicked!");
         GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter += 1;
-        SoundManager.Instance.PlayEnterARButtonSound();
+        SoundManager.Instance.PlayDefaultButtonSound();
         SceneManager.LoadScene("MainScene00");
     }
 
@@ -54,7 +55,7 @@ public class PlantDescriptionUI : MonoBehaviour
     {
         Debug.Log("Button 'myButton' was clicked!");
         GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter += 1;
-        SoundManager.Instance.PlayEnterARButtonSound();
+        SoundManager.Instance.PlayDefaultButtonSound();
         SceneManager.LoadScene("View3D");
     }
 

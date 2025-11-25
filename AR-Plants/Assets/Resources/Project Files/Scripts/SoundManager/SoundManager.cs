@@ -162,6 +162,12 @@ public class SoundManager : MonoBehaviour
         interactionSoundSource.Play();
     }
 
+    public void PlayBackButtonSound()
+    {
+        interactionSoundSource.clip = GetInteractionSoundClip("BackButtonSound");
+        interactionSoundSource.Play();
+    }
+
 
     public void PlayEnterARButtonSound()
     {
