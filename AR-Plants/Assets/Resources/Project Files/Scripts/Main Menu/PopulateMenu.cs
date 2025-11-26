@@ -9,24 +9,7 @@ using System.Linq;
 using UnityEngine.SceneManagement;
 
 
-public class PlantInfo
-{
-    [PrimaryKey, AutoIncrement]
-    public int plantID { get; set; }
-    public string plantName { get; set; }
-    public string scientificName { get; set; }
-    public string plantDesc { get; set; }
-    public string stem { get; set; }
-    public string leaf { get; set; }
-    public string flower { get; set; }
-    public string typeID { get; set; }
 
-    public float maxSize = 2;
-    public float minSize = .3f;
-
-    //public string plantModelName = "Nerium oleander";
-    //public string plantModelName = "Monstera";
-}
 
 public class PopulateMenu : MonoBehaviour
 {

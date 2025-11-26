@@ -9,6 +9,25 @@ using System.IO;
 using System.Linq;
 
 
+public class PlantInfo
+{
+    [PrimaryKey, AutoIncrement]
+    public int plantID { get; set; }
+    public string plantName { get; set; }
+    public string scientificName { get; set; }
+    public string plantDesc { get; set; }
+    public string stem { get; set; }
+    public string leaf { get; set; }
+    public string flower { get; set; }
+    public string typeID { get; set; }
+
+    public float maxSize = 2;
+    public float minSize = .3f;
+
+    //public string plantModelName = "Nerium oleander";
+    //public string plantModelName = "Monstera";
+}
+
 public class PopulateMenuTest : MonoBehaviour
 {
 
@@ -64,10 +83,10 @@ public class PopulateMenuTest : MonoBehaviour
 
         // goes back to previous plant description if going back to main menu from AR scene
         Debug.Log("SceneCounter:" + GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter);
-        /*if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter >= 1)
+        if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter >= 1)
         {
             Instantiate(Resources.Load<GameObject>("PlantDescription"));
-        }*/
+        }
 
     }
 
