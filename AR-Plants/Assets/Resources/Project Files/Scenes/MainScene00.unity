@@ -525,6 +525,7 @@ GameObject:
   - component: {fileID: 599701539}
   - component: {fileID: 599701538}
   - component: {fileID: 599701542}
+  - component: {fileID: 599701543}
   m_Layer: 5
   m_Name: InfoCanvas
   m_TagString: Untagged
@@ -631,6 +632,21 @@ MonoBehaviour:
   hiddenPosition: {x: 0, y: -1050}
   shownPosition: {x: 0, y: 0}
   slidespeed: 500
+  scientificText: {fileID: 1419451221}
+  titleText: {fileID: 45276755}
+--- !u!114 &599701543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 599701537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e8053127def14029b7ae728086f6459, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  popup: {fileID: 599701542}
 --- !u!1 &962375990
 GameObject:
   m_ObjectHideFlags: 0
