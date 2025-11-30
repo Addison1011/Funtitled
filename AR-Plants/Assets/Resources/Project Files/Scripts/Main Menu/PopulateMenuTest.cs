@@ -101,6 +101,16 @@ public class PopulateMenuTest : MonoBehaviour
         var root = mainMenu.GetComponent<UIDocument>().rootVisualElement;
         var content = root.Q<VisualElement>(contentHandelName);
 
+        //add functionality to settings button
+        Button settingsButton = root.Q<Button>("settings-button");
+        if (settingsButton != null)
+        {
+            settingsButton.clicked += () =>
+            {
+                Debug.Log("settings button clicked");
+            };
+        }
+
         for (int i = 0; i < plants.Count; i++)
         {
             PlantInfo currentPlant = plants[i];
