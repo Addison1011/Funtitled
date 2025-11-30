@@ -1694,6 +1694,12 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 5455775847853768688, guid: 208aa5d8f9c177349a5964b28bdcefa6,
         type: 3}
+      propertyPath: settingsPrefab
+      value: 
+      objectReference: {fileID: 8495111359452637586, guid: 8eefa2eea585a7d4cab7e62f2e24f005,
+        type: 3}
+    - target: {fileID: 5455775847853768688, guid: 208aa5d8f9c177349a5964b28bdcefa6,
+        type: 3}
       propertyPath: buttonHandelName
       value: plant-card
       objectReference: {fileID: 0}

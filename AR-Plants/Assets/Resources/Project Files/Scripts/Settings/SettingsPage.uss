@@ -36,3 +36,22 @@
     flex-grow: 1;
     padding: 20px;
 }
+
+#unity-checkmark {
+    background-color: rgb(162, 242, 189);
+    font-size: 30px;
+    border-color: black;
+}
+
+#unity-tracker {
+    background-color: rgb(162, 242, 189);
+    border-color: black;
+    height: 20px;
+}
+
+#unity-dragger {
+    background-color: white;
+    border-color: black;
+    height: 40px;
+    width: 10px;
+}

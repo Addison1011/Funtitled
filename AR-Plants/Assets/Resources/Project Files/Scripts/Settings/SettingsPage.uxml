@@ -1,5 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/Resources/Project%20Files/Scripts/MainMenuComponent/MainMenu.uss?fileID=7433441132597879392&amp;guid=03c63967f6e3b1b4499075883a01a6e5&amp;type=3#MainMenu" />
+    <Style src="project://database/Assets/Resources/Project%20Files/Scripts/Settings/SettingsPage.uss?fileID=7433441132597879392&amp;guid=4080579518079a54a944a0b1208c2fca&amp;type=3#SettingsPage" />
     <ui:VisualElement name="root" class="root">
         <ui:VisualElement name="header" class="header" style="height: 165px;">
             <ui:Label text="Plantify" class="app-title" style="font-size: 54px;" />
