@@ -1,40 +1,10 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
-    <Style src="MainMenu.uss" />
-    
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/Resources/Project%20Files/Scripts/MainMenuComponent/MainMenu.uss?fileID=7433441132597879392&amp;guid=03c63967f6e3b1b4499075883a01a6e5&amp;type=3#MainMenu" />
     <ui:VisualElement name="root" class="root">
-        
-        <ui:VisualElement name="header" class="header">
-            <ui:Label text="Plantify" class="app-title" />
-            <ui:Button name="settings-button" class="settings-button">
-                <ui:Label text="⚙" class="settings-icon" />
-            </ui:Button>
+        <ui:VisualElement name="header" class="header" style="height: 165px;">
+            <ui:Label text="Plantify" class="app-title" style="font-size: 54px;" />
+            <ui:Button name="settings-button" class="settings-button" style="height: 75px; width: 75px; background-image: resource(&apos;Project Files/3D_Models/cog&apos;);" />
         </ui:VisualElement>
-        
-    
-        <ui:ScrollView name="content" class="content">
-         
-            <ui:VisualElement name="plant-card" class="plant-card">
-                <ui:VisualElement name="card-header" class="card-header">
-                    <ui:Label text="Desert Beauty" class="card-title" />
-                    <ui:Button name="menu-button" class="menu-button">
-                        <ui:Label text="⋯" class="menu-icon" />
-                    </ui:Button>
-                </ui:VisualElement>
-                
-                <ui:VisualElement name="card-content" class="card-content">
-                    <ui:VisualElement name="info-row" class="info-row">
-                        <ui:Label text="Species:" class="info-label" />
-                        <ui:Label text="Echinocactus grusonii" class="info-value" />
-                    </ui:VisualElement>
-                    
-                    <ui:VisualElement name="info-row" class="info-row">
-                        <ui:Label text="Region:" class="info-label" />
-                        <ui:Label text="Living Room Window" class="info-value" />
-                    </ui:VisualElement>
-                    
-                    <ui:Label text="*A stunning golden barrel cactus with bright yellow spines. Thrives in bright sunlight and requires minimal watering." class="info-note" />
-                </ui:VisualElement>
-            </ui:VisualElement>
-        </ui:ScrollView>
+        <ui:ScrollView name="content" class="content" style="font-size: 35px;" />
     </ui:VisualElement>
 </ui:UXML>

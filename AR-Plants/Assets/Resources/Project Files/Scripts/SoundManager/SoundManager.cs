@@ -12,19 +12,26 @@ public enum SoundSettings
 {
     AmbientSoundOnly,
     MusicSoundOnly,
-    AmbientAndMusicSound
 }
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance;
     public GameManager gameManager;
-    [SerializeField]
-    private AudioResource audioRandomizer;
+
     [SerializeField]
     private AudioSource menuMusicSource;
 
     [SerializeField]
     private AudioSource ambientSoundSource;
+
+    [SerializeField]
+    private AudioSource selectLeafSoundSource;
+
+    [SerializeField]
+    private AudioSource selectFlowerSoundSource;
+
+    [SerializeField]
+    private AudioSource selectBranchSoundSource;
 
     [SerializeField]
     private AudioSource interactionSoundSource;
@@ -39,9 +46,9 @@ public class SoundManager : MonoBehaviour
     void Start()
     {
         gameManager = GameManager.Instance;
-        interactionSoundSource = GameObject.FindGameObjectWithTag("InteractionSound").GetComponent<AudioSource>();
-        menuMusicSource = GameObject.FindGameObjectWithTag("BackgroundSound").GetComponent<AudioSource>();
-        audioRandomizer = GetComponent<AudioResource>();
+        // interactionSoundSource = GameObject.FindGameObjectWithTag("InteractionSound").GetComponent<AudioSource>();
+        //menuMusicSource = GameObject.FindGameObjectWithTag("MenuMusicSound").GetComponent<AudioSource>();
+        //audioRandomizer = GetComponent<AudioResource>();
 
         if (soundSettings == SoundSettings.AmbientSoundOnly)
         {
@@ -70,6 +77,21 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+
+    public void ToggleAtmosphericSoundSetting()
+    {
+        if (soundSettings == SoundSettings.AmbientSoundOnly)
+        {
+            StopAmbientSounds();
+            PlayMusic();
+        }
+        else if (soundSettings == SoundSettings.MusicSoundOnly)
+        {
+            StopMusic();
+            PlayAmbientSounds();
+        }
+    }
+
     public void PlayMusic()
     {
 
@@ -91,6 +113,27 @@ public class SoundManager : MonoBehaviour
     public void StopAmbientSounds()
     {
         ambientSoundSource.Stop();
+    }
+
+    public void PlaySelectPlantPartSound()
+    {
+        interactionSoundSource.clip = GetInteractionSoundClip("SelectPlantPartSound");
+        interactionSoundSource.Play();
+    }
+
+    public void PlaySelectLeafSound()
+    {
+        selectLeafSoundSource.Play();
+    }
+
+    public void PlaySelectFlowerSound()
+    {
+        selectFlowerSoundSource.Play();
+    }
+
+    public void PlaySelectBranchSound()
+    {
+        selectBranchSoundSource.Play();
     }
 
 
@@ -116,6 +159,12 @@ public class SoundManager : MonoBehaviour
     public void PlayPlantPlacementSound()
     {
         interactionSoundSource.clip = GetInteractionSoundClip("PlantPlacementSound");
+        interactionSoundSource.Play();
+    }
+
+    public void PlayBackButtonSound()
+    {
+        interactionSoundSource.clip = GetInteractionSoundClip("BackButtonSound");
         interactionSoundSource.Play();
     }
 

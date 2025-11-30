@@ -43,7 +43,6 @@ public class ExitButtonFunctionality : MonoBehaviour
     {
 
         selectedPlantData = selectedPlantDataHandle.GetComponent<SelectedPlantData>();
-        selectedPlantData.ResetSelectedPlantData();
         SceneManager.LoadScene("Menu");
     }
 }

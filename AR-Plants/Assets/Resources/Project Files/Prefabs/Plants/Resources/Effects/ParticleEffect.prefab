@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3212245823874978844}
   m_Layer: 0
   m_Name: ParticleEffect
-  m_TagString: Untagged
+  m_TagString: PlacementEffect
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
