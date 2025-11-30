@@ -7,8 +7,8 @@ using UnityEngine;
 public class SettingsData //data type for the settings
 {
     public bool soundToggle = true;
-    public int soundEffects = 100;
     public int masterVolume = 100;
+    public int soundEffects = 100;
     public int musicVolume = 100;
     public int ambientVolume = 100;
 }

@@ -39,6 +39,7 @@ public class PopulateMenuTest : MonoBehaviour
 
     [SerializeField] private VisualTreeAsset plantCardTemplate;
     [SerializeField] private GameObject mainMenuPrefab;
+    [SerializeField] private GameObject settingsPrefab;
     //[SerializeField] private string buttonHandelName;
     [SerializeField] private string contentHandelName;
 
@@ -108,6 +109,7 @@ public class PopulateMenuTest : MonoBehaviour
             settingsButton.clicked += () =>
             {
                 Debug.Log("settings button clicked");
+                GameObject settingsMenu = Instantiate(settingsPrefab);
             };
         }
 

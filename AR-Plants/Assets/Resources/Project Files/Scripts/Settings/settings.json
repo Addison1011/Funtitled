@@ -1,7 +1,7 @@
 {
     "soundToggle": true,
-    "soundEffects": 100,
     "masterVolume": 100,
+    "soundEffects": 100,
     "musicVolume": 100,
     "ambientVolume": 100
 }
