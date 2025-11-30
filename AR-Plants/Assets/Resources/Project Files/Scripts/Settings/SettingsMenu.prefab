@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3511906491648380086}
   - component: {fileID: 3978358573980112006}
+  - component: {fileID: 7222418150570524152}
   m_Layer: 0
   m_Name: SettingsMenu
   m_TagString: Untagged
@@ -52,3 +53,22 @@ MonoBehaviour:
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
   m_WorldSpaceHeight: 1080
+--- !u!114 &7222418150570524152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8495111359452637586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f61d250fb2b7e94448fd7ccdd20370be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings:
+    soundToggle: 1
+    masterVolume: 100
+    soundEffects: 100
+    musicVolume: 100
+    ambientVolume: 100
+  jsonFilePath: Project Files/Scripts/Settings/settings

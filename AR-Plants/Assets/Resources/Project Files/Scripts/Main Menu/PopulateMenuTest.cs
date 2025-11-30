@@ -108,7 +108,6 @@ public class PopulateMenuTest : MonoBehaviour
         {
             settingsButton.clicked += () =>
             {
-                Debug.Log("settings button clicked");
                 GameObject settingsMenu = Instantiate(settingsPrefab);
             };
         }
