@@ -65,6 +65,17 @@ public class SettingsHandler : MonoBehaviour
             };
         }
 
+        //set up listener for toggle
+        Toggle soundToggleBox = root.Q<Toggle>("sound-toggle");
+        if (soundToggleBox != null)
+        {
+            soundToggleBox.value = settings.soundToggle;
+            soundToggleBox.RegisterCallback<ChangeEvent<bool>>(evt =>
+            {
+                settings.soundToggle = evt.newValue;
+            });
+        }
+
         //set up listeners for sliders
         SliderInt masterVolumeSlider = root.Q<SliderInt>("master-volume-bar");
         if (masterVolumeSlider != null)
