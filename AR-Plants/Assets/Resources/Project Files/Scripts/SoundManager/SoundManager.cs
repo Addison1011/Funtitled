@@ -8,15 +8,16 @@ using UnityEngine.SceneManagement;
 using System.Diagnostics;
 using UnityEngine.Audio;
 
-public enum SoundSettings
-{
-    AmbientSoundOnly,
-    MusicSoundOnly,
-}
+
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance;
     public GameManager gameManager;
+
+
+
+    public bool ambientSoundEnabled = true;
+    public bool musicSoundEnabled = true;
 
     [SerializeField]
     private AudioSource menuMusicSource;
@@ -40,24 +41,17 @@ public class SoundManager : MonoBehaviour
     [SerializeField]
     private AudioClip[] interactionSoundClips;
 
-    public SoundSettings soundSettings;
 
 
     void Start()
     {
         gameManager = GameManager.Instance;
-        // interactionSoundSource = GameObject.FindGameObjectWithTag("InteractionSound").GetComponent<AudioSource>();
-        //menuMusicSource = GameObject.FindGameObjectWithTag("MenuMusicSound").GetComponent<AudioSource>();
-        //audioRandomizer = GetComponent<AudioResource>();
 
-        if (soundSettings == SoundSettings.AmbientSoundOnly)
-        {
-            PlayAmbientSounds();
-        }
-        else if (soundSettings == SoundSettings.MusicSoundOnly)
-        {
-            PlayMusic();
-        }
+    }
+
+    void Update()
+    {
+
     }
 
 
@@ -78,7 +72,7 @@ public class SoundManager : MonoBehaviour
     }
 
 
-    public void ToggleAtmosphericSoundSetting()
+    /*public void ToggleAtmosphericSoundSetting()
     {
         if (soundSettings == SoundSettings.AmbientSoundOnly)
         {
@@ -90,7 +84,7 @@ public class SoundManager : MonoBehaviour
             StopMusic();
             PlayAmbientSounds();
         }
-    }
+    }*/
 
     public void PlayMusic()
     {
