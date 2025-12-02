@@ -10,19 +10,10 @@ using System.Collections;
 using UnityEngine.InputSystem;
 using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 using UnityEngine.XR.Interaction.Toolkit.Attachment;
-public enum PlantPart
-{
-    Stem,
-    Leaf,
-    Root,
-    Flower,
-    None
-}
-[RequireComponent(typeof(ARRaycastManager))]
 
-public class ARInputController : MonoBehaviour
+
+public class View3DInputController : MonoBehaviour
 {
-    public ARSession arSession;
     [Header("References")]
     [SerializeField] private Camera arCamera;                   // AR Camera
     [SerializeField] private GameObject selectedPlantModel; // Prefab to place
@@ -35,8 +26,8 @@ public class ARInputController : MonoBehaviour
 
 
     [Header("Tuning")]
-    [SerializeField] private float yOffsetMeters = 0.02f;       // lift to avoid z-fighting
-    [SerializeField] private float followLerp = 14f;            // smoothing for drag
+
+
     private float initialPinchDistance;
     private Vector3 initialScale;
     public Color emissionColor = Color.white;
@@ -44,7 +35,7 @@ public class ARInputController : MonoBehaviour
 
     [Header("Hold / Tap Settings")]
     [Tooltip("Hold duration (seconds) required on the plant to start dragging.")]
-    [SerializeField] private float holdToDragSeconds = 0.1f;
+    [SerializeField] private float holdToDragSeconds = 0.05f;
     [Tooltip("Max finger movement (pixels) still considered a tap/hold (pre-drag).")]
     [SerializeField] private float tapSlopPixels = 12f;
 
@@ -53,12 +44,11 @@ public class ARInputController : MonoBehaviour
     [Header("Tap Callback")]
     public UnityEvent onPlantTapped; // hook UI, selection, etc.
 
-    private ARRaycastManager aRRaycastManager;
-    [Header("Placement Area Toggle")]
-    [SerializeField] private ARPlaneManager arPlaneManager;
-    [SerializeField] private bool allowHorizontalUp = true;
-    [SerializeField] private bool allowHorizontalDown = false;
-    [SerializeField] private bool allowVertical = false;
+    [Header("Rotate Settings")]
+    [SerializeField] private float rotationSpeed = 0.2f; // degrees per pixel
+    private Vector2 lastDragScreenPos;
+
+
     private readonly List<ARRaycastHit> hits = new();
 
     // Placement state
@@ -75,13 +65,20 @@ public class ARInputController : MonoBehaviour
     private Vector2 holdStartScreenPos;
     private Finger holdFinger;
 
+    private float spawnDistanceFromCamera = 4.0f;
+
 
     private void Awake()
     {
 
+        SoundManager.Instance.StopMusic();
+        if (SoundManager.Instance.ambientSoundEnabled)
+        {
+            SoundManager.Instance.PlayAmbientSounds();
+        }
 
+        arCamera = Camera.main;
 
-        EnsureCamera();
         if (GameObject.FindWithTag("SelectedPlantData") != null)
         {
             selectedPlantDataHandle = GameObject.FindWithTag("SelectedPlantData");
@@ -92,7 +89,12 @@ public class ARInputController : MonoBehaviour
         selectedPlantData = selectedPlantDataHandle.GetComponent<SelectedPlantData>();
 
         selectedPlantModel = Resources.Load<GameObject>(selectedPlantData.plantInfo.scientificName); //default plant
-        aRRaycastManager = GetComponent<ARRaycastManager>();
+        activePlant = Instantiate(selectedPlantModel);
+        GameObject plantBase = Instantiate(Resources.Load<GameObject>("Base"));
+        plantBase.transform.position = new Vector3(arCamera.transform.position.x, 0, arCamera.transform.position.z + spawnDistanceFromCamera);
+        isPlantPlaced = true;
+        //activePlant.transform.position = arCamera.transform.position + arCamera.transform.forward * spawnDistanceFromCamera;
+
         placementEffect = selectedPlantModel.GetComponentInChildren<ParticleSystem>();
 
 
@@ -101,16 +103,11 @@ public class ARInputController : MonoBehaviour
 
     void Start()
     {
-        SoundManager.Instance.StopMusic();
-        if (SoundManager.Instance.ambientSoundEnabled)
-        {
-            SoundManager.Instance.PlayAmbientSounds();
-        }
+
     }
 
     private void OnEnable()
     {
-        EnsureCamera();
         EnhancedTouchSupport.Enable();
         EnhancedTouch.Touch.onFingerDown += OnFingerDown;
         EnhancedTouch.Touch.onFingerMove += OnFingerMove;
@@ -138,18 +135,15 @@ public class ARInputController : MonoBehaviour
             if (moved <= tapSlopPixels && heldFor >= holdToDragSeconds)
             {
                 // Begin dragging
+                lastDragScreenPos = holdFinger.currentTouch.screenPosition;
                 isDragging = true;
-
-                if (TryARRaycastToAllowedPlane(holdFinger.currentTouch.screenPosition, out Pose pose))
-                    desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
             }
         }
 
 
         else if (activePlant != null)
         {
-            activePlant.transform.position =
-                Vector3.Lerp(activePlant.transform.position, desiredWorldPos, Time.deltaTime * followLerp);
+            activePlant.transform.position = new Vector3(arCamera.transform.position.x, 0, arCamera.transform.position.z + spawnDistanceFromCamera);
         }
 
     }
@@ -171,7 +165,7 @@ public class ARInputController : MonoBehaviour
             //DisableAllEmission(activePlant);
         }
         // If plant exists and touch is on the plant -> start HOLD candidate
-        if (isPlantPlaced && activePlant != null && HitActivePlant(screenPos))
+        if (isPlantPlaced && activePlant != null)
         {
             //resizePlantModelOnPinch();
             holdCandidate = true;
@@ -194,11 +188,9 @@ public class ARInputController : MonoBehaviour
         resizePlantModelOnPinch();
         if (!isDragging || activePlant == null || finger != holdFinger) return;
 
-        if (TryARRaycastToAllowedPlane(finger.currentTouch.screenPosition, out Pose planePose))
+        if (EnhancedTouch.Touch.activeTouches.Count == 1)
         {
-            desiredWorldPos = planePose.position + Vector3.up * yOffsetMeters;
-            // align rotation:
-            // activePlant.transform.rotation = planePose.rotation;
+            DragFingerToRotate(finger);
         }
     }
 
@@ -212,27 +204,7 @@ public class ARInputController : MonoBehaviour
         {
             OnPlantTapped(finger); // placeholder behavior
         }
-        // Case B: we were NOT holding on the plant (finger down wasn't on plant) -> treat as TAP on empty plane
-        else if (!holdCandidate && !isDragging)
-        {
 
-            if (TryARRaycastToAllowedPlane(finger.currentTouch.screenPosition, out Pose pose))
-            {
-
-                if (!isPlantPlaced)
-                {
-                    // Place new
-                    PlacePlant(pose);
-                    /*if (activePlant.GetComponent<Collider>() == null)
-                        activePlant.AddComponent<BoxCollider>();*/
-                }
-                else
-                {
-                    // Move existing
-                    //desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
-                }
-            }
-        }
 
         // Reset states
         holdCandidate = false;
@@ -254,24 +226,10 @@ public class ARInputController : MonoBehaviour
         activePlant = null;
     }
 
-    private void PlacePlant(Pose pose)
-    {
-        // Place new
-        isPlantPlaced = true;
-        Debug.Log("rotation: " + pose.rotation.eulerAngles);
-        activePlant = Instantiate(selectedPlantModel, pose.position, pose.rotation);
-        activePlant.transform.position += Vector3.up * yOffsetMeters;
-        desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
-        soundManager.PlayPlantPlacementSound();
-        //activePlant.Get
-        //activePlant.GetComponentInChildren<ParticleSystem>().Play();
-        GameObject.FindGameObjectWithTag("PlacementEffect").GetComponent<ParticleSystem>().Play();
-    }
+
 
     public void RefreshSession()
     {
-
-        arSession.Reset();
         isPlantPlaced = false;
         if (activePlant != null)
         {
@@ -284,42 +242,9 @@ public class ARInputController : MonoBehaviour
         }
     }
 
-
-
-    // helper method to raycast and find a valid plane
-    private bool TryARRaycastToAllowedPlane(Vector2 screenPos, out Pose pose)
-    {
-        pose = default;
-
-        if (!aRRaycastManager.Raycast(screenPos, hits, TrackableType.PlaneWithinPolygon))
-            return false;
-
-        foreach (var hit in hits)
-        {
-            var plane = arPlaneManager?.GetPlane(hit.trackableId);
-            if (plane == null) continue;
-
-            var align = plane.alignment; // UnityEngine.XR.ARSubsystems.PlaneAlignment
-
-            bool placementAllowed =
-                (allowHorizontalUp && align == PlaneAlignment.HorizontalUp) ||
-                (allowHorizontalDown && align == PlaneAlignment.HorizontalDown) ||
-                (allowVertical && align == PlaneAlignment.Vertical);
-
-            if (placementAllowed)
-            {
-                pose = hit.pose;
-                pose.position += Vector3.up * yOffsetMeters;
-                return true;
-            }
-        }
-        return false;
-    }
-
     // Raycast from screen to check if we tapped the active plant
     private bool HitActivePlant(Vector2 screenPos)
     {
-        EnsureCamera();
         if (!arCamera || activePlant == null) return false;
 
         if (arCamera == null || activePlant == null) return false;
@@ -336,7 +261,6 @@ public class ARInputController : MonoBehaviour
     // Placeholder tap behavior on the plant (short tap)
     private void OnPlantTapped(Finger finger)
     {
-        EnsureCamera();
         // Unity’s destroyed objects compare equal to null
         if (!arCamera) return;
 
@@ -346,17 +270,10 @@ public class ARInputController : MonoBehaviour
 
             if (hit.collider.gameObject.tag == "Stem")
             {
-
-
                 selectedPlantData.selectedPart = PlantPart.Stem;
                 SoundManager.Instance.PlaySelectBranchSound();
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-
-                //DisableAllEmission(activePlant);
-                //EnableEmissionsOnHitObject("Stem");
-
-
             }
             else if (hit.collider.gameObject.tag == "Leaf")
             {
@@ -367,10 +284,6 @@ public class ARInputController : MonoBehaviour
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
 
-                // DisableAllEmission(activePlant);
-                //EnableEmissionsOnHitObject("Leaf");
-
-
             }
             else if (hit.collider.gameObject.tag == "Root")
             {
@@ -379,8 +292,6 @@ public class ARInputController : MonoBehaviour
 
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-                //DisableAllEmission(activePlant);
-                //EnableEmissionsOnHitObject("Root");
 
             }
             else if (hit.collider.gameObject.tag == "Flower")
@@ -389,16 +300,13 @@ public class ARInputController : MonoBehaviour
                 SoundManager.Instance.PlaySelectFlowerSound();
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-                //DisableAllEmission(activePlant);
-                //EnableEmissionsOnHitObject("Flower");
+
 
             }
             else
             {
                 selectedPlantData.selectedPart = PlantPart.None;
                 DisableAllSelectionEffects(activePlant);
-
-                //DisableAllEmission(activePlant);
             }
 
 
@@ -417,50 +325,6 @@ public class ARInputController : MonoBehaviour
         foreach (GameObject eff in effects)
         {
             eff.GetComponent<ParticleSystem>().Stop();
-        }
-    }
-
-    private void EnableEmissionsOnHitObject(string hitPartTag)
-    {
-        //enable all leaf mesh emmisions if there are multiple leaf meshes
-
-
-        //GameObject.FindGameObjectsWithTag(hitPartTag);
-        Renderer[] renderers = activePlant.GetComponentsInChildren<Renderer>();
-
-
-        foreach (Renderer rend in renderers)
-        {
-            if (rend.gameObject.tag == hitPartTag)
-            {
-                rend.material.SetColor("_EmissionColor", emissionColor * emissionIntensity);
-                rend.material.EnableKeyword("_EMISSION");
-            }
-        }
-
-    }
-
-    private void DisableAllEmission(GameObject activePlant)
-    {
-        if (activePlant == null) return;
-
-        Renderer[] renderers = activePlant.GetComponentsInChildren<Renderer>();
-        foreach (Renderer rend in renderers)
-        {
-            rend.material.DisableKeyword("_EMISSION");
-        }
-    }
-
-
-    private void EnsureCamera()
-    {
-        if (!arCamera)
-        {
-            var main = Camera.main;
-            if (main) { arCamera = main; return; }
-
-            var tagged = GameObject.FindWithTag("MainCamera");
-            if (tagged) arCamera = tagged.GetComponent<Camera>();
         }
     }
 
@@ -483,6 +347,22 @@ public class ARInputController : MonoBehaviour
                 activePlant.transform.localScale = new Vector3(maxSize, maxSize, maxSize);
             }
         }
+    }
+
+    private void DragFingerToRotate(Finger finger)
+    {
+        if (activePlant == null) return;
+
+        Vector2 currentPos = finger.currentTouch.screenPosition;
+
+        // Horizontal delta in pixels
+        float deltaX = currentPos.x - lastDragScreenPos.x;
+
+        // Rotate around Y (world up)
+        activePlant.transform.Rotate(Vector3.up, deltaX * rotationSpeed, Space.World);
+
+        // Update last drag position
+        lastDragScreenPos = currentPos;
     }
 
     private void resizePlantModelOnPinch()

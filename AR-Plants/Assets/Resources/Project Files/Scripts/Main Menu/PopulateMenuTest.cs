@@ -91,9 +91,28 @@ public class PopulateMenuTest : MonoBehaviour
 
     }
 
+    public void Start()
+    {
+        if (GameManager.Instance.sceneCounter >= 1)
+        {
+            SoundManager.Instance.StopAmbientSounds();
+            if (SoundManager.Instance.musicSoundEnabled)
+            {
+                SoundManager.Instance.PlayMusic();
+            }
+        }
+        else
+        {
+            if (SoundManager.Instance.musicSoundEnabled)
+            {
+                SoundManager.Instance.PlayMusic();
+            }
+        }
+    }
 
     void OnEnable()
     {
+
         // Instantiate UI and data holder prefabs and keep references
         GameObject mainMenu = Instantiate(mainMenuPrefab);
         plantButtonDataHolder = Instantiate(Resources.Load<GameObject>("PlantButtonDataHolder"));
