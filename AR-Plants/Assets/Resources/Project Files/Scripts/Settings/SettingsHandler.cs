@@ -43,6 +43,8 @@ public class SettingsHandler : MonoBehaviour
 
     void OnEnable()
     {
+        UpdateSoundManager();
+        
         var root  = GetComponent<UIDocument>().rootVisualElement;
 
         //add functionality to buttons
@@ -167,6 +169,8 @@ public class SettingsHandler : MonoBehaviour
 
     public void UpdateSoundManager()
     {
+
+        Debug.Log("hello");
         //update sound volumes
         float masterVolumeModifier = settings.masterVolume * 0.01f;
 
