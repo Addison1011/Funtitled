@@ -127,6 +127,7 @@ public class PopulateMenuTest : MonoBehaviour
         {
             settingsButton.clicked += () =>
             {
+                SoundManager.Instance.PlayDefaultButtonSound();
                 GameObject settingsMenu = Instantiate(settingsPrefab);
             };
         }

@@ -19,7 +19,7 @@ public class SettingsHandler : MonoBehaviour
 {
     public SettingsData settings;
 
-    [SerializeField] private string jsonFilePath = "Project Files/Scripts/Settings/settings";
+    private string jsonFilePath = "Assets/Resources/Project Files/Scripts/Settings/Resources/";
     private string persistentPath;
 
     void Awake()
@@ -51,6 +51,9 @@ public class SettingsHandler : MonoBehaviour
         {
             cancelButton.clicked += () =>
             {
+                LoadSettingsFromJson();
+                UpdateSoundManager();
+                SoundManager.Instance.PlayDefaultButtonSound();
                 Destroy(gameObject);
             };
         }
@@ -60,6 +63,7 @@ public class SettingsHandler : MonoBehaviour
         {
             saveButton.clicked += () =>
             {
+                SoundManager.Instance.PlayDefaultButtonSound();
                 SaveSettingsToJson();
                 Destroy(gameObject);
             };
@@ -73,6 +77,7 @@ public class SettingsHandler : MonoBehaviour
             soundToggleBox.RegisterCallback<ChangeEvent<bool>>(evt =>
             {
                 settings.soundToggle = evt.newValue;
+                UpdateSoundManager();
             });
         }
 
@@ -89,6 +94,7 @@ public class SettingsHandler : MonoBehaviour
                 if (numberLabel != null)
                 {
                     numberLabel.text = evt.newValue.ToString();
+                    UpdateSoundManager();
                 }
             });
         }
@@ -105,6 +111,7 @@ public class SettingsHandler : MonoBehaviour
                 if (numberLabel != null)
                 {
                     numberLabel.text = evt.newValue.ToString();
+                    UpdateSoundManager();
                 }
             });
         }
@@ -121,6 +128,7 @@ public class SettingsHandler : MonoBehaviour
                 if (numberLabel != null)
                 {
                     numberLabel.text = evt.newValue.ToString();
+                    UpdateSoundManager();
                 }
             });
         }
@@ -137,6 +145,7 @@ public class SettingsHandler : MonoBehaviour
                 if (numberLabel != null)
                 {
                     numberLabel.text = evt.newValue.ToString();
+                    UpdateSoundManager();
                 }
             });
         }
@@ -154,6 +163,37 @@ public class SettingsHandler : MonoBehaviour
     {
         string json = JsonUtility.ToJson(settings);
         File.WriteAllText(persistentPath, json);
+    }
+
+    public void UpdateSoundManager()
+    {
+        //update sound volumes
+        float masterVolumeModifier = settings.masterVolume * 0.01f;
+
+        if(settings.soundToggle == true)
+        {
+            //background noise
+            SoundManager.Instance.menuMusicSource.volume = settings.musicVolume * .01f * masterVolumeModifier;
+            SoundManager.Instance.ambientSoundSource.volume = settings.ambientVolume *.01f * masterVolumeModifier;
+
+            //sound effects
+            SoundManager.Instance.selectLeafSoundSource.volume = settings.soundEffects * .01f * masterVolumeModifier;
+            SoundManager.Instance.selectFlowerSoundSource.volume = settings.soundEffects * .01f * masterVolumeModifier;
+            SoundManager.Instance.selectBranchSoundSource.volume = settings.soundEffects * .01f * masterVolumeModifier;
+            SoundManager.Instance.interactionSoundSource.volume = settings.soundEffects * .01f * masterVolumeModifier;
+        }
+        else //sound is off
+        {
+            //background noise
+            SoundManager.Instance.menuMusicSource.volume = 0;
+            SoundManager.Instance.ambientSoundSource.volume = 0;
+
+            //sound effects
+            SoundManager.Instance.selectLeafSoundSource.volume = 0;
+            SoundManager.Instance.selectFlowerSoundSource.volume = 0;
+            SoundManager.Instance.selectBranchSoundSource.volume = 0;
+            SoundManager.Instance.interactionSoundSource.volume = 0;
+        }
     }
 
 }
