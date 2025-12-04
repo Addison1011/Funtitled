@@ -67,7 +67,7 @@ public class PopupToggleManager : MonoBehaviour
     }
     public void TogglePanel()
     {
-        Debug.Log("Info panel reference: " + infoPanel);
+        //Debug.Log("Info panel reference: " + infoPanel);
         Debug.Log("Toggling panel. New state: " + isVisible);
         Debug.Log("Plant name: " + plantInfo.plantName);
         Debug.Log("Scientific name: " + plantInfo.scientificName);
