@@ -530,8 +530,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278229765
-  m_fontColor: {r: 0.018255584, g: 0.6075471, b: 0, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1269,7 +1269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.94716984, g: 0.94716984, b: 0.94716984, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1372,7 +1372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.30588236, g: 0.74509805, b: 0.23529412, a: 1}
+  m_Color: {r: 0.5019608, g: 0.99607843, b: 0.5019608, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1716,6 +1716,12 @@ PrefabInstance:
       propertyPath: mainMenuPrefab
       value: 
       objectReference: {fileID: 8495111359452637586, guid: 08ea47203da917a4b9e1e4b03fff9083,
+        type: 3}
+    - target: {fileID: 5455775847853768688, guid: 208aa5d8f9c177349a5964b28bdcefa6,
+        type: 3}
+      propertyPath: settingsPrefab
+      value: 
+      objectReference: {fileID: 8495111359452637586, guid: 8eefa2eea585a7d4cab7e62f2e24f005,
         type: 3}
     - target: {fileID: 5455775847853768688, guid: 208aa5d8f9c177349a5964b28bdcefa6,
         type: 3}

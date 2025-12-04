@@ -39,6 +39,7 @@ public class PopulateMenuTest : MonoBehaviour
 
     [SerializeField] private VisualTreeAsset plantCardTemplate;
     [SerializeField] private GameObject mainMenuPrefab;
+    [SerializeField] private GameObject settingsPrefab;
     //[SerializeField] private string buttonHandelName;
     [SerializeField] private string contentHandelName;
 
@@ -87,7 +88,8 @@ public class PopulateMenuTest : MonoBehaviour
         {
             Instantiate(Resources.Load<GameObject>("PlantDescription"));
         }
-
+        GameObject tempSettings = Instantiate(settingsPrefab);
+        Destroy(tempSettings);
     }
 
     public void Start()
@@ -119,6 +121,17 @@ public class PopulateMenuTest : MonoBehaviour
         // Get the root and content container
         var root = mainMenu.GetComponent<UIDocument>().rootVisualElement;
         var content = root.Q<VisualElement>(contentHandelName);
+
+        //add functionality to settings button
+        Button settingsButton = root.Q<Button>("settings-button");
+        if (settingsButton != null)
+        {
+            settingsButton.clicked += () =>
+            {
+                SoundManager.Instance.PlayDefaultButtonSound();
+                GameObject settingsMenu = Instantiate(settingsPrefab);
+            };
+        }
 
         for (int i = 0; i < plants.Count; i++)
         {
