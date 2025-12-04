@@ -97,7 +97,8 @@ public class ARInputController : MonoBehaviour
         selectedPlantModel = Resources.Load<GameObject>(selectedPlantData.plantInfo.scientificName); //default plant
         aRRaycastManager = GetComponent<ARRaycastManager>();
         placementEffect = selectedPlantModel.GetComponentInChildren<ParticleSystem>();
-        popup = FindObjectOfType<PopupToggleManager>();
+        //popup = FindObjectOfType<PopupToggleManager>();
+        popup = FindFirstObjectByType<PopupToggleManager>(FindObjectsInactive.Include);
 
 
         soundManager = SoundManager.Instance;
@@ -413,7 +414,7 @@ public class ARInputController : MonoBehaviour
             Debug.Log(hit.collider.gameObject.name);
         }
 
-        Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
+        //Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
     }
 
     private void DisableAllSelectionEffects(GameObject hitObject)

@@ -40,9 +40,7 @@ public class PopupToggleManager : MonoBehaviour
 //function to display the info of the part clicked
     public void DisplayPartInfo(PlantPart part)
     {
-        //string partName = "";
-        //string partDescription = "";
-        Debug.Log("got here!");
+        //Debug.Log("got here!");
         switch (part)
         {
             case PlantPart.Flower:
@@ -63,8 +61,6 @@ public class PopupToggleManager : MonoBehaviour
                 partDescription.text = "";
                 break;
         }
-        //partText.text = partName;
-        //partDescText.text = partDescription;
 
         if (!isVisible)
             TogglePanel();
@@ -88,7 +84,7 @@ public class PopupToggleManager : MonoBehaviour
             yield return null;
         }
         infoPanel.anchoredPosition = target;
-        Debug.Log("Arrived at: " + infoPanel.anchoredPosition);
+        //Debug.Log("Arrived at: " + infoPanel.anchoredPosition);
     }
 
 }
