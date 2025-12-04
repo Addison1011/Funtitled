@@ -1,4 +1,3 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -14,56 +13,29 @@ public class PopupToggleManager : MonoBehaviour
 
     [Header("TextElements")]
     public TMP_Text scientificText;
-    //public TMP_Text partText;
-    //public TMP_Text partDescText;
-    public TMP_Text partName;
-    public TMP_Text partDescription;
+    //public TMP_Text stemText;
+    //public TMP_Text leafText;
+    //public TMP_Text flowerText;
     public TMP_Text titleText;
+    //public TMP_Text scientificText;
     private PlantInfo plantInfo;
 
 
     void Start()
     {
         infoPanel.anchoredPosition = hiddenPosition;
-        plantInfo = GameObject.FindGameObjectWithTag("SelectedPlantData").GetComponent<SelectedPlantData>().plantInfo;
     }
 
-//function to display the general info of the plant on the panel
     public void LoadPlantParts(PlantInfo info)
     {
         plantInfo = info;
         titleText.text = plantInfo.plantName;
+        //stemText.text = plantInfo.stem;
+        //leafText.text = plantInfo.leaf;
+        //flowerText.text = plantInfo.flower;
         scientificText.text = plantInfo.scientificName;
 
         TogglePanel();
-    }
-//function to display the info of the part clicked
-    public void DisplayPartInfo(PlantPart part)
-    {
-        //Debug.Log("got here!");
-        switch (part)
-        {
-            case PlantPart.Flower:
-                partName.text = "Flower";
-                partDescription.text = plantInfo.flower;
-                break;
-            case PlantPart.Leaf:
-                partName.text = "Leaf";
-                partDescription.text = plantInfo.leaf;
-                break;
-            case PlantPart.Stem:
-                partName.text = "Stem";
-                partDescription.text = plantInfo.stem;
-                Debug.Log("This is stem: " + partName);
-                break;
-            default:
-                partName.text = "";
-                partDescription.text = "";
-                break;
-        }
-
-        if (!isVisible)
-            TogglePanel();
     }
     public void TogglePanel()
     {
@@ -84,7 +56,7 @@ public class PopupToggleManager : MonoBehaviour
             yield return null;
         }
         infoPanel.anchoredPosition = target;
-        //Debug.Log("Arrived at: " + infoPanel.anchoredPosition);
+        Debug.Log("Arrived at: " + infoPanel.anchoredPosition);
     }
 
 }
