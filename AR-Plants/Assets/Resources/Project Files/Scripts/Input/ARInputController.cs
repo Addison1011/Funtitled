@@ -75,9 +75,6 @@ public class ARInputController : MonoBehaviour
     private Vector2 holdStartScreenPos;
     private Finger holdFinger;
 
-    //popup handler
-    private PopupToggleManager popup;
-
 
     private void Awake()
     {
@@ -97,8 +94,6 @@ public class ARInputController : MonoBehaviour
         selectedPlantModel = Resources.Load<GameObject>(selectedPlantData.plantInfo.scientificName); //default plant
         aRRaycastManager = GetComponent<ARRaycastManager>();
         placementEffect = selectedPlantModel.GetComponentInChildren<ParticleSystem>();
-        //popup = FindObjectOfType<PopupToggleManager>();
-        popup = FindFirstObjectByType<PopupToggleManager>(FindObjectsInactive.Include);
 
 
         soundManager = SoundManager.Instance;
@@ -348,7 +343,7 @@ public class ARInputController : MonoBehaviour
         Ray ray = arCamera.ScreenPointToRay(finger.currentTouch.screenPosition);
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, ~0, QueryTriggerInteraction.Ignore))
         {
-            //plant part selection handles
+
             if (hit.collider.gameObject.tag == "Stem")
             {
 
@@ -357,8 +352,6 @@ public class ARInputController : MonoBehaviour
                 SoundManager.Instance.PlaySelectBranchSound();
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-                popup.DisplayPartInfo(PlantPart.Stem);
-                
 
                 //DisableAllEmission(activePlant);
                 //EnableEmissionsOnHitObject("Stem");
@@ -373,7 +366,6 @@ public class ARInputController : MonoBehaviour
 
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-                popup.DisplayPartInfo(PlantPart.Leaf);
 
                 // DisableAllEmission(activePlant);
                 //EnableEmissionsOnHitObject("Leaf");
@@ -387,7 +379,6 @@ public class ARInputController : MonoBehaviour
 
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-                popup.DisplayPartInfo(PlantPart.Root);
                 //DisableAllEmission(activePlant);
                 //EnableEmissionsOnHitObject("Root");
 
@@ -398,7 +389,6 @@ public class ARInputController : MonoBehaviour
                 SoundManager.Instance.PlaySelectFlowerSound();
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-                popup.DisplayPartInfo(PlantPart.Flower);
                 //DisableAllEmission(activePlant);
                 //EnableEmissionsOnHitObject("Flower");
 
@@ -411,10 +401,12 @@ public class ARInputController : MonoBehaviour
                 //DisableAllEmission(activePlant);
             }
 
+
+
             Debug.Log(hit.collider.gameObject.name);
         }
 
-        //Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
+        Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
     }
 
     private void DisableAllSelectionEffects(GameObject hitObject)
