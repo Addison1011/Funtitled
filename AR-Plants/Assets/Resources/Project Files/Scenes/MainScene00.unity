@@ -255,30 +255,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 45276753}
   m_CullTransparentMesh: 1
---- !u!1 &65269532 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2100362863261197143, guid: 427bcfeac9012f841b6a4f03e1185593,
-    type: 3}
-  m_PrefabInstance: {fileID: 552945095977556094}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &65269534
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 65269532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 272f56bcf444b364c8581c80b05dc8ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  button: {fileID: 0}
-  buttonImage: {fileID: 0}
-  buttonColor: {r: 0.19999999, g: 1, b: 0.2587242, a: 1}
-  buttonHoverColor: {r: 0.36952648, g: 0.6792453, b: 0.39229995, a: 1}
-  buttonPressedColor: {r: 0.36862746, g: 0.6784314, b: 0.3921569, a: 1}
-  buttonIcon: {fileID: 0}
 --- !u!1 &272982539
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,30 +391,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 272982539}
   m_CullTransparentMesh: 1
---- !u!1 &338603043 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2539695481231516216, guid: 427bcfeac9012f841b6a4f03e1185593,
-    type: 3}
-  m_PrefabInstance: {fileID: 552945095977556094}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &338603045
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 338603043}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 272f56bcf444b364c8581c80b05dc8ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  button: {fileID: 0}
-  buttonImage: {fileID: 0}
-  buttonColor: {r: 0.29942578, g: 1, b: 0.19999999, a: 1}
-  buttonHoverColor: {r: 0.36285797, g: 0.67295593, b: 0.3195482, a: 1}
-  buttonPressedColor: {r: 0.3647059, g: 0.6745098, b: 0.31764707, a: 1}
-  buttonIcon: {fileID: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1558,15 +1510,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2539695481231516216, guid: 427bcfeac9012f841b6a4f03e1185593,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 338603045}
-    - targetCorrespondingSourceObject: {fileID: 2100362863261197143, guid: 427bcfeac9012f841b6a4f03e1185593,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 65269534}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 427bcfeac9012f841b6a4f03e1185593, type: 3}
 --- !u!20 &2512387468973847745
 Camera:

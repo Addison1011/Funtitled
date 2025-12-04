@@ -796,7 +796,7 @@ PrefabInstance:
     - target: {fileID: 5993397416920604423, guid: ece76be4ca3f90f4786388875c19f21b,
         type: 3}
       propertyPath: ambientSoundEnabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5993397416920604423, guid: ece76be4ca3f90f4786388875c19f21b,
         type: 3}
