@@ -19,27 +19,21 @@ public class SoundManager : MonoBehaviour
     public bool ambientSoundEnabled = true;
     public bool musicSoundEnabled = true;
 
-    [SerializeField]
-    private AudioSource menuMusicSource;
+    public AudioSource menuMusicSource;
 
-    [SerializeField]
-    private AudioSource ambientSoundSource;
+    public AudioSource ambientSoundSource;
 
-    [SerializeField]
-    private AudioSource selectLeafSoundSource;
+    public AudioSource selectLeafSoundSource;
 
-    [SerializeField]
-    private AudioSource selectFlowerSoundSource;
+    public AudioSource selectFlowerSoundSource;
 
-    [SerializeField]
-    private AudioSource selectBranchSoundSource;
+    public AudioSource selectBranchSoundSource;
 
-    [SerializeField]
-    private AudioSource interactionSoundSource;
-    [SerializeField]
-    private AudioClip[] backgroundSoundClips;
-    [SerializeField]
-    private AudioClip[] interactionSoundClips;
+    public AudioSource interactionSoundSource;
+
+    public AudioClip[] backgroundSoundClips;
+
+    public AudioClip[] interactionSoundClips;
 
 
 

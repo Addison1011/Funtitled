@@ -312,6 +312,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
+  ambientSoundEnabled: 1
+  musicSoundEnabled: 1
   menuMusicSource: {fileID: 1776192201170406664}
   ambientSoundSource: {fileID: 4757893823158860270}
   selectLeafSoundSource: {fileID: 5793745761624561232}
@@ -330,7 +332,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f1da4d960ff207f40b5ed651cf864b57, type: 3}
   - {fileID: 8300000, guid: b46dfc1f9a1735c41ac2800e18f6e486, type: 3}
   - {fileID: 8300000, guid: 12d2a551efc4e53419ed47bc1d372d11, type: 3}
-  soundSettings: 1
 --- !u!82 &1689416903453599234
 AudioSource:
   m_ObjectHideFlags: 0
