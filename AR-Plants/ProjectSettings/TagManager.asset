@@ -11,6 +11,12 @@ TagManager:
   - Stem
   - PlantDescription
   - GameManager
+  - Fruit
+  - BackgroundSound
+  - InteractionSound
+  - SelectionEffect
+  - PlacementEffect
+  - MainMenuNew
   layers:
   - Default
   - TransparentFX

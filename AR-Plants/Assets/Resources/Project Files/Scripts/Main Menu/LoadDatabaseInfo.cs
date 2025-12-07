@@ -12,6 +12,7 @@ public class LoadDatabaseInfo : MonoBehaviour
 
     public void OnClick()
     {
+        SoundManager.Instance.PlayDefaultButtonSound();
         SelectedPlantData data = GameObject.FindGameObjectWithTag("SelectedPlantData").GetComponent<SelectedPlantData>();
         data.plantInfo = this.plantInfo;
         Debug.Log("Button clicked for " + data.plantInfo.plantName + " with ID: " + data.plantInfo.plantID + ". " + data.plantInfo.scientificName);

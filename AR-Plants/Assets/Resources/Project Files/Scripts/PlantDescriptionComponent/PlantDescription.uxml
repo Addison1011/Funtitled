@@ -13,12 +13,18 @@
                     <ui:Label text="Golden Barrel Cactus" name="CommonName" class="common-name" style="font-size: 45px;" />
                     <ui:Label text="Kroenleinia grusonii" name="ScientificName" class="scientific-name" style="font-size: 40px;" />
                 </ui:VisualElement>
-                <ui:Button name="ARButton" class="ar-button" style="height: 154px; width: 282px;">
-                    <ui:VisualElement name="CameraIcon" class="camera-icon" style="height: 70px; width: 90px;" />
-                    <ui:Label text="View in AR" class="ar-label" style="height: 70px; width: 136px; font-size: 22px;" />
-                </ui:Button>
+                <ui:VisualElement name="ButtonGroup" class="title-group" style="flex-direction: column; align-self: auto; align-items: auto; align-content: auto; height: auto;">
+                    <ui:Button name="ARButton" class="ar-button" style="height: auto; width: auto;">
+                        <ui:VisualElement name="CameraIcon" class="camera-icon" style="height: 70px; width: 90px; background-image: resource(&apos;Project Files/Scripts/PlantDescriptionComponent/Images/camera-icon&apos;); -unity-background-image-tint-color: rgb(0, 0, 0);" />
+                        <ui:Label text="View in AR" class="ar-label" style="height: 70px; width: 136px; font-size: 22px; color: rgb(0, 0, 0);" />
+                    </ui:Button>
+                    <ui:Button name="View3DButton" class="ar-button" style="height: auto; width: auto;">
+                        <ui:VisualElement name="CameraIcon" class="camera-icon" style="height: 70px; width: 90px; -unity-background-image-tint-color: rgb(0, 0, 0); background-image: url(&quot;project://database/Assets/Samples/XR%20Interaction%20Toolkit/3.1.2/XR%20Device%20Simulator/XRDeviceSimulator/UI/General/Look.png?fileID=2800000&amp;guid=5410adf0b914f49438506b7dd0022773&amp;type=3#Look&quot;);" />
+                        <ui:Label text="View 3D" class="ar-label" style="height: 70px; width: 136px; font-size: 22px;" />
+                    </ui:Button>
+                </ui:VisualElement>
             </ui:VisualElement>
-            <ui:Label name="PlantDescription" text="Kroenleinia grusonii, popularly known as the golden barrel cactus, golden ball, &quot;mother-in-law&apos;s cushion&quot; or &quot;mother-in-law&apos;s chair&quot;, is a species of barrel cactus which is endemic to east-central Mexico." class="description" style="font-size: 40px;" />
+            <ui:Label name="PlantDescription" text="Kroenleinia grusonii, popularly known as the golden barrel cactus, golden ball, &quot;mother-in-law&apos;s cushion&quot; or &quot;mother-in-law&apos;s chair&quot;, is a species of barrel cactus which is endemic to east-central Mexico." class="description" style="font-size: 40px; border-top-width: 10px;" />
             <ui:VisualElement name="MapSection" class="map-section" style="height: 515px;">
                 <ui:VisualElement name="MapImage" class="map-image" />
                 <ui:VisualElement name="LocationBadge" class="location-badge">

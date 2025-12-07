@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/Resources/Project%20Files/Scripts/MainMenuComponent/MainMenu.uss?fileID=7433441132597879392&amp;guid=03c63967f6e3b1b4499075883a01a6e5&amp;type=3#MainMenu" />
+    <ui:VisualElement name="root" class="root">
+        <ui:VisualElement name="header" class="header" style="height: 165px;">
+            <ui:Label text="Plantify" class="app-title" style="font-size: 54px;" />
+            <ui:Button name="settings-button" class="settings-button" style="height: 75px; width: 75px; background-image: resource(&apos;Project Files/3D_Models/cog&apos;);" />
+        </ui:VisualElement>
+        <ui:ScrollView name="content" class="content" style="font-size: 35px;" />
+    </ui:VisualElement>
+</ui:UXML>

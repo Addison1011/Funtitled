@@ -35,6 +35,7 @@ public class ExitButtonFunctionality : MonoBehaviour
     public void OnExitButtonPressed()
     {
         //EndARSession();
+        SoundManager.Instance.PlayDefaultButtonSound();
         ReturnToMainMenu();
     }
 
@@ -42,7 +43,7 @@ public class ExitButtonFunctionality : MonoBehaviour
     {
 
         selectedPlantData = selectedPlantDataHandle.GetComponent<SelectedPlantData>();
-        selectedPlantData.ResetSelectedPlantData();
+        GameManager.Instance.currentSceneName = "Menu";
         SceneManager.LoadScene("Menu");
     }
 }
