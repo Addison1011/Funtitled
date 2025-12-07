@@ -32,7 +32,7 @@ public class ARInputController : MonoBehaviour
     [SerializeField] private GameObject selectedPlantDataHandle;
     private ParticleSystem placementEffect;
 
-
+    private PopupToggleManager popup;
 
     [Header("Tuning")]
     [SerializeField] private float yOffsetMeters = 0.02f;       // lift to avoid z-fighting
@@ -97,6 +97,7 @@ public class ARInputController : MonoBehaviour
 
 
         soundManager = SoundManager.Instance;
+        popup = FindFirstObjectByType<PopupToggleManager>(FindObjectsInactive.Include);
     }
 
     void Start()
@@ -352,7 +353,7 @@ public class ARInputController : MonoBehaviour
                 SoundManager.Instance.PlaySelectBranchSound();
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-
+                popup.DisplayPartInfo(PlantPart.Stem);
                 //DisableAllEmission(activePlant);
                 //EnableEmissionsOnHitObject("Stem");
 
@@ -366,7 +367,7 @@ public class ARInputController : MonoBehaviour
 
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-
+                popup.DisplayPartInfo(PlantPart.Leaf);
                 // DisableAllEmission(activePlant);
                 //EnableEmissionsOnHitObject("Leaf");
 
@@ -379,6 +380,7 @@ public class ARInputController : MonoBehaviour
 
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
+                popup.DisplayPartInfo(PlantPart.Root);
                 //DisableAllEmission(activePlant);
                 //EnableEmissionsOnHitObject("Root");
 
@@ -389,6 +391,7 @@ public class ARInputController : MonoBehaviour
                 SoundManager.Instance.PlaySelectFlowerSound();
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
+                popup.DisplayPartInfo(PlantPart.Flower);
                 //DisableAllEmission(activePlant);
                 //EnableEmissionsOnHitObject("Flower");
 

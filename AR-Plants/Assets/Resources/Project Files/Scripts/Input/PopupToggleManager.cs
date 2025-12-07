@@ -16,6 +16,8 @@ public class PopupToggleManager : MonoBehaviour
     //public TMP_Text stemText;
     //public TMP_Text leafText;
     //public TMP_Text flowerText;
+    public TMP_Text partName;
+    public TMP_Text partDescription;
     public TMP_Text titleText;
     //public TMP_Text scientificText;
     private PlantInfo plantInfo;
@@ -24,6 +26,7 @@ public class PopupToggleManager : MonoBehaviour
     void Start()
     {
         infoPanel.anchoredPosition = hiddenPosition;
+        plantInfo = GameObject.FindGameObjectWithTag("SelectedPlantData").GetComponent<SelectedPlantData>().plantInfo;
     }
 
     public void LoadPlantParts(PlantInfo info)
@@ -46,6 +49,34 @@ public class PopupToggleManager : MonoBehaviour
         isVisible = !isVisible;
         StopAllCoroutines();
         StartCoroutine(SlidePanel(isVisible ? shownPosition : hiddenPosition));
+    }
+
+    public void DisplayPartInfo(PlantPart part)
+    {
+        //Debug.Log("got here!");
+        switch (part)
+        {
+            case PlantPart.Flower:
+                partName.text = "Flower";
+                partDescription.text = plantInfo.flower;
+                break;
+            case PlantPart.Leaf:
+                partName.text = "Leaf";
+                partDescription.text = plantInfo.leaf;
+                break;
+            case PlantPart.Stem:
+                partName.text = "Stem";
+                partDescription.text = plantInfo.stem;
+                Debug.Log("This is stem: " + partName);
+                break;
+            default:
+                partName.text = "";
+                partDescription.text = "";
+                break;
+        }
+
+        if (!isVisible)
+            TogglePanel();
     }
 
     private System.Collections.IEnumerator SlidePanel(Vector2 target)
