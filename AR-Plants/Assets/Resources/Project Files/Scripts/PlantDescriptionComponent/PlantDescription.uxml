@@ -28,6 +28,7 @@
             <ui:VisualElement name="MapSection" class="map-section" style="height: 515px;">
                 <ui:VisualElement name="MapImage" class="map-image" style="flex-direction: row; background-image: resource(&apos;Project Files/Scripts/PlantDescriptionComponent/Images/BlankMap&apos;);" />
                 <ui:VisualElement name="LocationBadge" class="location-badge" style="bottom: auto; top: 12px;">
+                    <ui:VisualElement name="PinIcon" class="pin-icon" style="background-color: rgb(32, 178, 77);" />
                     <ui:Label text="Range of Plant" class="location-text" />
                 </ui:VisualElement>
             </ui:VisualElement>
