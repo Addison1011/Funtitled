@@ -12,6 +12,8 @@ public class SettingsData //data type for the settings
     public int soundEffects = 100;
     public int musicVolume = 100;
     public int ambientVolume = 100;
+
+    public bool highContrastToggle = false;
 }
 
 
@@ -48,7 +50,7 @@ public class SettingsHandler : MonoBehaviour
         var root  = GetComponent<UIDocument>().rootVisualElement;
 
         //add functionality to buttons
-        Button cancelButton = root.Q<Button>("cancel-button");
+        Button cancelButton = root.Q<Button>("canceetl-button");
         if (cancelButton != null)
         {
             cancelButton.clicked += () =>
@@ -68,6 +70,20 @@ public class SettingsHandler : MonoBehaviour
                 SoundManager.Instance.PlayDefaultButtonSound();
                 SaveSettingsToJson();
                 Destroy(gameObject);
+            };
+        }
+
+        //set up listener for high contrast toggle
+        Button highContrastButton = root.Q<Button>("high-contrast-button");
+        if (highContrastButton != null)
+        {
+            highContrastButton.text = settings.highContrastToggle ? "High Contrast: On" : "High Contrast: Off";
+
+            highContrastButton.clicked += () =>
+            {
+                settings.highContrastToggle = !settings.highContrastToggle;
+                highContrastButton.text = settings.highContrastToggle ? "High Contrast: On" : "High Contrast: Off";
+                SoundManager.Instance.PlayDefaultButtonSound();
             };
         }
 
