@@ -7,13 +7,12 @@ using UnityEngine.UIElements;
 [System.Serializable]
 public class SettingsData //data type for the settings
 {
+    public bool highContrastToggle = false;
     public bool soundToggle = true;
     public int masterVolume = 100;
     public int soundEffects = 100;
     public int musicVolume = 100;
     public int ambientVolume = 100;
-
-    public bool highContrastToggle = false;
 }
 
 
@@ -50,7 +49,7 @@ public class SettingsHandler : MonoBehaviour
         var root  = GetComponent<UIDocument>().rootVisualElement;
 
         //add functionality to buttons
-        Button cancelButton = root.Q<Button>("canceetl-button");
+        Button cancelButton = root.Q<Button>("cancel-button");
         if (cancelButton != null)
         {
             cancelButton.clicked += () =>
@@ -74,25 +73,40 @@ public class SettingsHandler : MonoBehaviour
         }
 
         //set up listener for high contrast toggle
-        Button highContrastButton = root.Q<Button>("high-contrast-button");
-        if (highContrastButton != null)
+        Toggle contrastToggleBox = root.Q<Toggle>("high-contrast-button");
+        if (contrastToggleBox != null)
         {
-            highContrastButton.text = settings.highContrastToggle ? "High Contrast: On" : "High Contrast: Off";
-
-            highContrastButton.clicked += () =>
+            contrastToggleBox.value = settings.highContrastToggle;
+            contrastToggleBox.RegisterCallback<ChangeEvent<bool>>(evt =>
             {
-                settings.highContrastToggle = !settings.highContrastToggle;
-                highContrastButton.text = settings.highContrastToggle ? "High Contrast: On" : "High Contrast: Off";
-                
+                settings.highContrastToggle = evt.newValue;
                 // Apply theme change
                 if (ColorThemeManager.Instance != null)
                 {
                     ColorThemeManager.Instance.ToggleTheme();
                 }
-                
-                SoundManager.Instance.PlayDefaultButtonSound();
-            };
+            });
         }
+
+        // Button highContrastButton = root.Q<Button>("high-contrast-button");
+        // if (highContrastButton != null)
+        // {
+        //     highContrastButton.text = settings.highContrastToggle ? "High Contrast: On" : "High Contrast: Off";
+
+        //     highContrastButton.clicked += () =>
+        //     {
+        //         settings.highContrastToggle = !settings.highContrastToggle;
+        //         highContrastButton.text = settings.highContrastToggle ? "High Contrast: On" : "High Contrast: Off";
+                
+        //         // Apply theme change
+        //         if (ColorThemeManager.Instance != null)
+        //         {
+        //             ColorThemeManager.Instance.ToggleTheme();
+        //         }
+                
+        //         SoundManager.Instance.PlayDefaultButtonSound();
+        //     };
+        // }
 
         //set up listener for toggle
         Toggle soundToggleBox = root.Q<Toggle>("sound-toggle");
