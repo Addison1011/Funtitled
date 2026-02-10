@@ -83,6 +83,13 @@ public class SettingsHandler : MonoBehaviour
             {
                 settings.highContrastToggle = !settings.highContrastToggle;
                 highContrastButton.text = settings.highContrastToggle ? "High Contrast: On" : "High Contrast: Off";
+                
+                // Apply theme change
+                if (ColorThemeManager.Instance != null)
+                {
+                    ColorThemeManager.Instance.ToggleTheme();
+                }
+                
                 SoundManager.Instance.PlayDefaultButtonSound();
             };
         }
