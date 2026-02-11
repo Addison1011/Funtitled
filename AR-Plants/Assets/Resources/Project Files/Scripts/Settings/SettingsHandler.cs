@@ -56,6 +56,11 @@ public class SettingsHandler : MonoBehaviour
             {
                 LoadSettingsFromJson();
                 UpdateSoundManager();
+                // Reset theme to match loaded settings
+                if (ColorThemeManager.Instance != null)
+                {
+                    ColorThemeManager.Instance.SetHighContrast(settings.highContrastToggle);
+                }
                 SoundManager.Instance.PlayDefaultButtonSound();
                 Destroy(gameObject);
             };
@@ -80,33 +85,15 @@ public class SettingsHandler : MonoBehaviour
             contrastToggleBox.RegisterCallback<ChangeEvent<bool>>(evt =>
             {
                 settings.highContrastToggle = evt.newValue;
-                // Apply theme change
+                // Apply theme change to ColorThemeManager
                 if (ColorThemeManager.Instance != null)
                 {
-                    ColorThemeManager.Instance.ToggleTheme();
+                    ColorThemeManager.Instance.SetHighContrast(evt.newValue);
                 }
             });
         }
 
-        // Button highContrastButton = root.Q<Button>("high-contrast-button");
-        // if (highContrastButton != null)
-        // {
-        //     highContrastButton.text = settings.highContrastToggle ? "High Contrast: On" : "High Contrast: Off";
-
-        //     highContrastButton.clicked += () =>
-        //     {
-        //         settings.highContrastToggle = !settings.highContrastToggle;
-        //         highContrastButton.text = settings.highContrastToggle ? "High Contrast: On" : "High Contrast: Off";
-                
-        //         // Apply theme change
-        //         if (ColorThemeManager.Instance != null)
-        //         {
-        //             ColorThemeManager.Instance.ToggleTheme();
-        //         }
-                
-        //         SoundManager.Instance.PlayDefaultButtonSound();
-        //     };
-        // }
+        
 
         //set up listener for toggle
         Toggle soundToggleBox = root.Q<Toggle>("sound-toggle");
