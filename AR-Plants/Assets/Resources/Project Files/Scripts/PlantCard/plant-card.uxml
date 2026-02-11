@@ -1,14 +1,16 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <ui:VisualElement name="plant-card" class="plant-card" style="font-size: 28px; height: auto; align-self: auto; flex-direction: column; align-items: stretch; width: auto; align-content: flex-start;">
+    <Style src="project://database/Assets/Resources/Project%20Files/Scripts/MainMenuComponent/MainMenu.uss?fileID=7433441132597879392&amp;guid=03c63967f6e3b1b4499075883a01a6e5&amp;type=3#MainMenu" />
+    <ui:VisualElement name="plant-card" class="plant-card" style="font-size: 28px; height: 218px; align-self: auto; flex-direction: column; align-items: stretch; width: 623px; align-content: flex-start; background-image: resource(&apos;Project Files/Scripts/PlantDescriptionComponent/Images/golden_barrel_cactus&apos;); -unity-background-image-tint-color: rgb(91, 88, 88);">
         <ui:VisualElement name="name" class="card-header" style="align-self: auto;">
-            <ui:Label text="Desert Beauty" name="PlantName" class="card-title" style="font-size: 35px; opacity: 1; align-self: auto;">
+            <ui:Label text="Desert Beauty" name="PlantName" class="card-title" style="font-size: 35px; opacity: 1; align-self: auto; color: rgb(222, 216, 216);">
                 <ui:Button name="PlantDescriptionButton" icon-image="project://database/Assets/Samples/XR%20Interaction%20Toolkit/3.1.2/XR%20Device%20Simulator/XRInteractionSimulator/UI/Translate/TranslateRight@2x.png?fileID=2800000&amp;guid=eb5a85b675ed34acf9efd6d574df4ceb&amp;type=3#TranslateRight@2x" selectable="false" style="width: 76px; align-self: flex-end; background-image: none; background-color: rgba(162, 242, 189, 0.71); height: 62px; cursor: initial; -unity-background-image-tint-color: rgba(0, 234, 255, 0); border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0);" />
             </ui:Label>
         </ui:VisualElement>
         <ui:VisualElement name="card-content" class="card-content">
             <ui:VisualElement name="species" class="info-row" style="font-size: 40px;">
-                <ui:Label text="Species:" class="info-label" style="font-size: 20px;" />
-                <ui:Label text="Echinocactus grusonii" name="ScientificName" class="info-value" style="font-size: 20px;" />
+                <ui:Image source="C:\Users\ianja\OneDrive\Pictures\Screenshots\Screenshot 2026-02-05 113506.png" scale-mode="StretchToFill" tint-color="rgb(49, 49, 49)" />
+                <ui:Label text="Species:" class="info-label" style="font-size: 20px; color: rgb(247, 247, 247);" />
+                <ui:Label text="Echinocactus grusonii" name="ScientificName" class="info-value" style="font-size: 20px; color: rgb(247, 240, 240);" />
             </ui:VisualElement>
             <ui:VisualElement name="info-row" class="info-row" />
         </ui:VisualElement>

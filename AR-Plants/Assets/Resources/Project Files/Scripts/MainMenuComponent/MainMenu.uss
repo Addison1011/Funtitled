@@ -11,7 +11,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    background-color: rgb(162, 242, 189);
+    background-color: #00671b;
     padding-left: 20px;
     padding-right: 20px;
     padding-top: 20px;
@@ -22,13 +22,13 @@
 .app-title {
     font-size: 28px;
     -unity-font-style: bold;
-    color: rgb(40, 40, 40);
+    color: rgb(207, 201, 201);
 }
 
 .settings-button {
     width: 40px;
     height: 40px;
-    background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(255, 255, 255, 0);
     border-width: 0;
     padding: 0;
     margin: 0;
@@ -42,7 +42,7 @@
 
 .settings-icon {
     font-size: 32px;
-    color: rgb(40, 40, 40);
+    color: rgb(207, 201, 201);
     -unity-text-align: middle-center;
 }
 
