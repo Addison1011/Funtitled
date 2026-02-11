@@ -53,7 +53,7 @@ public class PopupToggleManager : MonoBehaviour
 
     public void DisplayPartInfo(PlantPart part)
     {
-        //Debug.Log("got here!");
+        //Debug.Log("got to DisplayPartInfo!");
         switch (part)
         {
             case PlantPart.Flower:
@@ -70,8 +70,8 @@ public class PopupToggleManager : MonoBehaviour
                 Debug.Log("This is stem: " + partName);
                 break;
             default:
-                partName.text = "";
-                partDescription.text = "";
+                partName.text = "Unknown";
+                partDescription.text = "Part not found";
                 break;
         }
 

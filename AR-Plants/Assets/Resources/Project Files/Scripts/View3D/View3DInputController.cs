@@ -22,6 +22,7 @@ public class View3DInputController : MonoBehaviour
 
     [SerializeField] private GameObject selectedPlantDataHandle;
     private ParticleSystem placementEffect;
+    private PopupToggleManager popup;
 
 
 
@@ -96,6 +97,7 @@ public class View3DInputController : MonoBehaviour
         //activePlant.transform.position = arCamera.transform.position + arCamera.transform.forward * spawnDistanceFromCamera;
 
         placementEffect = selectedPlantModel.GetComponentInChildren<ParticleSystem>();
+        popup = FindFirstObjectByType<PopupToggleManager>(FindObjectsInactive.Include);
 
 
         soundManager = SoundManager.Instance;
@@ -274,6 +276,7 @@ public class View3DInputController : MonoBehaviour
                 SoundManager.Instance.PlaySelectBranchSound();
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
+                popup.DisplayPartInfo(PlantPart.Stem);
             }
             else if (hit.collider.gameObject.tag == "Leaf")
             {
@@ -283,7 +286,7 @@ public class View3DInputController : MonoBehaviour
 
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-
+                popup.DisplayPartInfo(PlantPart.Leaf);
             }
             else if (hit.collider.gameObject.tag == "Root")
             {
@@ -292,7 +295,8 @@ public class View3DInputController : MonoBehaviour
 
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-
+                Debug.Log("Found the root, moving to popup toggle manager for " + selectedPlantData.selectedPart);
+                popup.DisplayPartInfo(PlantPart.Root);
             }
             else if (hit.collider.gameObject.tag == "Flower")
             {
@@ -300,8 +304,7 @@ public class View3DInputController : MonoBehaviour
                 SoundManager.Instance.PlaySelectFlowerSound();
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-
-
+                popup.DisplayPartInfo(PlantPart.Flower);
             }
             else
             {
@@ -310,11 +313,11 @@ public class View3DInputController : MonoBehaviour
             }
 
 
-
-            Debug.Log(hit.collider.gameObject.name);
+            //Debug.Log("3D Page!");
+            //Debug.Log(hit.collider.gameObject.name);
         }
 
-        Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
+        //Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
     }
 
     private void DisableAllSelectionEffects(GameObject hitObject)
