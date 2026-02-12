@@ -47,6 +47,11 @@ public class ButtonUI : MonoBehaviour
         if (ColorThemeManager.Instance != null)
         {
             ColorThemeManager.Instance.RegisterButton(this);
+            Debug.Log($"ButtonUI: registered with ColorThemeManager -> {name}");
+        }
+        else
+        {
+            Debug.LogWarning($"ButtonUI: ColorThemeManager.Instance is null, could not register -> {name}");
         }
 
         // Apply styling

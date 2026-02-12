@@ -85,12 +85,29 @@ public class SettingsHandler : MonoBehaviour
             contrastToggleBox.RegisterCallback<ChangeEvent<bool>>(evt =>
             {
                 settings.highContrastToggle = evt.newValue;
+                Debug.Log($"SettingsHandler: high-contrast toggle changed -> {evt.newValue}");
                 // Apply theme change to ColorThemeManager
                 if (ColorThemeManager.Instance != null)
                 {
+                    Debug.Log("SettingsHandler: calling ColorThemeManager.SetHighContrast from toggle callback");
                     ColorThemeManager.Instance.SetHighContrast(evt.newValue);
                 }
+                else
+                {
+                    Debug.LogWarning("SettingsHandler: ColorThemeManager.Instance is null when toggle changed");
+                }
             });
+
+            // Ensure ColorThemeManager matches saved settings when the UI opens
+            if (ColorThemeManager.Instance != null)
+            {
+                Debug.Log($"SettingsHandler: setting ColorThemeManager to saved state -> {settings.highContrastToggle}");
+                ColorThemeManager.Instance.SetHighContrast(settings.highContrastToggle);
+            }
+            else
+            {
+                Debug.LogWarning("SettingsHandler: ColorThemeManager.Instance is null on settings open");
+            }
         }
 
         
