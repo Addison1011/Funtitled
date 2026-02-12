@@ -91,6 +91,7 @@ public class SettingsHandler : MonoBehaviour
                 {
                     Debug.Log("SettingsHandler: calling ColorThemeManager.SetHighContrast from toggle callback");
                     ColorThemeManager.Instance.SetHighContrast(evt.newValue);
+                    ApplyUITheme(root);
                 }
                 else
                 {
@@ -103,6 +104,7 @@ public class SettingsHandler : MonoBehaviour
             {
                 Debug.Log($"SettingsHandler: setting ColorThemeManager to saved state -> {settings.highContrastToggle}");
                 ColorThemeManager.Instance.SetHighContrast(settings.highContrastToggle);
+                ApplyUITheme(root);
             }
             else
             {
@@ -239,6 +241,43 @@ public class SettingsHandler : MonoBehaviour
             SoundManager.Instance.selectBranchSoundSource.volume = 0;
             SoundManager.Instance.interactionSoundSource.volume = 0;
         }
+    }
+
+    private void ApplyUITheme(VisualElement root)
+    {
+        if (ColorThemeManager.Instance == null)
+            return;
+
+        var uiTheme = ColorThemeManager.Instance.GetUITheme();
+
+        // Apply theme to root and content areas
+        VisualElement rootElement = root.Q<VisualElement>("root");
+        if (rootElement != null)
+            rootElement.style.backgroundColor = uiTheme.backgroundColor;
+
+        VisualElement header = root.Q<VisualElement>("header");
+        if (header != null)
+            header.style.backgroundColor = uiTheme.headerBackgroundColor;
+
+        VisualElement footer = root.Q<VisualElement>("footer");
+        if (footer != null)
+            footer.style.backgroundColor = uiTheme.headerBackgroundColor;
+
+        // Apply text color to labels
+        var labels = root.Query<Label>().ToList();
+        foreach (Label label in labels)
+        {
+            label.style.color = uiTheme.textColor;
+        }
+
+        // Apply text color to toggles
+        var toggles = root.Query<Toggle>().ToList();
+        foreach (Toggle toggle in toggles)
+        {
+            toggle.style.color = uiTheme.textColor;
+        }
+
+        Debug.Log($"SettingsHandler: applied UI theme -> {(ColorThemeManager.Instance.IsHighContrast() ? "High Contrast" : "Normal")}");
     }
 
 }

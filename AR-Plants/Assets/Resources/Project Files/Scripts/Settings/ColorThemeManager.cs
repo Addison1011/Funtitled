@@ -29,12 +29,19 @@ public class ColorThemeManager : MonoBehaviour
     }
 
     [System.Serializable]
+    public class UITheme
+    {
+        public Color textColor = new Color(0, 0, 0, 1f);          // Black text
+        public Color backgroundColor = new Color(0.94f, 0.94f, 0.96f, 1f);  // Light gray background
+        public Color headerBackgroundColor = new Color(0.635f, 0.949f, 0.741f, 1f);  // Light green header
+    }
+
+    [System.Serializable]
     public class ColorTheme
     {
         public string themeName = "Default";
         public ButtonTheme buttonTheme = new ButtonTheme();
-        // TODO: Add more color categories here (particles, UI text, backgrounds, etc.)
-        
+        public UITheme uiTheme = new UITheme();
     }
 
     private ColorTheme normalTheme;
@@ -67,6 +74,12 @@ public class ColorThemeManager : MonoBehaviour
                 normalColor = new Color(0.2f, 0.8f, 0.3f, 1f),    // Light green
                 hoverColor = new Color(0.15f, 0.65f, 0.2f, 1f),   // Medium green
                 pressedColor = new Color(0.1f, 0.5f, 0.15f, 1f)   // Dark green
+            },
+            uiTheme = new UITheme
+            {
+                textColor = new Color(0f, 0f, 0f, 1f),                    // Black text
+                backgroundColor = new Color(0.94f, 0.94f, 0.96f, 1f),     // Light gray background
+                headerBackgroundColor = new Color(0.635f, 0.949f, 0.741f, 1f)  // Light green header
             }
         };
 
@@ -79,6 +92,12 @@ public class ColorThemeManager : MonoBehaviour
                 normalColor = new Color(1f, 0.5f, 0f, 1f),       // Bright orange
                 hoverColor = new Color(1f, 0.7f, 0f, 1f),        // Lighter orange
                 pressedColor = new Color(0.8f, 0.3f, 0f, 1f)     // Darker orange
+            },
+            uiTheme = new UITheme
+            {
+                textColor = new Color(1f, 1f, 1f, 1f),                    // White text
+                backgroundColor = new Color(0.1f, 0.1f, 0.1f, 1f),        // Dark gray background
+                headerBackgroundColor = new Color(1f, 0.5f, 0f, 1f)       // Bright orange header
             }
         };
 
@@ -142,6 +161,12 @@ public class ColorThemeManager : MonoBehaviour
     public ButtonTheme GetButtonTheme()
     {
         return currentTheme.buttonTheme;
+    }
+
+    /// Get current theme's UI styling
+    public UITheme GetUITheme()
+    {
+        return currentTheme.uiTheme;
     }
 
     /// Check if high contrast is enabled
