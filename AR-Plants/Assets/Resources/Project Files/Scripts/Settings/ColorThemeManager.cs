@@ -3,6 +3,21 @@ using System.Collections.Generic;
 
 public class ColorThemeManager : MonoBehaviour
 {
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    static void EnsureInstanceExists()
+    {
+        if (Instance == null)
+        {
+            var go = new GameObject("ColorThemeManager");
+            go.AddComponent<ColorThemeManager>();
+            Object.DontDestroyOnLoad(go);
+            Debug.Log("ColorThemeManager: auto-created Instance before scene load.");
+        }
+        else
+        {
+            Debug.Log("ColorThemeManager: instance already exists at startup.");
+        }
+    }
     public static ColorThemeManager Instance { get; private set; }
 
     [System.Serializable]
@@ -49,9 +64,9 @@ public class ColorThemeManager : MonoBehaviour
             themeName = "Normal",
             buttonTheme = new ButtonTheme
             {
-                normalColor = new Color(0.2f, 0.7f, 1f, 1f),    // Light blue
-                hoverColor = new Color(0.1f, 0.6f, 0.9f, 1f),    // Darker blue
-                pressedColor = new Color(0f, 0.5f, 0.8f, 1f)     // Even darker blue
+                normalColor = new Color(0.2f, 0.8f, 0.3f, 1f),    // Light green
+                hoverColor = new Color(0.15f, 0.65f, 0.2f, 1f),   // Medium green
+                pressedColor = new Color(0.1f, 0.5f, 0.15f, 1f)   // Dark green
             }
         };
 
