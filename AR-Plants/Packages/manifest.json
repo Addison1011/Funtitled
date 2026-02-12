@@ -1,13 +1,14 @@
 {
   "dependencies": {
     "com.unity.2d.sprite": "1.0.0",
-    "com.unity.collab-proxy": "2.10.2",
+    "com.unity.collab-proxy": "2.11.2",
     "com.unity.feature.development": "1.0.2",
     "com.unity.inputsystem": "1.17.0",
     "com.unity.learn.iet-framework": "4.0.4",
     "com.unity.multiplayer.center": "1.0.0",
     "com.unity.render-pipelines.universal": "17.0.4",
     "com.unity.timeline": "1.8.10",
+    "com.unity.toolchain.win-x86_64-linux-x86_64": "2.0.11",
     "com.unity.xr-content.xr-sim-environments": "file:../ContentPackages\\com.unity.xr-content.xr-sim-environments-2.1.1.tgz",
     "com.unity.xr.arcore": "6.1.0",
     "com.unity.xr.arfoundation": "6.1.0",

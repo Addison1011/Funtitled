@@ -88,8 +88,8 @@ public class PopulateMenuTest : MonoBehaviour
         {
             Instantiate(Resources.Load<GameObject>("PlantDescription"));
         }
-        GameObject tempSettings = Instantiate(settingsPrefab);
-        Destroy(tempSettings);
+        //GameObject tempSettings = Instantiate(settingsPrefab);
+        //Destroy(tempSettings);
     }
 
     public void Start()
