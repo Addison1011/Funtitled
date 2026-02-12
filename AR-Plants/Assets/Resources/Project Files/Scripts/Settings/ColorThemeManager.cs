@@ -90,10 +90,13 @@ public class ColorThemeManager : MonoBehaviour
     /// Set theme to High Contrast
     public void SetHighContrast(bool enabled)
     {
+        Debug.Log($"ColorThemeManager.SetHighContrast called with: {enabled}");
         if (enabled != isHighContrast)
         {
             ToggleTheme();
+            Debug.Log($"ColorThemeManager state changed. HighContrast now: {isHighContrast}");
         }
+        
     }
 
     /// Register a button to receive theme updates
@@ -103,6 +106,7 @@ public class ColorThemeManager : MonoBehaviour
         {
             registeredButtons.Add(button);
             button.ApplyTheme(); // Apply current theme immediately
+            Debug.Log($"ColorThemeManager.RegisterButton called for: {button.name}");
         }
     }
 
