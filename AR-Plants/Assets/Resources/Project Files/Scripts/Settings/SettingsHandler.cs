@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 [System.Serializable]
 public class SettingsData //data type for the settings
 {
+    public bool highContrastToggle = false;
     public bool soundToggle = true;
     public int masterVolume = 100;
     public int soundEffects = 100;
@@ -55,6 +56,11 @@ public class SettingsHandler : MonoBehaviour
             {
                 LoadSettingsFromJson();
                 UpdateSoundManager();
+                // Reset theme to match loaded settings
+                if (ColorThemeManager.Instance != null)
+                {
+                    ColorThemeManager.Instance.SetHighContrast(settings.highContrastToggle);
+                }
                 SoundManager.Instance.PlayDefaultButtonSound();
                 Destroy(gameObject);
             };
@@ -70,6 +76,43 @@ public class SettingsHandler : MonoBehaviour
                 Destroy(gameObject);
             };
         }
+
+        //set up listener for high contrast toggle
+        Toggle contrastToggleBox = root.Q<Toggle>("high-contrast-button");
+        if (contrastToggleBox != null)
+        {
+            contrastToggleBox.value = settings.highContrastToggle;
+            contrastToggleBox.RegisterCallback<ChangeEvent<bool>>(evt =>
+            {
+                settings.highContrastToggle = evt.newValue;
+                Debug.Log($"SettingsHandler: high-contrast toggle changed -> {evt.newValue}");
+                // Apply theme change to ColorThemeManager
+                if (ColorThemeManager.Instance != null)
+                {
+                    Debug.Log("SettingsHandler: calling ColorThemeManager.SetHighContrast from toggle callback");
+                    ColorThemeManager.Instance.SetHighContrast(evt.newValue);
+                    ApplyUITheme(root);
+                }
+                else
+                {
+                    Debug.LogWarning("SettingsHandler: ColorThemeManager.Instance is null when toggle changed");
+                }
+            });
+
+            // Ensure ColorThemeManager matches saved settings when the UI opens
+            if (ColorThemeManager.Instance != null)
+            {
+                Debug.Log($"SettingsHandler: setting ColorThemeManager to saved state -> {settings.highContrastToggle}");
+                ColorThemeManager.Instance.SetHighContrast(settings.highContrastToggle);
+                ApplyUITheme(root);
+            }
+            else
+            {
+                Debug.LogWarning("SettingsHandler: ColorThemeManager.Instance is null on settings open");
+            }
+        }
+
+        
 
         //set up listener for toggle
         Toggle soundToggleBox = root.Q<Toggle>("sound-toggle");
@@ -198,6 +241,43 @@ public class SettingsHandler : MonoBehaviour
             SoundManager.Instance.selectBranchSoundSource.volume = 0;
             SoundManager.Instance.interactionSoundSource.volume = 0;
         }
+    }
+
+    private void ApplyUITheme(VisualElement root)
+    {
+        if (ColorThemeManager.Instance == null)
+            return;
+
+        var uiTheme = ColorThemeManager.Instance.GetUITheme();
+
+        // Apply theme to root and content areas
+        VisualElement rootElement = root.Q<VisualElement>("root");
+        if (rootElement != null)
+            rootElement.style.backgroundColor = uiTheme.backgroundColor;
+
+        VisualElement header = root.Q<VisualElement>("header");
+        if (header != null)
+            header.style.backgroundColor = uiTheme.headerBackgroundColor;
+
+        VisualElement footer = root.Q<VisualElement>("footer");
+        if (footer != null)
+            footer.style.backgroundColor = uiTheme.headerBackgroundColor;
+
+        // Apply text color to labels
+        var labels = root.Query<Label>().ToList();
+        foreach (Label label in labels)
+        {
+            label.style.color = uiTheme.textColor;
+        }
+
+        // Apply text color to toggles
+        var toggles = root.Query<Toggle>().ToList();
+        foreach (Toggle toggle in toggles)
+        {
+            toggle.style.color = uiTheme.textColor;
+        }
+
+        Debug.Log($"SettingsHandler: applied UI theme -> {(ColorThemeManager.Instance.IsHighContrast() ? "High Contrast" : "Normal")}");
     }
 
 }

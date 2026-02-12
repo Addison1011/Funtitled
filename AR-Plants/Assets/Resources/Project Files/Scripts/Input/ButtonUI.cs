@@ -2,10 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-/// <summary>
 /// Generic button styling and functionality manager.
 /// Can be used on any button to apply custom colors, text, and icons.
-/// </summary>
 public class ButtonUI : MonoBehaviour
 {
     [Header("Button References")]
@@ -45,6 +43,17 @@ public class ButtonUI : MonoBehaviour
             buttonImage = button.GetComponent<Image>();
         }
 
+        // Register with ColorThemeManager
+        if (ColorThemeManager.Instance != null)
+        {
+            ColorThemeManager.Instance.RegisterButton(this);
+            Debug.Log($"ButtonUI: registered with ColorThemeManager -> {name}");
+        }
+        else
+        {
+            Debug.LogWarning($"ButtonUI: ColorThemeManager.Instance is null, could not register -> {name}");
+        }
+
         // Apply styling
         ApplyButtonStyle();
     }
@@ -72,9 +81,22 @@ public class ButtonUI : MonoBehaviour
         }
     }
 
-    /// <summary>
+    /// Apply theme colors from ColorThemeManager
+    public void ApplyTheme()
+    {
+        if (ColorThemeManager.Instance == null)
+            return;
+
+        var buttonTheme = ColorThemeManager.Instance.GetButtonTheme();
+        buttonColor = buttonTheme.normalColor;
+        buttonHoverColor = buttonTheme.hoverColor;
+        buttonPressedColor = buttonTheme.pressedColor;
+
+        ApplyButtonStyle();
+    }
+
     /// Update the button's color at runtime
-    /// </summary>
+    /// Might delete this method after testing ColorThemeManager
     public void SetButtonColor(Color newColor)
     {
         buttonColor = newColor;
@@ -84,9 +106,7 @@ public class ButtonUI : MonoBehaviour
         }
     }
 
-    /// <summary>
     /// Update the button icon
-    /// </summary>
     public void SetButtonIcon(Sprite newIcon)
     {
         buttonIcon = newIcon;

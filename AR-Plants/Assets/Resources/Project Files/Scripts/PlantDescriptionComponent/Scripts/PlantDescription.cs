@@ -110,6 +110,7 @@ public class PlantDescription : VisualElement
         set
         {
             m_MapImagePath = value;
+            Debug.Log(m_MapImagePath);
             UpdateMapImage(value);
         }
     }
@@ -141,7 +142,6 @@ public class PlantDescription : VisualElement
 
         if (arButton != null)
             arButton.clicked += OnARClicked;
-
 
         Render();
     }

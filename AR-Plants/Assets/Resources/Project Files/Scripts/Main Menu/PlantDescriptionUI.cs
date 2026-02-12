@@ -18,9 +18,42 @@ public class PlantDescriptionUI : MonoBehaviour
         Label scientificNameLabel = root.Q<Label>("ScientificName");
         Label descriptionLabel = root.Q<Label>("PlantDescription");
 
+        // Load and set the map image based on scientific name
+        VisualElement mapImageElement = root.Q<VisualElement>("MapImage");
+        if (mapImageElement != null && plantInfo != null)
+        {
+            string mapImagePath = $"Project Files/Scripts/PlantDescriptionComponent/Images/{plantInfo.plantName} map";
+            Texture2D mapTexture = Resources.Load<Texture2D>(mapImagePath);
+            if (mapTexture != null)
+            {
+                mapImageElement.style.backgroundImage = new StyleBackground(mapTexture);
+            }
+            else
+            {
+                Debug.LogWarning($"Map image not found at path: {mapImagePath}");
+            }
+        }
+
+        // Load and set the header image based on scientific name
+        VisualElement headerImageElement = root.Q<VisualElement>("HeaderImage");
+        if (headerImageElement != null && plantInfo != null)
+        {
+            string headerImagePath = $"Project Files/Scripts/PlantDescriptionComponent/Images/{plantInfo.plantName}";
+            Texture2D headerTexture = Resources.Load<Texture2D>(headerImagePath);
+            if (headerTexture != null)
+            {
+                headerImageElement.style.backgroundImage = new StyleBackground(headerTexture);
+            }
+            else
+            {
+                Debug.LogWarning($"Header image not found at path: {headerImagePath}");
+            }
+        }
+
         commonNameLabel.text = plantInfo.plantName;
         scientificNameLabel.text = plantInfo.scientificName;
         descriptionLabel.text = plantInfo.plantDesc;
+
         // Find the button by its name
         Button arButton = root.Q<Button>("ARButton");
         Button backButton = root.Q<Button>("BackButton");

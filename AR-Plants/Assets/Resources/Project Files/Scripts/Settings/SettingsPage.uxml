@@ -6,6 +6,7 @@
             <ui:Label text="Plantify" class="app-title" style="font-size: 54px;" />
         </ui:VisualElement>
         <ui:VisualElement name="content" style="flex-grow: 1; padding-left: 15px; padding-right: 15px;">
+            <ui:Toggle label="High Contrast Mode" name="high-contrast-button" style="font-size: 30px; margin-bottom: 15px;" />
             <ui:Toggle label="Sound" name="sound-toggle" style="font-size: 30px; margin-bottom: 15px;" />
             <ui:VisualElement name="master-volume-content" style="flex-grow: 1; height: 123px; width: 571px;">
                 <ui:Label text="Master Volume" name="master-volume-title" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; background-color: rgba(0, 0, 0, 0); font-size: 30px;" />
