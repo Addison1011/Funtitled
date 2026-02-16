@@ -50,8 +50,8 @@ public class PopulateMenuTest : MonoBehaviour
         string persistentPath = Path.Combine(Application.persistentDataPath, dbName);
 
         // First-run copy from StreamingAssets -> persistentDataPath
-        //if (!File.Exists(persistentPath))
-        //{
+        if (!File.Exists(persistentPath))
+        {
 #if UNITY_ANDROID
             // StreamingAssets on Android must be read via UnityWebRequest
             string srcPath = Path.Combine(Application.streamingAssetsPath, dbName);
@@ -72,7 +72,7 @@ public class PopulateMenuTest : MonoBehaviour
                 string srcPath = Path.Combine(Application.streamingAssetsPath, dbName);
                 File.Copy(srcPath, persistentPath, overwrite: true);
 #endif
-        //}
+        }
 
         // Open the DB from a real filesystem location
         _connection = new SQLite4Unity3d.SQLiteConnection(
