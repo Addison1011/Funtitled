@@ -119,12 +119,23 @@ public class PopulateMenuTest : MonoBehaviour
         }
 
         //instantiate settings for app
-        string jsonFilePath = "Assets/Resources/Project Files/Scripts/Settings/Resources/";
+        //string jsonFilePath = "Assets/Resources/Project Files/Scripts/Settings/Resources/";
         string persistentPath = Path.Combine(Application.persistentDataPath, "settings.json");
         SettingsData settings;
         string json = File.ReadAllText(persistentPath);
         settings = JsonUtility.FromJson<SettingsData>(json);
 
+        //update color theme
+        if (settings.highContrastToggle)
+        {
+            //TODO: set to high contrast
+        }
+        else
+        {
+            //TODO: set to normal theme
+        }
+
+        //copied from UpdateSoundManager() in SettingsHandler.cs
         float masterVolumeModifier = settings.masterVolume * 0.01f;
 
         if(settings.soundToggle == true)
@@ -151,6 +162,7 @@ public class PopulateMenuTest : MonoBehaviour
             SoundManager.Instance.selectBranchSoundSource.volume = 0;
             SoundManager.Instance.interactionSoundSource.volume = 0;
         }
+        //end code copied from UpdateSoundManager()
     }
 
     void OnEnable()
