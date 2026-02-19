@@ -212,8 +212,6 @@ public class SettingsHandler : MonoBehaviour
 
     public void UpdateSoundManager()
     {
-
-        Debug.Log("hello");
         //update sound volumes
         float masterVolumeModifier = settings.masterVolume * 0.01f;
 
