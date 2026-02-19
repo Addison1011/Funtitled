@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[System.Serializable]
 public class SettingsData //data type for the settings
 {
     public bool highContrastToggle = false;
