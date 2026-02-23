@@ -1,0 +1,139 @@
+.root {
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+}
+
+.screen {
+    width: 1080px;
+    height: 2400px;
+    background-color: #d7d7d7;
+    flex-direction: column;
+}
+
+/* Header matches your mock: slightly shorter, tighter padding */
+.header {
+    height: 200px;
+    background-color: #b8b0b0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 70px;
+    padding-right: 70px;
+}
+
+/* 4 buttons fit better: slightly smaller + tighter gap */
+.center-buttons {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 45px;
+}
+
+/* Buttons slightly smaller to match your layout */
+.icon-btn {
+    width: 135px;
+    height: 135px;
+    border-radius: 16px;
+    background-color: #9f9797;
+
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+
+    box-shadow: 0px 10px 0px rgba(0,0,0,0.20);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+
+
+/* Selected tab border (thin, like your mock) */
+.tab-selected {
+    border-left-width: 4px;
+    border-right-width: 4px;
+    border-top-width: 4px;
+    border-bottom-width: 4px;
+    border-left-color: #000000;
+    border-right-color: #000000;
+    border-top-color: #000000;
+    border-bottom-color: #000000;
+}
+
+/* Dropdown: closer to header and wider */
+.dropdown-area {
+    padding-left: 35px;
+    padding-right: 35px;
+    padding-top: 18px;
+    padding-bottom: 10px;
+    display: none; /* hidden when nothing selected */
+}
+
+/* Box looks like your screenshot: less rounding, thinner border, less padding */
+.dropdown-card {
+    background-color: #bdbdbd;
+
+    border-radius: 22px;
+
+    border-left-width: 3px;
+    border-right-width: 3px;
+    border-top-width: 3px;
+    border-bottom-width: 3px;
+    border-left-color: #000000;
+    border-right-color: #000000;
+    border-top-color: #000000;
+    border-bottom-color: #000000;
+
+    padding-left: 28px;
+    padding-right: 28px;
+    padding-top: 22px;
+    padding-bottom: 22px;
+}
+
+/* Title smaller and tighter (if you’re using it) */
+.dropdown-title {
+    font-size: 38px;
+    unity-font-style: bold;
+    margin-bottom: 10px;
+}
+
+/* Text matches mock: smaller, wraps nicely */
+.dropdown-text {
+    font-size: 34px;
+    color: #000000;
+    white-space: normal;
+    line-height: 1.15;
+}
+
+/* General info rows: smaller + tighter so it doesn’t blow up */
+.info-row {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 6px;
+}
+
+.info-label {
+    font-size: 32px;
+    unity-font-style: bold;
+    margin-right: 12px;
+}
+
+.info-value {
+    font-size: 32px;
+    white-space: normal;
+    flex-shrink: 1;
+}
+
+.body {
+    flex-grow: 1;
+    background-color: #d7d7d7;
+}
+
+.tab-selected {
+    background-color: #8f8787;
+}

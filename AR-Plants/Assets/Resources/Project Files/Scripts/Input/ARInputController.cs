@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
@@ -10,6 +11,7 @@ using System.Collections;
 using UnityEngine.InputSystem;
 using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 using UnityEngine.XR.Interaction.Toolkit.Attachment;
+using UnityEngine.UIElements;
 public enum PlantPart
 {
     Stem,
@@ -28,6 +30,7 @@ public class ARInputController : MonoBehaviour
     [SerializeField] private GameObject selectedPlantModel; // Prefab to place
     [SerializeField] private SoundManager soundManager;
     private SelectedPlantData selectedPlantData;
+    ARUIController aRUIController;
 
     [SerializeField] private GameObject selectedPlantDataHandle;
     private ParticleSystem placementEffect;
@@ -90,7 +93,7 @@ public class ARInputController : MonoBehaviour
 
         //Gets the SelectedPlantData script from the SelectedPlantData GameObject
         selectedPlantData = selectedPlantDataHandle.GetComponent<SelectedPlantData>();
-
+        aRUIController = GameObject.FindWithTag("ARUI").GetComponent<ARUIController>();
         selectedPlantModel = Resources.Load<GameObject>(selectedPlantData.plantInfo.scientificName); //default plant
         aRRaycastManager = GetComponent<ARRaycastManager>();
         placementEffect = selectedPlantModel.GetComponentInChildren<ParticleSystem>();
@@ -156,10 +159,10 @@ public class ARInputController : MonoBehaviour
     }
 
     //++++ Touch Handlers ++++
+
     private void OnFingerDown(Finger finger)
     {
         Vector2 screenPos = finger.currentTouch.screenPosition;
-
 
 
         if (HitActivePlant(finger.currentTouch.screenPosition))
@@ -168,8 +171,10 @@ public class ARInputController : MonoBehaviour
         }
         else
         {
+            // Tapping on empty space deselects current plant part (if any) and UI tab
             DisableAllSelectionEffects(activePlant);
-            //DisableAllEmission(activePlant);
+            //aRUIController.SetTab(ARUIController.Tab.None);
+            selectedPlantData.selectedPart = PlantPart.None;
         }
         // If plant exists and touch is on the plant -> start HOLD candidate
         if (isPlantPlaced && activePlant != null && HitActivePlant(screenPos))
@@ -337,23 +342,26 @@ public class ARInputController : MonoBehaviour
     // Placeholder tap behavior on the plant (short tap)
     private void OnPlantTapped(Finger finger)
     {
+        PlantPart previousPart = selectedPlantData.selectedPart;
         EnsureCamera();
         // Unity’s destroyed objects compare equal to null
         if (!arCamera) return;
 
         Ray ray = arCamera.ScreenPointToRay(finger.currentTouch.screenPosition);
+
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, ~0, QueryTriggerInteraction.Ignore))
         {
 
             if (hit.collider.gameObject.tag == "Stem")
             {
 
-
                 selectedPlantData.selectedPart = PlantPart.Stem;
                 SoundManager.Instance.PlaySelectBranchSound();
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-                popup.DisplayPartInfo(PlantPart.Stem);
+                aRUIController.SetTab(ARUIController.Tab.Stem);
+
+                //popup.DisplayPartInfo(PlantPart.Stem);
                 //DisableAllEmission(activePlant);
                 //EnableEmissionsOnHitObject("Stem");
 
@@ -367,47 +375,43 @@ public class ARInputController : MonoBehaviour
 
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-                popup.DisplayPartInfo(PlantPart.Leaf);
+                aRUIController.SetTab(ARUIController.Tab.Leaf);
+
+
+
+                //popup.DisplayPartInfo(PlantPart.Leaf);
                 // DisableAllEmission(activePlant);
                 //EnableEmissionsOnHitObject("Leaf");
 
 
             }
-            else if (hit.collider.gameObject.tag == "Root")
-            {
-                selectedPlantData.selectedPart = PlantPart.Root;
-                SoundManager.Instance.PlaySelectPlantPartSound();
 
-                DisableAllSelectionEffects(activePlant);
-                hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-                popup.DisplayPartInfo(PlantPart.Root);
-                //DisableAllEmission(activePlant);
-                //EnableEmissionsOnHitObject("Root");
-
-            }
             else if (hit.collider.gameObject.tag == "Flower")
             {
+
                 selectedPlantData.selectedPart = PlantPart.Flower;
                 SoundManager.Instance.PlaySelectFlowerSound();
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-                popup.DisplayPartInfo(PlantPart.Flower);
+                aRUIController.SetTab(ARUIController.Tab.Flower);
+
+                //popup.DisplayPartInfo(PlantPart.Flower);
                 //DisableAllEmission(activePlant);
                 //EnableEmissionsOnHitObject("Flower");
 
             }
-            else
+
+
+            if (previousPart == selectedPlantData.selectedPart)
             {
                 selectedPlantData.selectedPart = PlantPart.None;
                 DisableAllSelectionEffects(activePlant);
-
-                //DisableAllEmission(activePlant);
+                aRUIController.SetTab(ARUIController.Tab.None);
             }
-
-
 
             Debug.Log(hit.collider.gameObject.name);
         }
+
 
         Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
     }
@@ -441,17 +445,6 @@ public class ARInputController : MonoBehaviour
             }
         }
 
-    }
-
-    private void DisableAllEmission(GameObject activePlant)
-    {
-        if (activePlant == null) return;
-
-        Renderer[] renderers = activePlant.GetComponentsInChildren<Renderer>();
-        foreach (Renderer rend in renderers)
-        {
-            rend.material.DisableKeyword("_EMISSION");
-        }
     }
 
 

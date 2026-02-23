@@ -17,6 +17,8 @@ TagManager:
   - SelectionEffect
   - PlacementEffect
   - MainMenuNew
+  - ARUI
+  - ARInputController
   layers:
   - Default
   - TransparentFX
