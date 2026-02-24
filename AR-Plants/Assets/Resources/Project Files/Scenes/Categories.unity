@@ -196,7 +196,7 @@ MonoBehaviour:
     type: 3}
   settingsPrefab: {fileID: 8495111359452637586, guid: 8eefa2eea585a7d4cab7e62f2e24f005,
     type: 3}
-  contentHandleName: content
+  contentHandleName: cateCont
 --- !u!1 &302008936
 GameObject:
   m_ObjectHideFlags: 0
