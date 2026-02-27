@@ -149,8 +149,13 @@ public class ARUIController : MonoBehaviour
                     }
                     //inputController.activePlant;
                 }
+                if (child == null)
+                {
+                    SoundManager.Instance.PlayDefaultButtonSound();
+                }
 
             }
+            // Stem selection plays stem effects and sets selectedPart to Stem, which disables individual part selection until another tab is selected or the plant is deselected
             else if (current == Tab.Stem && selectedPlantData.selectedPart != PlantPart.Stem)
             {
                 inputController.DisableAllSelectionEffects(inputController.activePlant);
@@ -168,10 +173,16 @@ public class ARUIController : MonoBehaviour
                         }
                         break;
                     }
+
                     //inputController.activePlant;
+                }
+                if (child == null)
+                {
+                    SoundManager.Instance.PlayDefaultButtonSound();
                 }
 
             }
+            //Flower selection plays flower effects and sets selectedPart to Flower, which disables individual part selection until another tab is selected or the plant is deselected
             else if (current == Tab.Flower && selectedPlantData.selectedPart != PlantPart.Flower)
             {
                 inputController.DisableAllSelectionEffects(inputController.activePlant);
@@ -189,10 +200,18 @@ public class ARUIController : MonoBehaviour
                         }
                         break;
                     }
+
                     //inputController.activePlant;
                 }
+                if (child == null)
+                {
+                    SoundManager.Instance.PlayDefaultButtonSound();
+                }
+
+
 
             }
+            // General selection plays all effects and sets selectedPart to General, which disables individual part selection until another tab is selected or the plant is deselected
             else if (current == Tab.General && selectedPlantData.selectedPart != PlantPart.General)
             {
                 inputController.DisableAllSelectionEffects(inputController.activePlant);
@@ -200,7 +219,7 @@ public class ARUIController : MonoBehaviour
                 GameObject child = null;
                 foreach (Transform transform in inputController.activePlant.transform)
                 {
-                    if (transform.CompareTag("Flower")) // General tab highlights flower for now since it's the most visible part, can change later
+                    if (transform.CompareTag("Flower"))
                     {
                         child = transform.gameObject;
                         if (child != null)
@@ -208,7 +227,7 @@ public class ARUIController : MonoBehaviour
                             child.GetComponentInChildren<ParticleSystem>().Play();
                         }
                     }
-                    if (transform.CompareTag("Stem")) // General tab highlights flower for now since it's the most visible part, can change later
+                    if (transform.CompareTag("Stem"))
                     {
                         child = transform.gameObject;
                         if (child != null)
@@ -216,7 +235,7 @@ public class ARUIController : MonoBehaviour
                             child.GetComponentInChildren<ParticleSystem>().Play();
                         }
                     }
-                    if (transform.CompareTag("Leaf")) // General tab highlights flower for now since it's the most visible part, can change later
+                    if (transform.CompareTag("Leaf"))
                     {
                         child = transform.gameObject;
                         if (child != null)
@@ -226,6 +245,8 @@ public class ARUIController : MonoBehaviour
                     }
                     //inputController.activePlant;
                 }
+                SoundManager.Instance.PlayDefaultButtonSound();
+
 
             }
             else
@@ -233,6 +254,10 @@ public class ARUIController : MonoBehaviour
                 inputController.DisableAllSelectionEffects(inputController.activePlant);
                 selectedPlantData.selectedPart = PlantPart.None;
             }
+        }
+        else
+        {
+            SoundManager.Instance.PlayDefaultButtonSound();
         }
         //SoundManager.Instance.PlayDefaultButtonSound();
     }
