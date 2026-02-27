@@ -24,13 +24,16 @@ public class ARUIController : MonoBehaviour
 
     public enum Tab { None, General, Flower, Stem, Leaf }
     public Tab current = Tab.None;
+    private ARInputController inputController;
+
+
 
     private const string SelectedClass = "tab-selected";
 
     private void Awake()
     {
         selectedPlantData = GameObject.FindGameObjectWithTag("SelectedPlantData").GetComponent<SelectedPlantData>();
-        ARInputController inputController = GameObject.FindGameObjectWithTag("ARInputController").GetComponent<ARInputController>();
+        inputController = GameObject.FindGameObjectWithTag("ARInputController").GetComponent<ARInputController>();
         if (uiDocument == null) uiDocument = GetComponent<UIDocument>();
         var root = uiDocument.rootVisualElement;
 
@@ -70,17 +73,200 @@ public class ARUIController : MonoBehaviour
         stemBtn.clicked += () => Toggle(Tab.Stem);
         leafBtn.clicked += () => Toggle(Tab.Leaf);
 
-        backBtn.clicked += () => OnExitButtonPressed();
-        refreshBtn.clicked += () => inputController.RefreshSession();
+        // --- Back Button Highlight (works on Button because TrickleDown) ---
+        backBtn.RegisterCallback<PointerDownEvent>(_ =>
+        {
+            backBtn.AddToClassList(SelectedClass);
+        }, TrickleDown.TrickleDown);
+
+        backBtn.RegisterCallback<PointerUpEvent>(_ =>
+        {
+            backBtn.RemoveFromClassList(SelectedClass);
+            OnExitButtonPressed();
+        }, TrickleDown.TrickleDown);
+
+        backBtn.RegisterCallback<PointerCancelEvent>(_ =>
+        {
+            backBtn.RemoveFromClassList(SelectedClass);
+        }, TrickleDown.TrickleDown);
+
+        backBtn.RegisterCallback<PointerCaptureOutEvent>(_ =>
+        {
+            backBtn.RemoveFromClassList(SelectedClass);
+        }, TrickleDown.TrickleDown);
+
+
+        // --- Refresh Button Highlight (works on Button because TrickleDown) ---
+        refreshBtn.RegisterCallback<PointerDownEvent>(_ =>
+        {
+            refreshBtn.AddToClassList(SelectedClass);
+        }, TrickleDown.TrickleDown);
+
+        refreshBtn.RegisterCallback<PointerUpEvent>(_ =>
+        {
+            refreshBtn.RemoveFromClassList(SelectedClass);
+            inputController.RefreshSession();
+        }, TrickleDown.TrickleDown);
+
+        refreshBtn.RegisterCallback<PointerCancelEvent>(_ =>
+        {
+            refreshBtn.RemoveFromClassList(SelectedClass);
+        }, TrickleDown.TrickleDown);
+
+        refreshBtn.RegisterCallback<PointerCaptureOutEvent>(_ =>
+        {
+            refreshBtn.RemoveFromClassList(SelectedClass);
+        }, TrickleDown.TrickleDown);
 
         // Example default text (replace with DB values later)
         SetPartInfo(PlantPart.Flower, PlantPart.Stem, PlantPart.Leaf);
+
     }
 
     public void Toggle(Tab t)
     {
         SetTab(current == t ? Tab.None : t);
+
+        if (inputController.activePlant != null)
+        {
+
+            if (current == Tab.Leaf && selectedPlantData.selectedPart != PlantPart.Leaf)
+            {
+                inputController.DisableAllSelectionEffects(inputController.activePlant);
+                selectedPlantData.selectedPart = PlantPart.Leaf;
+                GameObject child = null;
+                foreach (Transform transform in inputController.activePlant.transform)
+                {
+                    if (transform.CompareTag("Leaf"))
+                    {
+                        child = transform.gameObject;
+                        if (child != null)
+                        {
+                            child.GetComponentInChildren<ParticleSystem>().Play();
+                            SoundManager.Instance.PlaySelectLeafSound();
+                        }
+                        break;
+                    }
+                    //inputController.activePlant;
+                }
+
+            }
+            else if (current == Tab.Stem && selectedPlantData.selectedPart != PlantPart.Stem)
+            {
+                inputController.DisableAllSelectionEffects(inputController.activePlant);
+                selectedPlantData.selectedPart = PlantPart.Stem;
+                GameObject child = null;
+                foreach (Transform transform in inputController.activePlant.transform)
+                {
+                    if (transform.CompareTag("Stem"))
+                    {
+                        child = transform.gameObject;
+                        if (child != null)
+                        {
+                            child.GetComponentInChildren<ParticleSystem>().Play();
+                            SoundManager.Instance.PlaySelectBranchSound();
+                        }
+                        break;
+                    }
+                    //inputController.activePlant;
+                }
+
+            }
+            else if (current == Tab.Flower && selectedPlantData.selectedPart != PlantPart.Flower)
+            {
+                inputController.DisableAllSelectionEffects(inputController.activePlant);
+                selectedPlantData.selectedPart = PlantPart.Flower;
+                GameObject child = null;
+                foreach (Transform transform in inputController.activePlant.transform)
+                {
+                    if (transform.CompareTag("Flower"))
+                    {
+                        child = transform.gameObject;
+                        if (child != null)
+                        {
+                            child.GetComponentInChildren<ParticleSystem>().Play();
+                            SoundManager.Instance.PlaySelectFlowerSound();
+                        }
+                        break;
+                    }
+                    //inputController.activePlant;
+                }
+
+            }
+            else if (current == Tab.General && selectedPlantData.selectedPart != PlantPart.General)
+            {
+                inputController.DisableAllSelectionEffects(inputController.activePlant);
+                selectedPlantData.selectedPart = PlantPart.General;
+                GameObject child = null;
+                foreach (Transform transform in inputController.activePlant.transform)
+                {
+                    if (transform.CompareTag("Flower")) // General tab highlights flower for now since it's the most visible part, can change later
+                    {
+                        child = transform.gameObject;
+                        if (child != null)
+                        {
+                            child.GetComponentInChildren<ParticleSystem>().Play();
+                        }
+                    }
+                    if (transform.CompareTag("Stem")) // General tab highlights flower for now since it's the most visible part, can change later
+                    {
+                        child = transform.gameObject;
+                        if (child != null)
+                        {
+                            child.GetComponentInChildren<ParticleSystem>().Play();
+                        }
+                    }
+                    if (transform.CompareTag("Leaf")) // General tab highlights flower for now since it's the most visible part, can change later
+                    {
+                        child = transform.gameObject;
+                        if (child != null)
+                        {
+                            child.GetComponentInChildren<ParticleSystem>().Play();
+                        }
+                    }
+                    //inputController.activePlant;
+                }
+
+            }
+            else
+            {
+                inputController.DisableAllSelectionEffects(inputController.activePlant);
+                selectedPlantData.selectedPart = PlantPart.None;
+            }
+        }
+        //SoundManager.Instance.PlayDefaultButtonSound();
     }
+
+
+    public bool IsScreenPointOverAnyUIButton(Vector2 screenPos)
+    {
+        if (uiDocument == null) return false;
+
+        var root = uiDocument.rootVisualElement;
+        var panel = root?.panel;
+        if (panel == null) return false;
+
+        // Convert screen -> panel coords
+        Vector2 panelPos = RuntimePanelUtils.ScreenToPanel(panel, screenPos);
+
+        // Some devices/panels end up inverted on Y depending on panel settings,
+        // so we also test a flipped-Y position.
+        Vector2 panelPosFlipped = RuntimePanelUtils.ScreenToPanel(panel, new Vector2(screenPos.x, Screen.height - screenPos.y));
+
+        return IsOverButton(backBtn, panelPos) || IsOverButton(refreshBtn, panelPos) ||
+               IsOverButton(generalBtn, panelPos) || IsOverButton(flowerBtn, panelPos) ||
+               IsOverButton(stemBtn, panelPos) || IsOverButton(leafBtn, panelPos) ||
+               IsOverButton(backBtn, panelPosFlipped) || IsOverButton(refreshBtn, panelPosFlipped) ||
+               IsOverButton(generalBtn, panelPosFlipped) || IsOverButton(flowerBtn, panelPosFlipped) ||
+               IsOverButton(stemBtn, panelPosFlipped) || IsOverButton(leafBtn, panelPosFlipped);
+    }
+
+    private bool IsOverButton(Button btn, Vector2 panelPos)
+    {
+        return btn != null && btn.worldBound.Contains(panelPos);
+    }
+
+
 
     public void SetTab(Tab t)
     {

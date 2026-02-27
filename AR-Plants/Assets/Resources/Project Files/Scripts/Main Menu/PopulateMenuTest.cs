@@ -152,6 +152,7 @@ public class PopulateMenuTest : MonoBehaviour
             // Add the button to the content container
             content.Add(newPlantCardInstance);
 
+
             // Creates a new GameObject holding its own LoadDatabaseInfo script pertaining to the specific plant in the itteration
             // This allows each button to have its own data loader instance
             GameObject dataObj = new GameObject($"PlantData_{currentPlant.plantName}");

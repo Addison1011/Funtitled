@@ -725,7 +725,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &599701538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2311,6 +2311,7 @@ MonoBehaviour:
   allowHorizontalUp: 1
   allowHorizontalDown: 0
   allowVertical: 0
+  activePlant: {fileID: 0}
 --- !u!4 &2512387470860572925
 Transform:
   m_ObjectHideFlags: 0

@@ -18,6 +18,7 @@ public enum PlantPart
     Leaf,
     Root,
     Flower,
+    General,
     None
 }
 [RequireComponent(typeof(ARRaycastManager))]
@@ -66,7 +67,7 @@ public class ARInputController : MonoBehaviour
 
     // Placement state
     private bool isPlantPlaced = false;
-    private GameObject activePlant;
+    public GameObject activePlant;
 
     // Drag state
     private bool isDragging = false;
@@ -164,17 +165,18 @@ public class ARInputController : MonoBehaviour
     {
         Vector2 screenPos = finger.currentTouch.screenPosition;
 
-
         if (HitActivePlant(finger.currentTouch.screenPosition))
         {
             resizePlantModelOnPinch();
         }
         else
         {
+
+
             // Tapping on empty space deselects current plant part (if any) and UI tab
-            DisableAllSelectionEffects(activePlant);
-            //aRUIController.SetTab(ARUIController.Tab.None);
-            selectedPlantData.selectedPart = PlantPart.None;
+            /*DisableAllSelectionEffects(activePlant);
+            aRUIController.SetTab(ARUIController.Tab.None);
+            selectedPlantData.selectedPart = PlantPart.None;*/
         }
         // If plant exists and touch is on the plant -> start HOLD candidate
         if (isPlantPlaced && activePlant != null && HitActivePlant(screenPos))
@@ -213,6 +215,8 @@ public class ARInputController : MonoBehaviour
         if (finger != holdFinger)
             return;
 
+
+
         // Case A: we were holding on the plant but never transitioned to drag -> treat as a TAP on plant
         if (holdCandidate && !isDragging)
         {
@@ -221,6 +225,21 @@ public class ARInputController : MonoBehaviour
         // Case B: we were NOT holding on the plant (finger down wasn't on plant) -> treat as TAP on empty plane
         else if (!holdCandidate && !isDragging)
         {
+
+            Vector2 screenPos = finger.currentTouch.screenPosition;
+
+            if (!HitActivePlant(screenPos))
+            {
+                // Only deselect when NOT releasing over a UI button
+                bool overUIButton = aRUIController != null && aRUIController.IsScreenPointOverAnyUIButton(screenPos);
+
+                if (!overUIButton)
+                {
+                    DisableAllSelectionEffects(activePlant);
+                    aRUIController.SetTab(ARUIController.Tab.None);
+                    selectedPlantData.selectedPart = PlantPart.None;
+                }
+            }
 
             if (TryARRaycastToAllowedPlane(finger.currentTouch.screenPosition, out Pose pose))
             {
@@ -234,6 +253,7 @@ public class ARInputController : MonoBehaviour
                 }
                 else
                 {
+
                     // Move existing
                     //desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
                 }
@@ -416,7 +436,7 @@ public class ARInputController : MonoBehaviour
         Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
     }
 
-    private void DisableAllSelectionEffects(GameObject hitObject)
+    public void DisableAllSelectionEffects(GameObject hitObject)
     {
         if (activePlant == null) return;
 
