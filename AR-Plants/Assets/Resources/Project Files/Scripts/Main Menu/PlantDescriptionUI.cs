@@ -58,6 +58,7 @@ public class PlantDescriptionUI : MonoBehaviour
         Button arButton = root.Q<Button>("ARButton");
         Button backButton = root.Q<Button>("BackButton");
         Button view3DButton = root.Q<Button>("View3DButton");
+        Button fullScreenButton = root.Q<Button>("FullScreenButton");
 
         // Register the event handler for the 'clicked' event
         if (arButton != null && backButton != null)
@@ -65,6 +66,7 @@ public class PlantDescriptionUI : MonoBehaviour
             arButton.clicked += OnARButtonClicked;
             backButton.clicked += OnBackButtonClicked;
             view3DButton.clicked += OnView3DButtonClicked;
+            fullScreenButton.clicked += OnFullScreenButtonClicked;
         }
     }
 
@@ -92,7 +94,46 @@ public class PlantDescriptionUI : MonoBehaviour
         SceneManager.LoadScene("View3D");
     }
 
+    private bool isFullScreen = false;
+    private float originalWidth;
+    private float originalHeight;
 
+    private void OnFullScreenButtonClicked()
+    {
+        Debug.Log("Button 'FullScreenButton' was clicked!");
+        SoundManager.Instance.PlayDefaultButtonSound();
+        VisualElement MapSection = GameObject.FindGameObjectWithTag("PlantDescription").GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("MapSection");
+        VisualElement root = GameObject.FindGameObjectWithTag("PlantDescription").GetComponent<UIDocument>().rootVisualElement;
+
+        if (MapSection != null)
+        {
+            if (!isFullScreen)
+            {
+                originalWidth = MapSection.resolvedStyle.width;
+                originalHeight = MapSection.resolvedStyle.height;
+                
+                isFullScreen = true;
+
+                MapSection.style.rotate = new StyleRotate(new Rotate(90f));
+                float scale = Mathf.Min(root.resolvedStyle.width / originalHeight, root.resolvedStyle.height / originalWidth);
+                MapSection.style.width = scale * originalWidth;
+                MapSection.style.height = scale * originalHeight;
+                
+                float xOffset = (root.resolvedStyle.width - scale * originalWidth) * 0.5f -24f;
+                MapSection.style.translate = new StyleTranslate(new Translate(xOffset, 0f));
+            }
+            else
+            {
+                isFullScreen = false;
+
+                MapSection.style.rotate = new StyleRotate(new Rotate(0f));
+                MapSection.style.width = originalWidth;
+                MapSection.style.height = originalHeight;
+                MapSection.style.translate = new StyleTranslate(new Translate(0f, 0f));
+            }
+            
+        }
+    }
 
 
 }
