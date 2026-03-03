@@ -80,6 +80,8 @@ public class PopulateMenuTest : MonoBehaviour
         );
 
         plants = _connection.Table<PlantInfo>().ToList();
+        //filtering for the plants in the selected category
+
 
         // goes back to previous plant description if going back to main menu from AR scene
         Debug.Log("SceneCounter:" + GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter);
@@ -112,7 +114,6 @@ public class PopulateMenuTest : MonoBehaviour
 
     void OnEnable()
     {
-
         // Instantiate UI and data holder prefabs and keep references
         GameObject mainMenu = Instantiate(mainMenuPrefab);
         plantButtonDataHolder = Instantiate(Resources.Load<GameObject>("PlantButtonDataHolder"));
