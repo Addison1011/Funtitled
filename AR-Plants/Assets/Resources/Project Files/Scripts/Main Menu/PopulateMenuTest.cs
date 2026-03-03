@@ -82,22 +82,10 @@ public class PopulateMenuTest : MonoBehaviour
         //plants = _connection.Table<PlantInfo>().ToList();
         //filtering for the plants in the selected category
         SelectedCategory selectedData = GameObject.FindGameObjectWithTag("SelectedCategory").GetComponent<SelectedCategory>();
+        plants = _connection.Table<PlantInfo>().ToList();
+        Debug.Log("no categories selected, loading all plants");
+        Debug.Log("Plants type null, count: " + plants.Count);
 
-        if (selectedData.plantTypes != null)
-        {
-
-            plants = _connection.Table<PlantInfo>()
-                .Where(p => p.typeID == selectedData.plantTypes.typeID).ToList();
-            Debug.Log("filtering plants for category " + selectedData.plantTypes.typeID);
-            Debug.Log("Plants type not null, count: " + plants.Count);
-        }
-        else
-        {
-
-            plants = _connection.Table<PlantInfo>().ToList();
-            Debug.Log("no categories selected, loading all plants");
-            Debug.Log("Plants type null, count: " + plants.Count);
-        }
 
         // goes back to previous plant description if going back to main menu from AR scene
         Debug.Log("SceneCounter:" + GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter);
@@ -111,6 +99,9 @@ public class PopulateMenuTest : MonoBehaviour
 
     public void Start()
     {
+        // Set sorting order on start to ensure correct menu is on top
+        GameObject.Find("categMenu(Clone)").GetComponent<UIDocument>().panelSettings.sortingOrder = 1;
+        mainMenu.GetComponent<UIDocument>().panelSettings.sortingOrder = 0;
 
         if (GameManager.Instance.sceneCounter >= 1)
         {
@@ -150,6 +141,8 @@ public class PopulateMenuTest : MonoBehaviour
             };
         }
 
+        // remove this code, tot needed anymore since we are now just clearing and repopulating the menu instead of switching to a different menu
+        /*
         for (int i = 0; i < plants.Count; i++)
         {
             PlantInfo currentPlant = plants[i];
@@ -180,13 +173,58 @@ public class PopulateMenuTest : MonoBehaviour
 
             //Wire button to its corresponding data loader instance
             button.clicked += dataLoader.OnClick;
-        }
+        }*/
     }
 
 
-    public void PopulateMenuWithCategoryPlants(PlantTypes category)
+    // added function to clear current plant buttons and repopulate with plants of the selected category
+    public void ClearAndPopulateMenuWithCategoryPlants(PlantTypes category)
     {
+        plantButtonDataHolder = Instantiate(Resources.Load<GameObject>("PlantButtonDataHolder"));
+        var root = mainMenu.GetComponent<UIDocument>().rootVisualElement;
+        var content = root.Q<VisualElement>(contentHandelName);
+        content.Clear();
+        Destroy(GameObject.FindGameObjectWithTag("DataHolder"));
+        for (int i = 0; i < plants.Count; i++)
+        {
+            if (plants[i].typeID != category.typeID)
+            {
+                continue;
+            }
+            else
+            {
 
+
+                PlantInfo currentPlant = plants[i];
+
+                // Create a new button from the template
+                VisualElement newPlantCardInstance = plantCardTemplate.CloneTree();
+                Label plantNameLabel = newPlantCardInstance.Q<Label>("PlantName");
+
+                Label scientificNameLabel = newPlantCardInstance.Q<Label>("ScientificName");
+
+                Button button = newPlantCardInstance.Q<Button>("PlantDescriptionButton");
+
+
+                scientificNameLabel.text = currentPlant.scientificName;
+                plantNameLabel.text = currentPlant.plantName;
+
+                // Add the button to the content container
+                content.Add(newPlantCardInstance);
+                // Creates a new GameObject holding its own LoadDatabaseInfo script pertaining to the specific plant in the itteration
+                // This allows each button to have its own data loader instance
+                GameObject dataObj = new GameObject($"PlantData_{currentPlant.plantName}");
+                dataObj.transform.SetParent(plantButtonDataHolder.transform, false);
+
+                //Debug.Log(dataObj);
+
+                LoadDatabaseInfo dataLoader = dataObj.AddComponent<LoadDatabaseInfo>();
+                dataLoader.plantInfo = currentPlant;
+
+                //Wire button to its corresponding data loader instance
+                button.clicked += dataLoader.OnClick;
+            }
+        }
     }
 
 }

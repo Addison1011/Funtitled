@@ -16,21 +16,28 @@ public class LoadCategoriesMenu : MonoBehaviour
 
     public void OnClick()
     {
+        //--------------------------------
+        //EDITED THIS FUNCTION TO CLEAR THE CURRENT PLANT BUTTONS AND REPOPULATE WITH THE PLANTS OF THE SELECTED CATEGORY
+        //--------------------------------
         GameObject categories = GameObject.Find("categMenu(Clone)");
         GameObject populator = GameObject.FindGameObjectWithTag("MainMenuPopulator");
-        GameObject mainMenu = populator.GetComponent<PopulateMenuTest>().mainMenu;
-        var root = mainMenu.GetComponent<UIDocument>().rootVisualElement;
-        var content = root.Q<VisualElement>("content");
-        content.Clear();
-
-
+        GameObject.FindGameObjectWithTag("MainMenu").GetComponent<UIDocument>().panelSettings.sortingOrder = 1;
+        categories.GetComponent<UIDocument>().panelSettings.sortingOrder = 0;
+        //mainMenu.GetComponent<
 
         SoundManager.Instance.PlayDefaultButtonSound();
         SelectedCategory data = GameObject.FindGameObjectWithTag("SelectedCategory").GetComponent<SelectedCategory>();
         data.plantTypes = this.plantTypes;
         Debug.Log("Button clicked for " + data.plantTypes.typeName);
-        /*Instantiate(Resources.Load<GameObject>("MainMenuPopulator"));*/
 
+        //Added function to clear current plant buttons and repopulate with plants of the selected category
+        populator.GetComponent<PopulateMenuTest>().ClearAndPopulateMenuWithCategoryPlants(this.plantTypes);
+
+
+        /* Remove this code, tot needed anymore since we are now just clearing and repopulating the menu instead of switching to a different menu
+         * 
+         * 
+         *
         if (categories != null)
         {
             //categories.SetActive(false);
@@ -47,7 +54,7 @@ public class LoadCategoriesMenu : MonoBehaviour
         {
             Debug.Log("populator is null:/");
         }
-
+        */
 
     }
 
