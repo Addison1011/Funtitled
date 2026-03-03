@@ -1,3 +1,5 @@
+//script to the plant description page that opens when a plant is clicked on
+//references: SelectedPlantData
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
@@ -9,7 +11,7 @@ public class PlantDescriptionUI : MonoBehaviour
     private PlantInfo plantInfo;
     void OnEnable()
     {
-        PlantInfo plantInfo = GameObject.FindGameObjectWithTag("SelectedPlantData").GetComponent<SelectedPlantData>().plantInfo;
+        PlantInfo plantInfo = GameObject.FindGameObjectWithTag("SelectedPlantData").GetComponent<SelectedPlantData>().plantInfo;//references SelectedPlantData script
         // Load the UXML and get the root VisualElement
         VisualElement root = GameObject.FindGameObjectWithTag("PlantDescription").GetComponent<UIDocument>().rootVisualElement;
 

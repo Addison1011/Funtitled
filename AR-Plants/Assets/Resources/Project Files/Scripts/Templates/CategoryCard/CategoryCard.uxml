@@ -1,6 +1,8 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement name="CategoryCard" style="flex-grow: 1; flex-direction: column; justify-content: space-between;">
-        <ui:VisualElement name="background" style="flex-grow: 1; background-image: resource(&quot;Project Files/Scripts/ARUI/Icons/branch_733788&quot;);"/>
-        <ui:Label text="Label" name="CategoryName"/>
+    <Style src="project://database/Assets/categorycard.uss?fileID=7433441132597879392&amp;guid=00981bd36aa1b46e685c597386ec7282&amp;type=3#categorycard"/>
+    <ui:VisualElement name="CategoryCardCont" style="flex-grow: 1; flex-direction: row; justify-content: space-between; width: 732px; height: 30px; flex-wrap: wrap; align-content: center;">
+        <ui:Button text="" name="CardButton" style="background-image: resource(&quot;Project Files/Prefabs/Plants/uploads_files_2921926_Anemone_Hybrida_BLEND/Anemone_Hybrida_BLEND/maps/anemone_hybrida_petal_a1&quot;); width: 732px;">
+            <ui:Label text="Label" name="CategoryName" style="font-size: 24px; -unity-font-style: bold; white-space: normal; -unity-text-align: upper-left; align-content: auto; height: 590px; width: 432px;"/>
+        </ui:Button>
     </ui:VisualElement>
 </ui:UXML>

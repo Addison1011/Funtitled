@@ -72,7 +72,7 @@ public class categories : MonoBehaviour
         Debug.Log("SceneCounter:" + GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter);
         if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter >= 1)
         {
-            Instantiate(Resources.Load<GameObject>("PlantDescription"));
+            Instantiate(Resources.Load<GameObject>("MainMenu"));
         }
         //GameObject tempSettings = Instantiate(settingsPrefab);
         //Destroy(tempSettings);
@@ -127,6 +127,7 @@ public class categories : MonoBehaviour
             // Create a new button from the template
             VisualElement newCategoryInstance = categoryCardTemplate.CloneTree();
             Label categoryNameLabel = newCategoryInstance.Q<Label>("CategoryName");
+            Button button = newCategoryInstance.Q<Button>("CardButton");
 
             
             categoryNameLabel.text = currentType.typeName;
@@ -139,14 +140,14 @@ public class categories : MonoBehaviour
             // This allows each button to have its own data loader instance
 
             //TODO: REVISIT!!
-            /*GameObject dataObj = new GameObject($"PlantData_{currentPlant.plantName}");
-            dataObj.transform.SetParent(plantButtonDataHolder.transform, false);
+            GameObject dataObj = new GameObject($"TypeData_{currentType.typeName}");
+            dataObj.transform.SetParent(categoryButtonDataHolder.transform, false);
 
-            LoadDatabaseInfo dataLoader = dataObj.AddComponent<LoadDatabaseInfo>();
-            dataLoader.plantInfo = currentPlant;
+            LoadCategoriesMenu dataLoader = dataObj.AddComponent<LoadCategoriesMenu>();
+            dataLoader.plantTypes = currentType;
 
             //Wire button to its corresponding data loader instance
-            button.clicked += dataLoader.OnClick;*/
+            button.clicked += dataLoader.OnClick;
         }
     }
 

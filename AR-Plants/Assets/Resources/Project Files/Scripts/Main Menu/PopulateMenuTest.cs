@@ -1,3 +1,5 @@
+//real populate menu, gets all the plants from database and displays them
+
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
@@ -19,13 +21,10 @@ public class PlantInfo
     public string stem { get; set; }
     public string leaf { get; set; }
     public string flower { get; set; }
-    public string typeID { get; set; }
+    public int typeID { get; set; }
 
     public float maxSize = 2;
     public float minSize = .3f;
-
-    //public string plantModelName = "Nerium oleander";
-    //public string plantModelName = "Monstera";
 }
 
 public class PopulateMenuTest : MonoBehaviour
@@ -151,11 +150,12 @@ public class PopulateMenuTest : MonoBehaviour
 
             // Add the button to the content container
             content.Add(newPlantCardInstance);
-
             // Creates a new GameObject holding its own LoadDatabaseInfo script pertaining to the specific plant in the itteration
             // This allows each button to have its own data loader instance
             GameObject dataObj = new GameObject($"PlantData_{currentPlant.plantName}");
             dataObj.transform.SetParent(plantButtonDataHolder.transform, false);
+
+            //Debug.Log(dataObj);
 
             LoadDatabaseInfo dataLoader = dataObj.AddComponent<LoadDatabaseInfo>();
             dataLoader.plantInfo = currentPlant;

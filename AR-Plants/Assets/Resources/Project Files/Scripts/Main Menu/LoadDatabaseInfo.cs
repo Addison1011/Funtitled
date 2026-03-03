@@ -10,6 +10,7 @@ public class LoadDatabaseInfo : MonoBehaviour
         Debug.Log("Loaded Plant Info: " + plantInfo.plantName + " with ID: " + plantInfo.plantID);
     }
 
+    //script to instantiate the plant description -> info sent to plantdescriptionui page
     public void OnClick()
     {
         SoundManager.Instance.PlayDefaultButtonSound();
@@ -19,8 +20,6 @@ public class LoadDatabaseInfo : MonoBehaviour
         Instantiate(Resources.Load<GameObject>("PlantDescription"));
 
         Debug.Log(data.plantInfo.scientificName);
-
-        //SceneManager.LoadScene("MainScene00");
     }
     // Update is called once per frame
     void Update()
