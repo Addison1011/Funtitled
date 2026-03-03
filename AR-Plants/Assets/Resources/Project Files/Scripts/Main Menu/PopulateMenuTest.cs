@@ -140,40 +140,6 @@ public class PopulateMenuTest : MonoBehaviour
                 GameObject settingsMenu = Instantiate(settingsPrefab);
             };
         }
-
-        // remove this code, tot needed anymore since we are now just clearing and repopulating the menu instead of switching to a different menu
-        /*
-        for (int i = 0; i < plants.Count; i++)
-        {
-            PlantInfo currentPlant = plants[i];
-
-            // Create a new button from the template
-            VisualElement newPlantCardInstance = plantCardTemplate.CloneTree();
-            Label plantNameLabel = newPlantCardInstance.Q<Label>("PlantName");
-
-            Label scientificNameLabel = newPlantCardInstance.Q<Label>("ScientificName");
-
-            Button button = newPlantCardInstance.Q<Button>("PlantDescriptionButton");
-
-
-            scientificNameLabel.text = currentPlant.scientificName;
-            plantNameLabel.text = currentPlant.plantName;
-
-            // Add the button to the content container
-            content.Add(newPlantCardInstance);
-            // Creates a new GameObject holding its own LoadDatabaseInfo script pertaining to the specific plant in the itteration
-            // This allows each button to have its own data loader instance
-            GameObject dataObj = new GameObject($"PlantData_{currentPlant.plantName}");
-            dataObj.transform.SetParent(plantButtonDataHolder.transform, false);
-
-            //Debug.Log(dataObj);
-
-            LoadDatabaseInfo dataLoader = dataObj.AddComponent<LoadDatabaseInfo>();
-            dataLoader.plantInfo = currentPlant;
-
-            //Wire button to its corresponding data loader instance
-            button.clicked += dataLoader.OnClick;
-        }*/
     }
 
 
