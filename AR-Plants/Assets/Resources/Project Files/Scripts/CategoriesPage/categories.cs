@@ -27,6 +27,7 @@ public class categories : MonoBehaviour
     [SerializeField] private GameObject categMenuPrefab;
     [SerializeField] private GameObject settingsPrefab;
     [SerializeField] private string contentHandleName;
+    [SerializeField] private GameObject MainMenuPopulator;
 
     //Chat gpt error fix. pulling database from web request for android compatibility
     void Awake()
@@ -72,7 +73,7 @@ public class categories : MonoBehaviour
         Debug.Log("SceneCounter:" + GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter);
         if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter >= 1)
         {
-            Instantiate(Resources.Load<GameObject>("MainMenu"));
+            Instantiate(Resources.Load<GameObject>("MainMenuPopulator"));
         }
         //GameObject tempSettings = Instantiate(settingsPrefab);
         //Destroy(tempSettings);

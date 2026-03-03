@@ -79,9 +79,21 @@ public class PopulateMenuTest : MonoBehaviour
             SQLite4Unity3d.SQLiteOpenFlags.ReadWrite | SQLite4Unity3d.SQLiteOpenFlags.Create
         );
 
-        plants = _connection.Table<PlantInfo>().ToList();
+        //plants = _connection.Table<PlantInfo>().ToList();
         //filtering for the plants in the selected category
+        SelectedCategory selectedData = GameObject.FindGameObjectWithTag("SelectedCategory").GetComponent<SelectedCategory>();
 
+        if(selectedData.plantTypes != null)
+        {
+            plants = _connection.Table<PlantInfo>()
+                .Where(p => p.typeID == selectedData.plantTypes.typeID).ToList();
+            Debug.Log("filtering plants for category " + selectedData.plantTypes.typeID);
+        }
+        else
+        {
+            plants = _connection.Table<PlantInfo>().ToList();
+            Debug.Log("no categories selected, loading all plants");
+        }
 
         // goes back to previous plant description if going back to main menu from AR scene
         Debug.Log("SceneCounter:" + GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter);
