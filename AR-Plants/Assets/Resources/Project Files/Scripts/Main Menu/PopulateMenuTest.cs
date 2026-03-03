@@ -227,4 +227,12 @@ public class PopulateMenuTest : MonoBehaviour
         }
     }
 
+    public void ClearMainMenuPlants()
+    {
+        var root = mainMenu.GetComponent<UIDocument>().rootVisualElement;
+        var content = root.Q<VisualElement>(contentHandelName);
+        content.Clear();
+        Destroy(GameObject.FindGameObjectWithTag("DataHolder"));
+    }
+
 }
