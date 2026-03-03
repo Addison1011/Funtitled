@@ -28,8 +28,9 @@
                 <ui:Label name="PlantDescription" text="Kroenleinia grusonii, popularly known as the golden barrel cactus, golden ball, &quot;mother-in-law&apos;s cushion&quot; or &quot;mother-in-law&apos;s chair&quot;, is a species of barrel cactus which is endemic to east-central Mexico." class="description" style="font-size: 40px; border-top-width: 10px;"/>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="MapSection" class="map-section" style="height: 515px; position: relative; bottom: 25px; align-self: center;">
-            <ui:VisualElement name="MapImage" class="map-image" style="flex-direction: row; background-image: resource(&quot;Project Files/Scripts/PlantDescriptionComponent/Images/BlankMap&quot;); position: relative; flex-grow: 1;"/>
+        <ui:VisualElement name="ContentMask" style="flex-grow: 1; position: absolute; width: 100%; height: 100%;"/>
+        <ui:VisualElement name="MapSection" class="map-section" style="height: 535px; position: relative; bottom: 25px; align-self: center;">
+            <ui:VisualElement name="MapImage" class="map-image" style="flex-direction: row; background-image: resource(&quot;Project Files/Scripts/PlantDescriptionComponent/Images/BlankMap&quot;); position: relative; flex-grow: 1; flex-wrap: nowrap;"/>
             <ui:VisualElement name="LocationBadge" class="location-badge" style="bottom: auto; top: 12px;">
                 <ui:VisualElement name="PinIcon" class="pin-icon" style="background-color: rgb(32, 178, 77);"/>
                 <ui:Label text="Range of Plant" class="location-text"/>

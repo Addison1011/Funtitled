@@ -7,6 +7,8 @@ public class PlantDescriptionUI : MonoBehaviour
 {
     public VisualTreeAsset uxmlDocument; // Assign your UXML file in the Inspector
     private PlantInfo plantInfo;
+    private bool mapIsFullScreen = false; // for map to become full screen
+    private VisualElement contentMask; // for darkening the background when map is full screen
     void OnEnable()
     {
         PlantInfo plantInfo = GameObject.FindGameObjectWithTag("SelectedPlantData").GetComponent<SelectedPlantData>().plantInfo;
@@ -17,6 +19,8 @@ public class PlantDescriptionUI : MonoBehaviour
         Label commonNameLabel = root.Q<Label>("CommonName");
         Label scientificNameLabel = root.Q<Label>("ScientificName");
         Label descriptionLabel = root.Q<Label>("PlantDescription");
+        contentMask = root.Q<VisualElement>("ContentMask");
+        contentMask.pickingMode = PickingMode.Ignore; // Allow clicks to pass through the mask when not active
 
         // Load and set the map image based on scientific name
         VisualElement mapImageElement = root.Q<VisualElement>("MapImage");
@@ -68,6 +72,8 @@ public class PlantDescriptionUI : MonoBehaviour
             view3DButton.clicked += OnView3DButtonClicked;
             fullScreenButton.clicked += OnFullScreenButtonClicked;
         }
+
+        
     }
 
     // This method will be called when the button is pressed
@@ -94,7 +100,6 @@ public class PlantDescriptionUI : MonoBehaviour
         SceneManager.LoadScene("View3D");
     }
 
-    private bool isFullScreen = false;
     private float originalWidth;
     private float originalHeight;
 
@@ -104,18 +109,22 @@ public class PlantDescriptionUI : MonoBehaviour
         SoundManager.Instance.PlayDefaultButtonSound();
         VisualElement MapSection = GameObject.FindGameObjectWithTag("PlantDescription").GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>("MapSection");
         VisualElement root = GameObject.FindGameObjectWithTag("PlantDescription").GetComponent<UIDocument>().rootVisualElement;
+    
 
         if (MapSection != null)
         {
-            if (!isFullScreen)
+            if (!mapIsFullScreen)
             {
                 originalWidth = MapSection.resolvedStyle.width;
                 originalHeight = MapSection.resolvedStyle.height;
                 
-                isFullScreen = true;
+                mapIsFullScreen = true;
+                contentMask.style.backgroundColor = new StyleColor(new Color(0f, 0f, 0f, 1.0f)); 
+                contentMask.pickingMode = PickingMode.Position; // Block clicks on the mask
 
                 MapSection.style.rotate = new StyleRotate(new Rotate(90f));
                 
+                //fit map to screen size
                 float scale = Mathf.Min(root.resolvedStyle.width / originalHeight, root.resolvedStyle.height / originalWidth);
                 MapSection.style.width = scale * originalWidth;
                 MapSection.style.height = scale * originalHeight;
@@ -125,7 +134,9 @@ public class PlantDescriptionUI : MonoBehaviour
             }
             else
             {
-                isFullScreen = false;
+                mapIsFullScreen = false;
+                contentMask.style.backgroundColor = new StyleColor(new Color(0f, 0f, 0f, 0f));
+                contentMask.pickingMode = PickingMode.Ignore; // Allow clicks to pass through the mask
 
                 MapSection.style.rotate = new StyleRotate(new Rotate(0f));
                 MapSection.style.width = originalWidth;
