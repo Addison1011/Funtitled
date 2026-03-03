@@ -41,7 +41,7 @@ public class PopulateMenuTest : MonoBehaviour
     [SerializeField] private GameObject settingsPrefab;
     //[SerializeField] private string buttonHandelName;
     [SerializeField] private string contentHandelName;
-
+    public GameObject mainMenu;
     //Chat gpt error fix. pulling database from web request for android compatibility
     void Awake()
     {
@@ -83,16 +83,20 @@ public class PopulateMenuTest : MonoBehaviour
         //filtering for the plants in the selected category
         SelectedCategory selectedData = GameObject.FindGameObjectWithTag("SelectedCategory").GetComponent<SelectedCategory>();
 
-        if(selectedData.plantTypes != null)
+        if (selectedData.plantTypes != null)
         {
+
             plants = _connection.Table<PlantInfo>()
                 .Where(p => p.typeID == selectedData.plantTypes.typeID).ToList();
             Debug.Log("filtering plants for category " + selectedData.plantTypes.typeID);
+            Debug.Log("Plants type not null, count: " + plants.Count);
         }
         else
         {
+
             plants = _connection.Table<PlantInfo>().ToList();
             Debug.Log("no categories selected, loading all plants");
+            Debug.Log("Plants type null, count: " + plants.Count);
         }
 
         // goes back to previous plant description if going back to main menu from AR scene
@@ -107,6 +111,7 @@ public class PopulateMenuTest : MonoBehaviour
 
     public void Start()
     {
+
         if (GameManager.Instance.sceneCounter >= 1)
         {
             SoundManager.Instance.StopAmbientSounds();
@@ -127,7 +132,7 @@ public class PopulateMenuTest : MonoBehaviour
     void OnEnable()
     {
         // Instantiate UI and data holder prefabs and keep references
-        GameObject mainMenu = Instantiate(mainMenuPrefab);
+        mainMenu = Instantiate(mainMenuPrefab);
         plantButtonDataHolder = Instantiate(Resources.Load<GameObject>("PlantButtonDataHolder"));
 
         // Get the root and content container
@@ -176,6 +181,12 @@ public class PopulateMenuTest : MonoBehaviour
             //Wire button to its corresponding data loader instance
             button.clicked += dataLoader.OnClick;
         }
+    }
+
+
+    public void PopulateMenuWithCategoryPlants(PlantTypes category)
+    {
+
     }
 
 }
