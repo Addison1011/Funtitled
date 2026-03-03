@@ -115,12 +115,13 @@ public class PlantDescriptionUI : MonoBehaviour
                 isFullScreen = true;
 
                 MapSection.style.rotate = new StyleRotate(new Rotate(90f));
+                
                 float scale = Mathf.Min(root.resolvedStyle.width / originalHeight, root.resolvedStyle.height / originalWidth);
                 MapSection.style.width = scale * originalWidth;
                 MapSection.style.height = scale * originalHeight;
                 
-                float xOffset = (root.resolvedStyle.width - scale * originalWidth) * 0.5f -24f;
-                MapSection.style.translate = new StyleTranslate(new Translate(xOffset, 0f));
+                float yOffset = (root.resolvedStyle.height - scale * originalHeight) * -0.5f;
+                MapSection.style.translate = new StyleTranslate(new Translate(0f, yOffset));
             }
             else
             {
