@@ -7,6 +7,7 @@ using TMPro;
 using SQLite4Unity3d;
 using System.IO;
 using System.Linq;
+using System;
 
 
 public class PlantInfo
@@ -68,9 +69,9 @@ public class PopulateMenuTest : MonoBehaviour
                 File.WriteAllBytes(persistentPath, req.downloadHandler.data);
             }
 #else
-                // Desktop/editor/iOS etc.
-                string srcPath = Path.Combine(Application.streamingAssetsPath, dbName);
-                File.Copy(srcPath, persistentPath, overwrite: true);
+            // Desktop/editor/iOS etc.
+            string srcPath = Path.Combine(Application.streamingAssetsPath, dbName);
+            File.Copy(srcPath, persistentPath, overwrite: true);
 #endif
         }
 
@@ -148,6 +149,22 @@ public class PopulateMenuTest : MonoBehaviour
 
             scientificNameLabel.text = currentPlant.scientificName;
             plantNameLabel.text = currentPlant.plantName;
+
+            //Because Azeezat likes comments: 
+            // Setting the background image of the plant card according to name
+            VisualElement cardElement = newPlantCardInstance.Q<VisualElement>("plant-card");
+            String backgroundImagePath = $"Project Files/Scripts/PlantDescriptionComponent/Images/{currentPlant.plantName}";
+            Texture2D backgroundTexture = Resources.Load<Texture2D>(backgroundImagePath);
+            if (backgroundTexture != null)
+            {
+                cardElement.style.backgroundImage = new StyleBackground(backgroundTexture);
+            }
+            else
+            {
+                //default image is the golden cactus, may want to change this in the future
+                Debug.LogWarning($"Background image not found at path: {backgroundImagePath}");
+
+            }
 
             // Add the button to the content container
             content.Add(newPlantCardInstance);
