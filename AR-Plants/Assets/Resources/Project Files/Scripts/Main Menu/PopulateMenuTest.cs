@@ -125,14 +125,14 @@ public class PopulateMenuTest : MonoBehaviour
         string json = File.ReadAllText(persistentPath);
         settings = JsonUtility.FromJson<SettingsData>(json);
 
-        //update color theme
-        if (settings.highContrastToggle)
+        // update color theme using manager
+        if (ColorThemeManager.Instance != null)
         {
-            //TODO: set to high contrast
+            ColorThemeManager.Instance.SetHighContrast(settings.highContrastToggle);
         }
         else
         {
-            //TODO: set to normal theme
+            Debug.LogWarning("PopulateMenuTest: ColorThemeManager instance not found when applying theme.");
         }
 
         //copied from UpdateSoundManager() in SettingsHandler.cs
