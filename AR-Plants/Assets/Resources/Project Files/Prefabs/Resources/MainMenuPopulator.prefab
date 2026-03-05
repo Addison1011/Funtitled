@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3476752789092626187}
-  - component: {fileID: 7747856193695490439}
   - component: {fileID: 5455775847853768688}
   m_Layer: 0
   m_Name: MainMenuPopulator
@@ -33,22 +32,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7747856193695490439
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1106239452909837156}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4800d21eec10b504c9171c90a784c4a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Content: {fileID: 0}
-  m_ButtonPrefab: {fileID: 7854953394140387456, guid: ac50372b8a6541d4f9ec31796206e987,
-    type: 3}
-  path: Assets/Project Files/Prefabs/Plants
 --- !u!114 &5455775847853768688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,9 +46,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   plantButtonDataHolder: {fileID: 7956072063401152461, guid: 7e7cc2ecf9b0f2d48aba9bd9097d540b,
     type: 3}
-  buttonTemplate: {fileID: 9197481963319205126, guid: 4d337e2b7746c434b8c808afeaccd15a,
+  plantCardTemplate: {fileID: 9197481963319205126, guid: 134c37af02ca63e4d9cbfa7f449854ea,
     type: 3}
   mainMenuPrefab: {fileID: 8944783596417056218, guid: 1e476b491ad04da4f8da2ba818a72b2e,
     type: 3}
-  buttonHandelName: plant-button
+  settingsPrefab: {fileID: 8495111359452637586, guid: 8eefa2eea585a7d4cab7e62f2e24f005,
+    type: 3}
   contentHandelName: scroll-view

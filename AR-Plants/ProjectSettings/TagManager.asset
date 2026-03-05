@@ -19,6 +19,9 @@ TagManager:
   - MainMenuNew
   - ARUI
   - ARInputController
+  - DataHolder
+  - SelectedCategory
+  - MainMenuPopulator
   layers:
   - Default
   - TransparentFX

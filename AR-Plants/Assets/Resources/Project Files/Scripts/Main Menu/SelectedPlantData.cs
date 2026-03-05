@@ -1,3 +1,4 @@
+//Loads up the information of the plant that is selected
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
