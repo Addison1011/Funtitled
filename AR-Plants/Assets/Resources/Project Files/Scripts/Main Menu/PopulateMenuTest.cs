@@ -208,9 +208,15 @@ public class PopulateMenuTest : MonoBehaviour
         }
 
         //back button
-        Button backButton = root.Q<Button>("back-button");
+        Button backButton = mainMenuRoot.Q<Button>("back-button");
 
         if(backButton != null)
+        {
+            backButton.clicked += OnBackButtonClicked;
+        }
+
+        // populate plant cards based on database
+        for (int i = 0; i < plants.Count; i++)
         {
             PlantInfo currentPlant = plants[i];
 
@@ -279,9 +285,8 @@ public class PopulateMenuTest : MonoBehaviour
             foreach (Label label in infoLabels)
             {
                 label.style.color = new Color(1f, 1f, 1f, 1f); // White
-            backButton.clicked += OnBackButtonClicked;
+            }
         }
-    }
     }
 
 
