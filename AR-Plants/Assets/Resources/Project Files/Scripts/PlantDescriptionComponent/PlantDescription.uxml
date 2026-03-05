@@ -35,7 +35,7 @@
                 <ui:VisualElement name="PinIcon" class="pin-icon" style="background-color: rgb(32, 178, 77);"/>
                 <ui:Label text="Range of Plant" class="location-text"/>
             </ui:VisualElement>
-            <ui:Button text="" name="FullScreenButton" style="position: absolute; background-color: rgb(255, 255, 255); background-image: url(&quot;project://database/Assets/Resources/Project%20Files/Scripts/PlantDescriptionComponent/Images/FullScreen.png?fileID=2800000&amp;guid=3b7752f3d94b9b043a9b57d952c678b1&amp;type=3#FullScreen&quot;); width: 40px; height: 40px;"/>
+            <ui:Button text="" name="FullScreenButton" style="position: absolute; background-color: rgb(255, 255, 255); background-image: url(&quot;project://database/Assets/Resources/Project%20Files/Scripts/PlantDescriptionComponent/Images/FullScreen.png?fileID=2800000&amp;guid=3b7752f3d94b9b043a9b57d952c678b1&amp;type=3#FullScreen&quot;); width: 80px; height: 80px; left: 12px; right: auto;"/>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
