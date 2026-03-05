@@ -31,7 +31,7 @@ public class ARInputController : MonoBehaviour
     [SerializeField] private GameObject selectedPlantModel; // Prefab to place
     [SerializeField] private SoundManager soundManager;
     private SelectedPlantData selectedPlantData;
-    ARUIController aRUIController;
+    private ARUIController aRUIController;
 
     [SerializeField] private GameObject selectedPlantDataHandle;
     private ParticleSystem placementEffect;

@@ -23,6 +23,10 @@ public class View3DInputController : MonoBehaviour
     [SerializeField] private GameObject selectedPlantDataHandle;
     private ParticleSystem placementEffect;
     private PopupToggleManager popup;
+    private ARRaycastManager aRRaycastManager;
+    private View3DUIController aRUIController;
+
+
 
 
 
@@ -54,7 +58,7 @@ public class View3DInputController : MonoBehaviour
 
     // Placement state
     private bool isPlantPlaced = false;
-    private GameObject activePlant;
+    public GameObject activePlant;
 
     // Drag state
     private bool isDragging = false;
@@ -88,6 +92,8 @@ public class View3DInputController : MonoBehaviour
 
         //Gets the SelectedPlantData script from the SelectedPlantData GameObject
         selectedPlantData = selectedPlantDataHandle.GetComponent<SelectedPlantData>();
+        aRUIController = GameObject.FindWithTag("ARUI").GetComponent<View3DUIController>();
+        aRRaycastManager = GetComponent<ARRaycastManager>();
 
         selectedPlantModel = Resources.Load<GameObject>(selectedPlantData.plantInfo.scientificName); //default plant
         activePlant = Instantiate(selectedPlantModel);
@@ -104,6 +110,11 @@ public class View3DInputController : MonoBehaviour
     }
 
     void Start()
+    {
+
+    }
+
+    private void setScale()
     {
 
     }
@@ -155,19 +166,21 @@ public class View3DInputController : MonoBehaviour
     {
         Vector2 screenPos = finger.currentTouch.screenPosition;
 
-
-
         if (HitActivePlant(finger.currentTouch.screenPosition))
         {
             resizePlantModelOnPinch();
         }
         else
         {
-            DisableAllSelectionEffects(activePlant);
-            //DisableAllEmission(activePlant);
+
+
+            // Tapping on empty space deselects current plant part (if any) and UI tab
+            /*DisableAllSelectionEffects(activePlant);
+            aRUIController.SetTab(ARUIController.Tab.None);
+            selectedPlantData.selectedPart = PlantPart.None;*/
         }
         // If plant exists and touch is on the plant -> start HOLD candidate
-        if (isPlantPlaced && activePlant != null)
+        if (isPlantPlaced && activePlant != null && HitActivePlant(screenPos))
         {
             //resizePlantModelOnPinch();
             holdCandidate = true;
@@ -201,12 +214,32 @@ public class View3DInputController : MonoBehaviour
         if (finger != holdFinger)
             return;
 
+
+
         // Case A: we were holding on the plant but never transitioned to drag -> treat as a TAP on plant
         if (holdCandidate && !isDragging)
         {
             OnPlantTapped(finger); // placeholder behavior
         }
+        // Case B: we were NOT holding on the plant (finger down wasn't on plant) -> treat as TAP on empty plane
+        else if (!holdCandidate && !isDragging)
+        {
 
+            Vector2 screenPos = finger.currentTouch.screenPosition;
+
+            if (!HitActivePlant(screenPos))
+            {
+                // Only deselect when NOT releasing over a UI button
+                bool overUIButton = aRUIController != null && aRUIController.IsScreenPointOverAnyUIButton(screenPos);
+
+                if (!overUIButton)
+                {
+                    DisableAllSelectionEffects(activePlant);
+                    aRUIController.SetTab(View3DUIController.Tab.None);
+                    selectedPlantData.selectedPart = PlantPart.None;
+                }
+            }
+        }
 
         // Reset states
         holdCandidate = false;
@@ -263,20 +296,28 @@ public class View3DInputController : MonoBehaviour
     // Placeholder tap behavior on the plant (short tap)
     private void OnPlantTapped(Finger finger)
     {
+        PlantPart previousPart = selectedPlantData.selectedPart;
         // Unity’s destroyed objects compare equal to null
-        if (!arCamera) return;
 
         Ray ray = arCamera.ScreenPointToRay(finger.currentTouch.screenPosition);
+
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, ~0, QueryTriggerInteraction.Ignore))
         {
 
             if (hit.collider.gameObject.tag == "Stem")
             {
+
                 selectedPlantData.selectedPart = PlantPart.Stem;
                 SoundManager.Instance.PlaySelectBranchSound();
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-                popup.DisplayPartInfo(PlantPart.Stem);
+                aRUIController.SetTab(View3DUIController.Tab.Stem);
+
+                //popup.DisplayPartInfo(PlantPart.Stem);
+                //DisableAllEmission(activePlant);
+                //EnableEmissionsOnHitObject("Stem");
+
+
             }
             else if (hit.collider.gameObject.tag == "Leaf")
             {
@@ -286,41 +327,48 @@ public class View3DInputController : MonoBehaviour
 
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-                popup.DisplayPartInfo(PlantPart.Leaf);
-            }
-            else if (hit.collider.gameObject.tag == "Root")
-            {
-                selectedPlantData.selectedPart = PlantPart.Root;
-                SoundManager.Instance.PlaySelectPlantPartSound();
+                aRUIController.SetTab(View3DUIController.Tab.Leaf);
 
-                DisableAllSelectionEffects(activePlant);
-                hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-                Debug.Log("Found the root, moving to popup toggle manager for " + selectedPlantData.selectedPart);
-                popup.DisplayPartInfo(PlantPart.Root);
+
+
+                //popup.DisplayPartInfo(PlantPart.Leaf);
+                // DisableAllEmission(activePlant);
+                //EnableEmissionsOnHitObject("Leaf");
+
+
             }
+
             else if (hit.collider.gameObject.tag == "Flower")
             {
+
                 selectedPlantData.selectedPart = PlantPart.Flower;
                 SoundManager.Instance.PlaySelectFlowerSound();
                 DisableAllSelectionEffects(activePlant);
                 hit.collider.gameObject.GetComponentInChildren<ParticleSystem>().Play();
-                popup.DisplayPartInfo(PlantPart.Flower);
+                aRUIController.SetTab(View3DUIController.Tab.Flower);
+
+                //popup.DisplayPartInfo(PlantPart.Flower);
+                //DisableAllEmission(activePlant);
+                //EnableEmissionsOnHitObject("Flower");
+
             }
-            else
+
+
+            if (previousPart == selectedPlantData.selectedPart)
             {
                 selectedPlantData.selectedPart = PlantPart.None;
                 DisableAllSelectionEffects(activePlant);
+                aRUIController.SetTab(View3DUIController.Tab.None);
             }
 
-
-            //Debug.Log("3D Page!");
-            //Debug.Log(hit.collider.gameObject.name);
+            Debug.Log(hit.collider.gameObject.name);
         }
 
-        //Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
+
+        Debug.Log("Plant tapped (short press) — TODO: handle selection/details UI here.");
     }
 
-    private void DisableAllSelectionEffects(GameObject hitObject)
+    public void DisableAllSelectionEffects(GameObject hitObject)
     {
         if (activePlant == null) return;
 
