@@ -1,37 +1,41 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <Style src="project://database/Assets/Resources/Project%20Files/Scripts/PlantDescriptionComponent/PlantDescriptionStyles.uss?fileID=7433441132597879392&amp;guid=f37c3bc3574c61e43be4ca094aff3bfd&amp;type=3#PlantDescriptionStyles" />
-    <ui:VisualElement name="Plant" class="plant-description" style="visibility: visible; overflow: hidden; width: 100%; height: 100%; margin-bottom: 0; margin-top: 0;">
-        <ui:VisualElement name="HeaderSection" class="header-section">
-            <ui:VisualElement name="HeaderImage" class="header-image" />
-            <ui:Button name="BackButton" class="back-button" style="width: 100px; height: 100px;">
-                <ui:Label text="&lt;" class="back-icon" style="font-size: 40px;" />
-            </ui:Button>
+    <Style src="project://database/Assets/Resources/Project%20Files/Scripts/PlantDescriptionComponent/PlantDescriptionStyles.uss?fileID=7433441132597879392&amp;guid=f37c3bc3574c61e43be4ca094aff3bfd&amp;type=3#PlantDescriptionStyles"/>
+    <ui:VisualElement name="Plant" class="plant-description" style="visibility: visible; overflow: hidden; width: 100%; height: 100%; margin-bottom: 0; margin-top: 0; align-self: flex-start; justify-content: space-between;">
+        <ui:VisualElement name="HeaderAndContent" style="flex-grow: 1;">
+            <ui:VisualElement name="HeaderSection" class="header-section">
+                <ui:VisualElement name="HeaderImage" class="header-image"/>
+                <ui:Button name="BackButton" class="back-button" style="width: 100px; height: 100px;">
+                    <ui:Label text="&lt;" class="back-icon" style="font-size: 40px;"/>
+                </ui:Button>
+            </ui:VisualElement>
+            <ui:VisualElement name="ContentContainer" class="content-container" style="height: auto; padding-bottom: 0;">
+                <ui:VisualElement name="TitleSection" class="title-section">
+                    <ui:VisualElement name="TitleGroup" class="title-group">
+                        <ui:Label text="Golden Barrel Cactus" name="CommonName" class="common-name" style="font-size: 45px;"/>
+                        <ui:Label text="Kroenleinia grusonii" name="ScientificName" class="scientific-name" style="font-size: 40px;"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="ButtonGroup" class="title-group" style="flex-direction: column; align-self: auto; align-items: auto; align-content: auto; height: auto;">
+                        <ui:Button name="ARButton" class="ar-button" style="height: auto; width: auto;">
+                            <ui:VisualElement name="CameraIcon" class="camera-icon" style="height: 70px; width: 90px; background-image: resource(&quot;Project Files/Scripts/PlantDescriptionComponent/Images/camera-icon&quot;); -unity-background-image-tint-color: rgb(0, 0, 0);"/>
+                            <ui:Label text="View in AR" class="ar-label" style="height: 70px; width: 136px; font-size: 22px; color: rgb(0, 0, 0);"/>
+                        </ui:Button>
+                        <ui:Button name="View3DButton" class="ar-button" style="height: auto; width: auto;">
+                            <ui:VisualElement name="CameraIcon" class="camera-icon" style="height: 70px; width: 90px; -unity-background-image-tint-color: rgb(0, 0, 0); background-image: url(&quot;project://database/Assets/Samples/XR%20Interaction%20Toolkit/3.1.2/XR%20Device%20Simulator/XRDeviceSimulator/UI/General/Look.png?fileID=2800000&amp;guid=5410adf0b914f49438506b7dd0022773&amp;type=3#Look&quot;);"/>
+                            <ui:Label text="View 3D" class="ar-label" style="height: 70px; width: 136px; font-size: 22px;"/>
+                        </ui:Button>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:Label name="PlantDescription" text="Kroenleinia grusonii, popularly known as the golden barrel cactus, golden ball, &quot;mother-in-law&apos;s cushion&quot; or &quot;mother-in-law&apos;s chair&quot;, is a species of barrel cactus which is endemic to east-central Mexico." class="description" style="font-size: 40px; border-top-width: 10px;"/>
+            </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="ContentContainer" class="content-container" style="height: 1525px;">
-            <ui:VisualElement name="TitleSection" class="title-section">
-                <ui:VisualElement name="TitleGroup" class="title-group">
-                    <ui:Label text="Golden Barrel Cactus" name="CommonName" class="common-name" style="font-size: 45px;" />
-                    <ui:Label text="Kroenleinia grusonii" name="ScientificName" class="scientific-name" style="font-size: 40px;" />
-                </ui:VisualElement>
-                <ui:VisualElement name="ButtonGroup" class="title-group" style="flex-direction: column; align-self: auto; align-items: auto; align-content: auto; height: auto;">
-                    <ui:Button name="ARButton" class="ar-button" style="height: auto; width: auto;">
-                        <ui:VisualElement name="CameraIcon" class="camera-icon" style="height: 70px; width: 90px; background-image: resource(&apos;Project Files/Scripts/PlantDescriptionComponent/Images/camera-icon&apos;); -unity-background-image-tint-color: rgb(0, 0, 0);" />
-                        <ui:Label text="View in AR" class="ar-label" style="height: 70px; width: 136px; font-size: 22px; color: rgb(0, 0, 0);" />
-                    </ui:Button>
-                    <ui:Button name="View3DButton" class="ar-button" style="height: auto; width: auto;">
-                        <ui:VisualElement name="CameraIcon" class="camera-icon" style="height: 70px; width: 90px; -unity-background-image-tint-color: rgb(0, 0, 0); background-image: url(&quot;project://database/Assets/Samples/XR%20Interaction%20Toolkit/3.1.2/XR%20Device%20Simulator/XRDeviceSimulator/UI/General/Look.png?fileID=2800000&amp;guid=5410adf0b914f49438506b7dd0022773&amp;type=3#Look&quot;);" />
-                        <ui:Label text="View 3D" class="ar-label" style="height: 70px; width: 136px; font-size: 22px;" />
-                    </ui:Button>
-                </ui:VisualElement>
+        <ui:VisualElement name="ContentMask" style="flex-grow: 1; position: absolute; width: 100%; height: 100%;"/>
+        <ui:VisualElement name="MapSection" class="map-section" style="height: 535px; position: relative; bottom: 25px; align-self: center;">
+            <ui:VisualElement name="MapImage" class="map-image" style="flex-direction: row; background-image: resource(&quot;Project Files/Scripts/PlantDescriptionComponent/Images/BlankMap&quot;); position: relative; flex-grow: 1; flex-wrap: nowrap;"/>
+            <ui:VisualElement name="LocationBadge" class="location-badge" style="bottom: auto; top: 12px;">
+                <ui:VisualElement name="PinIcon" class="pin-icon" style="background-color: rgb(32, 178, 77);"/>
+                <ui:Label text="Range of Plant" class="location-text"/>
             </ui:VisualElement>
-            <ui:Label name="PlantDescription" text="Kroenleinia grusonii, popularly known as the golden barrel cactus, golden ball, &quot;mother-in-law&apos;s cushion&quot; or &quot;mother-in-law&apos;s chair&quot;, is a species of barrel cactus which is endemic to east-central Mexico." class="description" style="font-size: 40px; border-top-width: 10px;" />
-            <ui:VisualElement name="MapSection" class="map-section" style="height: 515px;">
-                <ui:VisualElement name="MapImage" class="map-image" style="flex-direction: row; background-image: resource(&apos;Project Files/Scripts/PlantDescriptionComponent/Images/BlankMap&apos;);" />
-                <ui:VisualElement name="LocationBadge" class="location-badge" style="bottom: auto; top: 12px;">
-                    <ui:VisualElement name="PinIcon" class="pin-icon" style="background-color: rgb(32, 178, 77);" />
-                    <ui:Label text="Range of Plant" class="location-text" />
-                </ui:VisualElement>
-            </ui:VisualElement>
+            <ui:Button text="" name="FullScreenButton" style="position: absolute; background-color: rgb(255, 255, 255); background-image: url(&quot;project://database/Assets/Resources/Project%20Files/Scripts/PlantDescriptionComponent/Images/FullScreen.png?fileID=2800000&amp;guid=3b7752f3d94b9b043a9b57d952c678b1&amp;type=3#FullScreen&quot;); width: 40px; height: 40px;"/>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[System.Serializable]
 public class SettingsData //data type for the settings
 {
     public bool highContrastToggle = false;
@@ -212,8 +211,6 @@ public class SettingsHandler : MonoBehaviour
 
     public void UpdateSoundManager()
     {
-
-        Debug.Log("hello");
         //update sound volumes
         float masterVolumeModifier = settings.masterVolume * 0.01f;
 

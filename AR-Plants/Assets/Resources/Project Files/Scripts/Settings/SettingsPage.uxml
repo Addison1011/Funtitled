@@ -1,33 +1,33 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <Style src="project://database/Assets/Resources/Project%20Files/Scripts/MainMenuComponent/MainMenu.uss?fileID=7433441132597879392&amp;guid=03c63967f6e3b1b4499075883a01a6e5&amp;type=3#MainMenu" />
-    <Style src="project://database/Assets/Resources/Project%20Files/Scripts/Settings/SettingsPage.uss?fileID=7433441132597879392&amp;guid=4080579518079a54a944a0b1208c2fca&amp;type=3#SettingsPage" />
+    <Style src="project://database/Assets/Resources/Project%20Files/Scripts/MainMenuComponent/MainMenu.uss?fileID=7433441132597879392&amp;guid=03c63967f6e3b1b4499075883a01a6e5&amp;type=3"/>
+    <Style src="project://database/Assets/Resources/Project%20Files/Scripts/Settings/SettingsPage.uss?fileID=7433441132597879392&amp;guid=4080579518079a54a944a0b1208c2fca&amp;type=3#SettingsPage"/>
     <ui:VisualElement name="root" class="root">
         <ui:VisualElement name="header" class="header" style="height: 165px;">
-            <ui:Label text="Plantify" class="app-title" style="font-size: 54px;" />
+            <ui:Label text="Plantify" class="app-title" style="font-size: 54px;"/>
         </ui:VisualElement>
-        <ui:VisualElement name="content" style="flex-grow: 1; padding-left: 15px; padding-right: 15px;">
-            <ui:Toggle label="High Contrast Mode" name="high-contrast-button" style="font-size: 30px; margin-bottom: 15px;" />
-            <ui:Toggle label="Sound" name="sound-toggle" style="font-size: 30px; margin-bottom: 15px;" />
-            <ui:VisualElement name="master-volume-content" style="flex-grow: 1; height: 123px; width: 571px;">
-                <ui:Label text="Master Volume" name="master-volume-title" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; background-color: rgba(0, 0, 0, 0); font-size: 30px;" />
-                <ui:SliderInt label="50" value="42" high-value="100" name="master-volume-bar" style="font-size: 30px; -unity-font-style: normal; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
+        <ui:VisualElement name="content" style="flex-grow: 1; padding-left: 0; padding-right: 0; opacity: 1; align-items: stretch; justify-content: flex-start; align-self: auto; align-content: auto; padding-top: 15px;">
+            <ui:Toggle label="High Contrast Mode" name="high-contrast-button" style="font-size: 40px; margin-bottom: 15px; opacity: 1; display: flex; visibility: visible; overflow: hidden; -unity-font-style: bold; flex-direction: row-reverse; align-self: center; align-items: stretch; margin-top: 15px;"/>
+            <ui:Toggle label="Sound" name="sound-toggle" style="font-size: 40px; margin-bottom: 30px; -unity-font-style: bold; margin-top: 60px; flex-direction: row-reverse; align-self: center; align-content: flex-start;"/>
+            <ui:VisualElement name="master-volume-content" style="flex-grow: 1; height: 0; width: 90%; -unity-text-align: upper-center; white-space: nowrap; opacity: 1; position: relative; bottom: auto; align-items: stretch; align-self: center; max-height: 13%; flex-direction: column;">
+                <ui:Label text="Master Volume" name="master-volume-title" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; background-color: rgba(0, 0, 0, 0); font-size: 40px; -unity-font-style: bold;"/>
+                <ui:SliderInt label="50" value="50" high-value="100" name="master-volume-bar" enabled="true" show-input-field="false" style="font-size: 40px; -unity-font-style: bold; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; align-items: stretch; justify-content: flex-start; align-self: auto; align-content: auto; -unity-text-align: upper-center; text-overflow: clip; -unity-text-auto-size: none; flex-direction: row;"/>
             </ui:VisualElement>
-            <ui:VisualElement name="sound-effect-content" style="flex-grow: 1; height: 123px; width: 571px;">
-                <ui:Label text="Sound Effects" name="sound-effects-title" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; background-color: rgba(0, 0, 0, 0); font-size: 30px;" />
-                <ui:SliderInt label="50" value="42" high-value="100" name="sound-effects-bar" style="font-size: 30px; -unity-font-style: normal; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
+            <ui:VisualElement name="sound-effect-content" style="flex-grow: 1; height: 0; width: 90%; -unity-text-align: upper-center; align-self: center; max-height: 13%;">
+                <ui:Label text="Sound Effects" name="sound-effects-title" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; background-color: rgba(0, 0, 0, 0); font-size: 40px; -unity-font-style: bold;"/>
+                <ui:SliderInt label="50" value="50" high-value="100" name="sound-effects-bar" style="font-size: 40px; -unity-font-style: bold; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;"/>
             </ui:VisualElement>
-            <ui:VisualElement name="master-volume-content" style="flex-grow: 1; height: 123px; width: 571px;">
-                <ui:Label text="Music Volume" name="music-volume-title" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; background-color: rgba(0, 0, 0, 0); font-size: 30px;" />
-                <ui:SliderInt label="50" value="42" high-value="100" name="music-volume-bar" style="font-size: 30px; -unity-font-style: normal; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
+            <ui:VisualElement name="master-volume-content" style="flex-grow: 1; height: 0; width: 90%; -unity-text-align: upper-center; align-self: center; max-height: 13%;">
+                <ui:Label text="Music Volume" name="music-volume-title" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; background-color: rgba(0, 0, 0, 0); font-size: 40px; -unity-font-style: bold;"/>
+                <ui:SliderInt label="50" value="50" high-value="100" name="music-volume-bar" style="font-size: 40px; -unity-font-style: bold; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;"/>
             </ui:VisualElement>
-            <ui:VisualElement name="master-volume-content" style="flex-grow: 1; height: 123px; width: 571px;">
-                <ui:Label text="Ambient Volume" name="ambient-volume-title" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; background-color: rgba(0, 0, 0, 0); font-size: 30px;" />
-                <ui:SliderInt label="50" value="42" high-value="100" name="ambient-volume-bar" style="font-size: 30px; -unity-font-style: normal; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;" />
+            <ui:VisualElement name="master-volume-content" style="flex-grow: 1; height: 0; width: 90%; -unity-text-align: upper-center; align-self: center; max-height: 13%;">
+                <ui:Label text="Ambient Volume" name="ambient-volume-title" style="margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; background-color: rgba(0, 0, 0, 0); font-size: 40px; -unity-font-style: bold; height: 50px;"/>
+                <ui:SliderInt label="50" value="50" high-value="100" name="ambient-volume-bar" style="font-size: 40px; -unity-font-style: bold; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;"/>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="footer" class="header" style="height: 165px;">
-            <ui:Button text="Don&apos;t Save" name="cancel-button" style="align-self: auto; align-items: auto; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); flex-shrink: 0; font-size: 30px;" />
-            <ui:Button text="Save Changes" name="save-button" style="align-self: auto; align-items: auto; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); flex-shrink: 0; font-size: 30px;" />
+            <ui:Button text="Don&apos;t Save" name="cancel-button" style="align-self: auto; align-items: auto; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); flex-shrink: 0; font-size: 40px; -unity-font-style: bold;"/>
+            <ui:Button text="Save Changes" name="save-button" style="align-self: auto; align-items: auto; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); flex-shrink: 0; font-size: 40px; -unity-font-style: bold;"/>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

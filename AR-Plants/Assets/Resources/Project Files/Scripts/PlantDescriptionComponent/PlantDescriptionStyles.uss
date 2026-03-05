@@ -138,6 +138,16 @@
     border-radius: 16px;
 }
 
+#FullScreenButton {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    flex-direction: row;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 4px 12px;
+    border-radius: 8px;
+}
+
 .pin-icon {
     width: 16px;
     height: 16px;

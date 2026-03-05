@@ -28,6 +28,16 @@ public class PlantInfo
     public float minSize = .3f;
 }
 
+// public class SettingsData //data type for the settings
+// {
+//     public bool highContrastToggle = false;
+//     public bool soundToggle = true;
+//     public int masterVolume = 100;
+//     public int soundEffects = 100;
+//     public int musicVolume = 100;
+//     public int ambientVolume = 100;
+// }
+
 public class PopulateMenuTest : MonoBehaviour
 {
 
@@ -95,8 +105,6 @@ public class PopulateMenuTest : MonoBehaviour
             //Destroy(GameObject.FindGameObjectWithTag("PlantDescription"));
             Instantiate(Resources.Load<GameObject>("PlantDescription")).GetComponent<UIDocument>().panelSettings.sortingOrder = 2;
         }
-        //GameObject tempSettings = Instantiate(settingsPrefab);
-        //Destroy(tempSettings);
     }
 
     public void Start()
@@ -120,6 +128,52 @@ public class PopulateMenuTest : MonoBehaviour
                 SoundManager.Instance.PlayMusic();
             }
         }
+
+        //instantiate settings for app
+        //string jsonFilePath = "Assets/Resources/Project Files/Scripts/Settings/Resources/";
+        string persistentPath = Path.Combine(Application.persistentDataPath, "settings.json");
+        SettingsData settings;
+        string json = File.ReadAllText(persistentPath);
+        settings = JsonUtility.FromJson<SettingsData>(json);
+
+        //update color theme
+        if (settings.highContrastToggle)
+        {
+            //TODO: set to high contrast
+        }
+        else
+        {
+            //TODO: set to normal theme
+        }
+
+        //copied from UpdateSoundManager() in SettingsHandler.cs
+        float masterVolumeModifier = settings.masterVolume * 0.01f;
+
+        if(settings.soundToggle == true)
+        {
+            //background noise
+            SoundManager.Instance.menuMusicSource.volume = settings.musicVolume * .01f * masterVolumeModifier;
+            SoundManager.Instance.ambientSoundSource.volume = settings.ambientVolume *.01f * masterVolumeModifier;
+
+            //sound effects
+            SoundManager.Instance.selectLeafSoundSource.volume = settings.soundEffects * .01f * masterVolumeModifier;
+            SoundManager.Instance.selectFlowerSoundSource.volume = settings.soundEffects * .01f * masterVolumeModifier;
+            SoundManager.Instance.selectBranchSoundSource.volume = settings.soundEffects * .01f * masterVolumeModifier;
+            SoundManager.Instance.interactionSoundSource.volume = settings.soundEffects * .01f * masterVolumeModifier;
+        }
+        else //sound is off
+        {
+            //background noise
+            SoundManager.Instance.menuMusicSource.volume = 0;
+            SoundManager.Instance.ambientSoundSource.volume = 0;
+
+            //sound effects
+            SoundManager.Instance.selectLeafSoundSource.volume = 0;
+            SoundManager.Instance.selectFlowerSoundSource.volume = 0;
+            SoundManager.Instance.selectBranchSoundSource.volume = 0;
+            SoundManager.Instance.interactionSoundSource.volume = 0;
+        }
+        //end code copied from UpdateSoundManager()
     }
 
     void OnEnable()
