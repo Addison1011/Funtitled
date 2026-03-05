@@ -60,8 +60,8 @@ public class PopulateMenuTest : MonoBehaviour
         string persistentPath = Path.Combine(Application.persistentDataPath, dbName);
 
         // First-run copy from StreamingAssets -> persistentDataPath
-        //if (!File.Exists(persistentPath))
-        //{
+        if (!File.Exists(persistentPath))
+        {
 #if UNITY_ANDROID
             // StreamingAssets on Android must be read via UnityWebRequest
             string srcPath = Path.Combine(Application.streamingAssetsPath, dbName);
@@ -82,7 +82,7 @@ public class PopulateMenuTest : MonoBehaviour
                 string srcPath = Path.Combine(Application.streamingAssetsPath, dbName);
                 File.Copy(srcPath, persistentPath, overwrite: true);
 #endif
-        //}
+        }
 
         // Open the DB from a real filesystem location
         _connection = new SQLite4Unity3d.SQLiteConnection(
@@ -205,6 +205,7 @@ public class PopulateMenuTest : MonoBehaviour
 
             // Add the button to the content container
             content.Add(newPlantCardInstance);
+
 
             // Creates a new GameObject holding its own LoadDatabaseInfo script pertaining to the specific plant in the itteration
             // This allows each button to have its own data loader instance
