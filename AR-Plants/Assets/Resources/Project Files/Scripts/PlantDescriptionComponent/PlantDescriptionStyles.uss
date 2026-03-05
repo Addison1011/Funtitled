@@ -1,6 +1,5 @@
 .plant-description {
     width: auto;
-    background-color: rgb(255, 255, 255);
     border-radius: 24px;
     border-width: 4px;
     border-color: rgb(31, 41, 55);
@@ -12,7 +11,7 @@
     position: relative;
     width: 100%;
     height: 256px;
-    background-color: rgb(243, 244, 246);
+    background-color: rgba(243, 244, 246, 0.5);
 }
 
 .header-image {
@@ -63,7 +62,6 @@
 
 .common-name {
     font-size: 24px;
-    color: rgb(17, 24, 39);
     -unity-font-style: bold;
     margin-bottom: 4px;
     white-space: normal;
@@ -71,7 +69,6 @@
 
 .scientific-name {
     font-size: 14px;
-    color: rgb(107, 114, 128);
     -unity-font-style: italic;
     white-space: normal;
 }
@@ -100,13 +97,11 @@
 
 .ar-label {
     font-size: 14px;
-    color: rgb(17, 24, 39);
     -unity-font-style: bold;
 }
 
 .description {
     font-size: 16px;
-    color: rgb(55, 65, 81);
     min-height: 24px;
     white-space: normal;
     margin-bottom: 16px;
@@ -157,6 +152,5 @@
 
 .location-text {
     font-size: 14px;
-    color: rgb(55, 65, 81);
     -unity-font-style: bold;
 }

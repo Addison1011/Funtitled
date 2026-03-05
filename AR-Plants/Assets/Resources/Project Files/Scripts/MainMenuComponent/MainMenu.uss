@@ -22,7 +22,6 @@
 .app-title {
     font-size: 28px;
     -unity-font-style: bold;
-    color: rgb(207, 201, 201);
 }
 
 .settings-button {
@@ -62,6 +61,11 @@
     border-color: rgb(220, 220, 220);
 }
 
+/* All labels within plant cards should be white for visibility over the image background */
+.plant-card Label {
+    color: rgb(255, 255, 255);
+}
+
 .card-header {
     flex-direction: row;
     justify-content: space-between;
@@ -75,8 +79,8 @@
 .card-title {
     font-size: 18px;
     -unity-font-style: bold;
-    color: rgb(40, 40, 40);
     flex-grow: 1;
+    color: rgb(255, 255, 255);
 }
 
 .menu-button {
@@ -96,7 +100,6 @@
 
 .menu-icon {
     font-size: 24px;
-    color: rgb(40, 40, 40);
     -unity-text-align: middle-center;
     rotate: 90deg;
 }
@@ -115,14 +118,12 @@
 .info-label {
     font-size: 14px;
     -unity-font-style: bold;
-    color: rgb(40, 40, 40);
     margin-right: 5px;
     min-width: 60px;
 }
 
 .info-value {
     font-size: 14px;
-    color: rgb(60, 60, 60);
     flex-shrink: 1;
     flex-grow: 1;
     white-space: normal;
@@ -130,7 +131,6 @@
 
 .info-note {
     font-size: 12px;
-    color: rgb(120, 120, 120);
     -unity-font-style: italic;
     margin-top: 10px;
     white-space: normal;

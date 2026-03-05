@@ -25,7 +25,7 @@ public class ARUIController : MonoBehaviour
     public enum Tab { None, General, Flower, Stem, Leaf }
     public Tab current = Tab.None;
     private ARInputController inputController;
-
+    private VisualElement root;
 
 
     private const string SelectedClass = "tab-selected";
@@ -35,7 +35,7 @@ public class ARUIController : MonoBehaviour
         selectedPlantData = GameObject.FindGameObjectWithTag("SelectedPlantData").GetComponent<SelectedPlantData>();
         inputController = GameObject.FindGameObjectWithTag("ARInputController").GetComponent<ARInputController>();
         if (uiDocument == null) uiDocument = GetComponent<UIDocument>();
-        var root = uiDocument.rootVisualElement;
+        root = uiDocument.rootVisualElement;
 
         backBtn = root.Q<Button>("BackButton");
         refreshBtn = root.Q<Button>("RefreshButton");
@@ -64,6 +64,14 @@ public class ARUIController : MonoBehaviour
         flowerText = root.Q<Label>("FlowerText");
         stemText = root.Q<Label>("StemText");
         leafText = root.Q<Label>("LeafText");
+
+        // Apply theme to AR UI
+        if (ColorThemeManager.Instance != null)
+        {
+            ColorThemeManager.Instance.ApplyThemeToUIDocument(root);
+            // Subscribe to theme changes to reapply theme when it changes
+            ColorThemeManager.Instance.SubscribeToThemeChange(OnThemeChanged);
+        }
 
         // Start: nothing selected
         SetTab(Tab.None);
@@ -384,6 +392,22 @@ public class ARUIController : MonoBehaviour
         SceneManager.LoadScene("Menu");
     }
 
+    private void OnThemeChanged(ColorThemeManager.ColorTheme newTheme)
+    {
+        // Reapply theme when it changes
+        if (root != null && ColorThemeManager.Instance != null)
+        {
+            ColorThemeManager.Instance.ApplyThemeToUIDocument(root);
+        }
+    }
 
+    private void OnDestroy()
+    {
+        // Unsubscribe from theme changes to prevent memory leaks
+        if (ColorThemeManager.Instance != null)
+        {
+            ColorThemeManager.Instance.UnsubscribeFromThemeChange(OnThemeChanged);
+        }
+    }
 
 }

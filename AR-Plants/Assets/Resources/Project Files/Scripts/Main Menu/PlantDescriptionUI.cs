@@ -9,11 +9,13 @@ public class PlantDescriptionUI : MonoBehaviour
     private PlantInfo plantInfo;
     private bool mapIsFullScreen = false; // for map to become full screen
     private VisualElement contentMask; // for darkening the background when map is full screen
+    private VisualElement root; // Store root for theme updates
+    
     void OnEnable()
     {
         PlantInfo plantInfo = GameObject.FindGameObjectWithTag("SelectedPlantData").GetComponent<SelectedPlantData>().plantInfo;
         // Load the UXML and get the root VisualElement
-        VisualElement root = GameObject.FindGameObjectWithTag("PlantDescription").GetComponent<UIDocument>().rootVisualElement;
+        root = GameObject.FindGameObjectWithTag("PlantDescription").GetComponent<UIDocument>().rootVisualElement;
 
         plantInfo = GameObject.FindGameObjectWithTag("SelectedPlantData").GetComponent<SelectedPlantData>().plantInfo;
         Label commonNameLabel = root.Q<Label>("CommonName");
@@ -57,6 +59,14 @@ public class PlantDescriptionUI : MonoBehaviour
         commonNameLabel.text = plantInfo.plantName;
         scientificNameLabel.text = plantInfo.scientificName;
         descriptionLabel.text = plantInfo.plantDesc;
+
+        // Apply theme to plant description UI AFTER text is set
+        if (ColorThemeManager.Instance != null)
+        {
+            ColorThemeManager.Instance.ApplyThemeToUIDocument(root);
+            // Subscribe to theme changes
+            ColorThemeManager.Instance.SubscribeToThemeChange(OnThemeChanged);
+        }
 
         // Find the button by its name
         Button arButton = root.Q<Button>("ARButton");
@@ -147,5 +157,22 @@ public class PlantDescriptionUI : MonoBehaviour
         }
     }
 
+    private void OnThemeChanged(ColorThemeManager.ColorTheme newTheme)
+    {
+        // Reapply theme when it changes
+        if (root != null && ColorThemeManager.Instance != null)
+        {
+            ColorThemeManager.Instance.ApplyThemeToUIDocument(root);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // Unsubscribe from theme changes to prevent memory leaks
+        if (ColorThemeManager.Instance != null)
+        {
+            ColorThemeManager.Instance.UnsubscribeFromThemeChange(OnThemeChanged);
+        }
+    }
 
 }

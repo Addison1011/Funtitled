@@ -26,8 +26,8 @@
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="footer" class="header" style="height: 165px;">
-            <ui:Button text="Don&apos;t Save" name="cancel-button" style="align-self: auto; align-items: auto; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); flex-shrink: 0; font-size: 40px; -unity-font-style: bold;"/>
-            <ui:Button text="Save Changes" name="save-button" style="align-self: auto; align-items: auto; color: rgb(0, 0, 0); background-color: rgb(255, 255, 255); flex-shrink: 0; font-size: 40px; -unity-font-style: bold;"/>
+            <ui:Button text="Don&apos;t Save" name="cancel-button" style="align-self: auto; align-items: auto; flex-shrink: 0; font-size: 40px; -unity-font-style: bold;"/>
+            <ui:Button text="Save Changes" name="save-button" style="align-self: auto; align-items: auto; flex-shrink: 0; font-size: 40px; -unity-font-style: bold;"/>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
