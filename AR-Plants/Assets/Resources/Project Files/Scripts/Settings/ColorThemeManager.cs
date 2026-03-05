@@ -1,5 +1,7 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 using System.Collections.Generic;
+using System;
 
 public class ColorThemeManager : MonoBehaviour
 {
@@ -10,7 +12,7 @@ public class ColorThemeManager : MonoBehaviour
         {
             var go = new GameObject("ColorThemeManager");
             go.AddComponent<ColorThemeManager>();
-            Object.DontDestroyOnLoad(go);
+            UnityEngine.Object.DontDestroyOnLoad(go);
             Debug.Log("ColorThemeManager: auto-created Instance before scene load.");
         }
         else
@@ -19,6 +21,9 @@ public class ColorThemeManager : MonoBehaviour
         }
     }
     public static ColorThemeManager Instance { get; private set; }
+
+    // Callback for when theme changes
+    public event Action<ColorTheme> OnThemeChanged;
 
     [System.Serializable]
     public class ButtonTheme
@@ -55,7 +60,7 @@ public class ColorThemeManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject);
+            UnityEngine.Object.Destroy(gameObject);
             return;
         }
 
@@ -71,15 +76,15 @@ public class ColorThemeManager : MonoBehaviour
             themeName = "Normal",
             buttonTheme = new ButtonTheme
             {
-                normalColor = new Color(0.2f, 0.8f, 0.3f, 1f),    // Light green
-                hoverColor = new Color(0.15f, 0.65f, 0.2f, 1f),   // Medium green
-                pressedColor = new Color(0.1f, 0.5f, 0.15f, 1f)   // Dark green
+                normalColor = new Color(0.467f, 0.600f, 0.455f, 1f),    //#779974 - Medium green
+                hoverColor = new Color(0.937f, 0.992f, 0.929f, 1f),     //#EFFDED - Light green
+                pressedColor = new Color(0f, 0.404f, 0.106f, 1f)        //#00671B - Dark green
             },
             uiTheme = new UITheme
             {
                 textColor = new Color(0f, 0f, 0f, 1f),                    // Black text
-                backgroundColor = new Color(0.94f, 0.94f, 0.96f, 1f),     // Light gray background
-                headerBackgroundColor = new Color(0.635f, 0.949f, 0.741f, 1f)  // Light green header
+                backgroundColor = new Color(0.937f, 0.992f, 0.929f, 1f),  //#EFFDED - Light green background
+                headerBackgroundColor = new Color(0f, 0.404f, 0.106f, 1f) //#00671B - Dark green header
             }
         };
 
@@ -118,6 +123,7 @@ public class ColorThemeManager : MonoBehaviour
         isHighContrast = !isHighContrast;
         currentTheme = isHighContrast ? highContrastTheme : normalTheme;
         ApplyThemeToAllButtons();
+        OnThemeChanged?.Invoke(currentTheme);
         Debug.Log($"Theme changed to: {currentTheme.themeName}");
     }
 
@@ -130,7 +136,6 @@ public class ColorThemeManager : MonoBehaviour
             ToggleTheme();
             Debug.Log($"ColorThemeManager state changed. HighContrast now: {isHighContrast}");
         }
-        
     }
 
     /// Register a button to receive theme updates
@@ -173,5 +178,92 @@ public class ColorThemeManager : MonoBehaviour
     public bool IsHighContrast()
     {
         return isHighContrast;
+    }
+
+    /// Apply theme colors to a UI Document's root element
+    public void ApplyThemeToUIDocument(VisualElement root)
+    {
+        if (root == null || currentTheme == null)
+            return;
+
+        var uiTheme = currentTheme.uiTheme;
+        var buttonTheme = currentTheme.buttonTheme;
+
+        // Apply theme to root and content areas
+        VisualElement rootElement = root.Q<VisualElement>("root");
+        if (rootElement != null)
+            rootElement.style.backgroundColor = uiTheme.backgroundColor;
+
+        VisualElement header = root.Q<VisualElement>("header");
+        if (header != null)
+            header.style.backgroundColor = uiTheme.headerBackgroundColor;
+
+        VisualElement footer = root.Q<VisualElement>("footer");
+        if (footer != null)
+            footer.style.backgroundColor = uiTheme.headerBackgroundColor;
+
+        // Apply background color to plant description card (main container)
+        VisualElement plantDescription = root.Q<VisualElement>(className: "plant-description");
+        if (plantDescription != null)
+            plantDescription.style.backgroundColor = uiTheme.backgroundColor;
+
+        // Apply background color to content containers
+        VisualElement contentContainer = root.Q<VisualElement>("content");
+        if (contentContainer != null)
+            contentContainer.style.backgroundColor = uiTheme.backgroundColor;
+
+        VisualElement plantElement = root.Q<VisualElement>("Plant");
+        if (plantElement != null)
+            plantElement.style.backgroundColor = uiTheme.backgroundColor;
+
+        // Apply background color to dropdown cards and info containers
+        var dropdownCards = root.Query<VisualElement>(className: "dropdown-card").ToList();
+        foreach (VisualElement card in dropdownCards)
+        {
+            card.style.backgroundColor = uiTheme.backgroundColor;
+        }
+
+        // Apply text color to all labels with explicit opacity
+        var labels = root.Query<Label>().ToList();
+        foreach (Label label in labels)
+        {
+            label.style.color = uiTheme.textColor;
+            label.style.opacity = 1f;
+        }
+
+        // Apply text color to toggles
+        var toggles = root.Query<Toggle>().ToList();
+        foreach (Toggle toggle in toggles)
+        {
+            toggle.style.color = uiTheme.textColor;
+        }
+
+        // Apply text and background color to buttons
+        var buttons = root.Query<Button>().ToList();
+        foreach (Button button in buttons)
+        {
+            button.style.color = uiTheme.textColor;
+            button.style.backgroundColor = buttonTheme.normalColor;
+        }
+
+        Debug.Log($"ColorThemeManager: applied UI theme to document -> {currentTheme.themeName}");
+    }
+
+    /// Subscribe to theme changes
+    public void SubscribeToThemeChange(Action<ColorTheme> callback)
+    {
+        if (callback != null)
+        {
+            OnThemeChanged += callback;
+        }
+    }
+
+    /// Unsubscribe from theme changes
+    public void UnsubscribeFromThemeChange(Action<ColorTheme> callback)
+    {
+        if (callback != null)
+        {
+            OnThemeChanged -= callback;
+        }
     }
 }

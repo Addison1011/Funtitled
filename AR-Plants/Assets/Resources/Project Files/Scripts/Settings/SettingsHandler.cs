@@ -90,7 +90,7 @@ public class SettingsHandler : MonoBehaviour
                 {
                     Debug.Log("SettingsHandler: calling ColorThemeManager.SetHighContrast from toggle callback");
                     ColorThemeManager.Instance.SetHighContrast(evt.newValue);
-                    ApplyUITheme(root);
+                    ColorThemeManager.Instance.ApplyThemeToUIDocument(root);
                 }
                 else
                 {
@@ -103,7 +103,7 @@ public class SettingsHandler : MonoBehaviour
             {
                 Debug.Log($"SettingsHandler: setting ColorThemeManager to saved state -> {settings.highContrastToggle}");
                 ColorThemeManager.Instance.SetHighContrast(settings.highContrastToggle);
-                ApplyUITheme(root);
+                ColorThemeManager.Instance.ApplyThemeToUIDocument(root);
             }
             else
             {

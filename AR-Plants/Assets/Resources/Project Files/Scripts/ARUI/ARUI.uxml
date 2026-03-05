@@ -3,17 +3,17 @@
     <ui:VisualElement name="Root" class="root" style="background-color: rgba(255, 255, 255, 0);">
         <ui:VisualElement name="Screen" class="screen" style="background-color: rgba(215, 215, 215, 0);">
             <ui:VisualElement name="Header" class="header" style="background-size: 22% 100%; background-color: rgba(239, 253, 237, 0.67);">
-                <ui:Button name="BackButton" icon-image="project://database/Assets/Resources/Project%20Files/Scripts/ARUI/Icons/93634.png?fileID=2800000&amp;guid=3b5b066fc7c50e94f899bdca3d7f35de&amp;type=3#93634" class="icon-btn back-btn" style="background-color: rgb(119, 153, 116);"/>
+                <ui:Button name="BackButton" icon-image="project://database/Assets/Resources/Project%20Files/Scripts/ARUI/Icons/93634.png?fileID=2800000&amp;guid=3b5b066fc7c50e94f899bdca3d7f35de&amp;type=3#93634" class="icon-btn back-btn"/>
                 <ui:VisualElement name="CenterButtons" class="center-buttons">
-                    <ui:Button name="GeneralButton" icon-image="project://database/Assets/Resources/Project%20Files/Scripts/ARUI/Icons/ecology_2384469.png?fileID=2800000&amp;guid=fc62a466e1a25c54094ff050c9c21600&amp;type=3#ecology_2384469" class="icon-btn tab-btn general-btn" style="background-color: rgb(119, 153, 116);"/>
-                    <ui:Button name="FlowerButton" icon-image="project://database/Assets/Resources/Project%20Files/Scripts/ARUI/Icons/flower_346167.png?fileID=2800000&amp;guid=9d5a82bc8c6318d4a9817773805a0814&amp;type=3#flower_346167" class="icon-btn tab-btn flower-btn" style="background-color: rgb(119, 153, 116);"/>
-                    <ui:Button name="StemButton" icon-image="project://database/Assets/Resources/Project%20Files/Scripts/ARUI/Icons/tree-branch_4287040.png?fileID=2800000&amp;guid=21b1ef5f935107748a48d7b5e1a85d2e&amp;type=3#tree-branch_4287040" class="icon-btn tab-btn stem-btn" style="background-color: rgb(119, 153, 116);"/>
-                    <ui:Button name="LeafButton" icon-image="project://database/Assets/Resources/Project%20Files/Scripts/ARUI/Icons/leaf4.png?fileID=2800000&amp;guid=a41ff67ae1be92348a3bae5787bb68cd&amp;type=3#leaf4" class="icon-btn tab-btn leaf-btn" style="background-color: rgb(119, 153, 116);"/>
+                    <ui:Button name="GeneralButton" icon-image="project://database/Assets/Resources/Project%20Files/Scripts/ARUI/Icons/ecology_2384469.png?fileID=2800000&amp;guid=fc62a466e1a25c54094ff050c9c21600&amp;type=3#ecology_2384469" class="icon-btn tab-btn general-btn"/>
+                    <ui:Button name="FlowerButton" icon-image="project://database/Assets/Resources/Project%20Files/Scripts/ARUI/Icons/flower_346167.png?fileID=2800000&amp;guid=9d5a82bc8c6318d4a9817773805a0814&amp;type=3#flower_346167" class="icon-btn tab-btn flower-btn"/>
+                    <ui:Button name="StemButton" icon-image="project://database/Assets/Resources/Project%20Files/Scripts/ARUI/Icons/tree-branch_4287040.png?fileID=2800000&amp;guid=21b1ef5f935107748a48d7b5e1a85d2e&amp;type=3#tree-branch_4287040" class="icon-btn tab-btn stem-btn"/>
+                    <ui:Button name="LeafButton" icon-image="project://database/Assets/Resources/Project%20Files/Scripts/ARUI/Icons/leaf4.png?fileID=2800000&amp;guid=a41ff67ae1be92348a3bae5787bb68cd&amp;type=3#leaf4" class="icon-btn tab-btn leaf-btn"/>
                 </ui:VisualElement>
-                <ui:Button name="RefreshButton" icon-image="project://database/Assets/Resources/Project%20Files/Scripts/ARUI/Icons/refresh_2805355.png?fileID=2800000&amp;guid=8d2b79e7c6e84e04cb3e593dab6041cb&amp;type=3#refresh_2805355" class="icon-btn refresh-btn" style="background-color: rgb(119, 153, 116);"/>
+                <ui:Button name="RefreshButton" icon-image="project://database/Assets/Resources/Project%20Files/Scripts/ARUI/Icons/refresh_2805355.png?fileID=2800000&amp;guid=8d2b79e7c6e84e04cb3e593dab6041cb&amp;type=3#refresh_2805355" class="icon-btn refresh-btn"/>
             </ui:VisualElement>
             <ui:VisualElement name="DropdownArea" class="dropdown-area">
-                <ui:VisualElement name="GeneralDropdown" class="dropdown-card general-card" style="background-color: rgb(255, 251, 206);">
+                <ui:VisualElement name="GeneralDropdown" class="dropdown-card general-card">
                     <ui:Label name="GeneralTitle" text="General Plant Info" class="dropdown-title"/>
                     <ui:VisualElement class="info-row">
                         <ui:Label text="Common name:" class="info-label"/>
@@ -38,15 +38,15 @@
                     <ui:Label text="Description:" class="info-label"/>
                     <ui:Label name="GeneralDescription" text="—" class="dropdown-text"/>
                 </ui:VisualElement>
-                <ui:VisualElement name="FlowerDropdown" class="dropdown-card" style="background-color: rgb(255, 251, 206);">
+                <ui:VisualElement name="FlowerDropdown" class="dropdown-card">
                     <ui:Label text="Flower" class="dropdown-title"/>
                     <ui:Label name="FlowerText" text="—" class="dropdown-text"/>
                 </ui:VisualElement>
-                <ui:VisualElement name="StemDropdown" class="dropdown-card" style="background-color: rgb(255, 251, 206);">
+                <ui:VisualElement name="StemDropdown" class="dropdown-card">
                     <ui:Label text="Stem" class="dropdown-title"/>
                     <ui:Label name="StemText" text="—" class="dropdown-text"/>
                 </ui:VisualElement>
-                <ui:VisualElement name="LeafDropdown" class="dropdown-card" style="background-color: rgb(255, 251, 206);">
+                <ui:VisualElement name="LeafDropdown" class="dropdown-card">
                     <ui:Label text="Leaf" class="dropdown-title"/>
                     <ui:Label name="LeafText" text="—" class="dropdown-text"/>
                 </ui:VisualElement>

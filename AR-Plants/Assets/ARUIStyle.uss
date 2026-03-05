@@ -104,7 +104,6 @@
 /* Text matches mock: smaller, wraps nicely */
 .dropdown-text {
     font-size: 34px;
-    color: #000000;
     white-space: normal;
     line-height: 1.15;
 }
