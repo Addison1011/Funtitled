@@ -92,7 +92,8 @@ public class PopulateMenuTest : MonoBehaviour
         Debug.Log("SceneCounter:" + GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter);
         if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter >= 1)
         {
-            Instantiate(Resources.Load<GameObject>("PlantDescription"));
+            //Destroy(GameObject.FindGameObjectWithTag("PlantDescription"));
+            Instantiate(Resources.Load<GameObject>("PlantDescription")).GetComponent<UIDocument>().panelSettings.sortingOrder = 2;
         }
         //GameObject tempSettings = Instantiate(settingsPrefab);
         //Destroy(tempSettings);
@@ -145,7 +146,7 @@ public class PopulateMenuTest : MonoBehaviour
         //back button
         Button backButton = root.Q<Button>("back-button");
 
-        if(backButton != null)
+        if (backButton != null)
         {
             backButton.clicked += OnBackButtonClicked;
         }

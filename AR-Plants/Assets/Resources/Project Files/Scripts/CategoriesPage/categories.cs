@@ -11,8 +11,8 @@ using System.Linq;
 public class PlantTypes
 {
     [PrimaryKey, AutoIncrement]
-    public int typeID{ get; set; }
-    public string typeName{ get; set; }
+    public int typeID { get; set; }
+    public string typeName { get; set; }
 }
 public class categories : MonoBehaviour
 {
@@ -67,16 +67,6 @@ public class categories : MonoBehaviour
         );
 
         types = _connection.Table<PlantTypes>().ToList();
-
-        // goes back to previous plant description if going back to main menu from AR scene
-        //TODO: fix this going back scenario
-        Debug.Log("SceneCounter:" + GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter);
-        if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter >= 1)
-        {
-            Instantiate(Resources.Load<GameObject>("MainMenuPopulator"));
-        }
-        //GameObject tempSettings = Instantiate(settingsPrefab);
-        //Destroy(tempSettings);
     }
 
     public void Start()
@@ -102,7 +92,7 @@ public class categories : MonoBehaviour
     {
 
         // Instantiate UI and data holder prefabs and keep references
-        
+
         GameObject categMenu = Instantiate(categMenuPrefab);
         categoryButtonDataHolder = Instantiate(Resources.Load<GameObject>("categoryButtonDataHolder"));
 
@@ -133,11 +123,11 @@ public class categories : MonoBehaviour
             //adds background images to the buttons
             VisualElement categoryImage = newCategoryInstance.Q<VisualElement>("CardButton");
 
-            if(categoryImage != null && currentType.typeName != null)
+            if (categoryImage != null && currentType.typeName != null)
             {
                 string categoryImagePath = $"Project Files/Scripts/CategoriesPage/Images/{currentType.typeName}";
                 Texture2D catTexture = Resources.Load<Texture2D>(categoryImagePath);
-                if(catTexture != null)
+                if (catTexture != null)
                 {
                     categoryImage.style.backgroundImage = new StyleBackground(catTexture);
                 }
@@ -147,7 +137,7 @@ public class categories : MonoBehaviour
                 }
             }
 
-            
+
             categoryNameLabel.text = currentType.typeName;
 
             // Add the button to the content container
