@@ -9,6 +9,7 @@ using TMPro;
 using SQLite4Unity3d;
 using System.IO;
 using System.Linq;
+using System;
 
 
 public class PlantInfo
@@ -67,9 +68,9 @@ public class PopulateMenuTest : MonoBehaviour
                 File.WriteAllBytes(persistentPath, req.downloadHandler.data);
             }
 #else
-                // Desktop/editor/iOS etc.
-                string srcPath = Path.Combine(Application.streamingAssetsPath, dbName);
-                File.Copy(srcPath, persistentPath, overwrite: true);
+            // Desktop/editor/iOS etc.
+            string srcPath = Path.Combine(Application.streamingAssetsPath, dbName);
+            File.Copy(srcPath, persistentPath, overwrite: true);
 #endif
         }
 
@@ -146,7 +147,49 @@ public class PopulateMenuTest : MonoBehaviour
 
         if(backButton != null)
         {
-            backButton.clicked += OnBackButtonClicked;
+            PlantInfo currentPlant = plants[i];
+
+            // Create a new button from the template
+            VisualElement newPlantCardInstance = plantCardTemplate.CloneTree();
+            Label plantNameLabel = newPlantCardInstance.Q<Label>("PlantName");
+
+            Label scientificNameLabel = newPlantCardInstance.Q<Label>("ScientificName");
+
+            Button button = newPlantCardInstance.Q<Button>("PlantDescriptionButton");
+
+
+            scientificNameLabel.text = currentPlant.scientificName;
+            plantNameLabel.text = currentPlant.plantName;
+
+            //Because Azeezat likes comments: 
+            // Setting the background image of the plant card according to name
+            VisualElement cardElement = newPlantCardInstance.Q<VisualElement>("plant-card");
+            String backgroundImagePath = $"Project Files/Scripts/PlantDescriptionComponent/Images/{currentPlant.plantName}";
+            Texture2D backgroundTexture = Resources.Load<Texture2D>(backgroundImagePath);
+            if (backgroundTexture != null)
+            {
+                cardElement.style.backgroundImage = new StyleBackground(backgroundTexture);
+            }
+            else
+            {
+                //default image is the golden cactus, may want to change this in the future
+                Debug.LogWarning($"Background image not found at path: {backgroundImagePath}");
+
+            }
+
+            // Add the button to the content container
+            content.Add(newPlantCardInstance);
+
+            // Creates a new GameObject holding its own LoadDatabaseInfo script pertaining to the specific plant in the itteration
+            // This allows each button to have its own data loader instance
+            GameObject dataObj = new GameObject($"PlantData_{currentPlant.plantName}");
+            dataObj.transform.SetParent(plantButtonDataHolder.transform, false);
+
+            LoadDatabaseInfo dataLoader = dataObj.AddComponent<LoadDatabaseInfo>();
+            dataLoader.plantInfo = currentPlant;
+
+            //Wire button to its corresponding data loader instance
+            button.clicked += dataLoader.OnClick;
         }
     }
 
