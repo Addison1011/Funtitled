@@ -130,6 +130,23 @@ public class categories : MonoBehaviour
             Label categoryNameLabel = newCategoryInstance.Q<Label>("CategoryName");
             Button button = newCategoryInstance.Q<Button>("CardButton");
 
+            //adds background images to the buttons
+            VisualElement categoryImage = newCategoryInstance.Q<VisualElement>("CardButton");
+
+            if(categoryImage != null && currentType.typeName != null)
+            {
+                string categoryImagePath = $"Project Files/Scripts/CategoriesPage/Images/{currentType.typeName}";
+                Texture2D catTexture = Resources.Load<Texture2D>(categoryImagePath);
+                if(catTexture != null)
+                {
+                    categoryImage.style.backgroundImage = new StyleBackground(catTexture);
+                }
+                else
+                {
+                    Debug.Log("category image not found at path: {categoryImagePath}");
+                }
+            }
+
             
             categoryNameLabel.text = currentType.typeName;
 

@@ -140,6 +140,14 @@ public class PopulateMenuTest : MonoBehaviour
                 GameObject settingsMenu = Instantiate(settingsPrefab);
             };
         }
+
+        //back button
+        Button backButton = root.Q<Button>("back-button");
+
+        if(backButton != null)
+        {
+            backButton.clicked += OnBackButtonClicked;
+        }
     }
 
 
@@ -159,8 +167,6 @@ public class PopulateMenuTest : MonoBehaviour
             }
             else
             {
-
-
                 PlantInfo currentPlant = plants[i];
 
                 // Create a new button from the template
@@ -201,4 +207,16 @@ public class PopulateMenuTest : MonoBehaviour
         Destroy(GameObject.FindGameObjectWithTag("DataHolder"));
     }
 
+    private void OnBackButtonClicked()
+    {
+        GameObject categories = GameObject.Find("categMenu(Clone)");
+        GameObject populator = GameObject.FindGameObjectWithTag("MainMenuPopulator");
+        GameObject.FindGameObjectWithTag("MainMenu").GetComponent<UIDocument>().panelSettings.sortingOrder = 0;
+        categories.GetComponent<UIDocument>().panelSettings.sortingOrder = 1;
+        ClearMainMenuPlants();
+
+        Debug.Log("Back button was clicked. Back to categories page");
+        GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter += 1;
+        SoundManager.Instance.PlayDefaultButtonSound();
+    }
 }
