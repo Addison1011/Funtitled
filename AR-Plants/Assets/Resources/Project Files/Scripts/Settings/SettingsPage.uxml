@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <Style src="project://database/Assets/Resources/Project%20Files/Scripts/MainMenuComponent/MainMenu.uss?fileID=7433441132597879392&amp;guid=03c63967f6e3b1b4499075883a01a6e5&amp;type=3"/>
+    <Style src="project://database/Assets/Resources/Project%20Files/Scripts/Main%20Menu/MainMenuComponent/MainMenu.uss?fileID=7433441132597879392&amp;guid=03c63967f6e3b1b4499075883a01a6e5&amp;type=3#MainMenu"/>
     <Style src="project://database/Assets/Resources/Project%20Files/Scripts/Settings/SettingsPage.uss?fileID=7433441132597879392&amp;guid=4080579518079a54a944a0b1208c2fca&amp;type=3#SettingsPage"/>
     <ui:VisualElement name="root" class="root">
         <ui:VisualElement name="header" class="header" style="height: 165px;">
@@ -25,6 +25,7 @@
                 <ui:SliderInt label="50" value="50" high-value="100" name="ambient-volume-bar" style="font-size: 40px; -unity-font-style: bold; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0;"/>
             </ui:VisualElement>
         </ui:VisualElement>
+        <ui:Label text="Information gathered from iNaturalist.&#10;Available from https://www.inaturalist.org.&#10;Accessed 2025-2026." name="iNaturalistCitation" style="font-size: 40px; -unity-font-style: bold; white-space: normal; -unity-text-align: upper-center;"/>
         <ui:VisualElement name="footer" class="header" style="height: 165px;">
             <ui:Button text="Don&apos;t Save" name="cancel-button" style="align-self: auto; align-items: auto; flex-shrink: 0; font-size: 40px; -unity-font-style: bold;"/>
             <ui:Button text="Save Changes" name="save-button" style="align-self: auto; align-items: auto; flex-shrink: 0; font-size: 40px; -unity-font-style: bold;"/>
