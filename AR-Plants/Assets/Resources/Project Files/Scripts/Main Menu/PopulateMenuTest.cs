@@ -24,8 +24,8 @@ public class PlantInfo
     public string flower { get; set; }
     public int typeID { get; set; }
 
-    public float maxSize = 2;
-    public float minSize = .3f;
+    public float maxSize = 1000f;
+    public float minSize = 0f;
 }
 
 // public class SettingsData //data type for the settings
@@ -52,7 +52,7 @@ public class PopulateMenuTest : MonoBehaviour
     [SerializeField] private GameObject settingsPrefab;
     //[SerializeField] private string buttonHandelName;
     [SerializeField] private string contentHandelName;
-    
+
     private VisualElement mainMenuRoot; // Store root for theme updates
 
     public GameObject mainMenu;
@@ -152,11 +152,11 @@ public class PopulateMenuTest : MonoBehaviour
         //copied from UpdateSoundManager() in SettingsHandler.cs
         float masterVolumeModifier = settings.masterVolume * 0.01f;
 
-        if(settings.soundToggle == true)
+        if (settings.soundToggle == true)
         {
             //background noise
             SoundManager.Instance.menuMusicSource.volume = settings.musicVolume * .01f * masterVolumeModifier;
-            SoundManager.Instance.ambientSoundSource.volume = settings.ambientVolume *.01f * masterVolumeModifier;
+            SoundManager.Instance.ambientSoundSource.volume = settings.ambientVolume * .01f * masterVolumeModifier;
 
             //sound effects
             SoundManager.Instance.selectLeafSoundSource.volume = settings.soundEffects * .01f * masterVolumeModifier;
@@ -232,7 +232,7 @@ public class PopulateMenuTest : MonoBehaviour
             // Plant card text should always be white (displayed over image background)
             plantNameLabel.style.color = new Color(1f, 1f, 1f, 1f); // White
             scientificNameLabel.style.color = new Color(1f, 1f, 1f, 1f); // White
-            
+
             // Also set info labels to white (like "Species:")
             var infoLabels = newPlantCardInstance.Query<Label>(className: "info-label").ToList();
             foreach (Label label in infoLabels)
@@ -266,21 +266,21 @@ public class PopulateMenuTest : MonoBehaviour
         if (mainMenuRoot != null && ColorThemeManager.Instance != null)
         {
             ColorThemeManager.Instance.ApplyThemeToUIDocument(mainMenuRoot);
-            
+
             // Plant card labels should always stay white (displayed over image background)
             var plantCardLabels = mainMenuRoot.Query<Label>(className: "card-title").ToList();
             foreach (Label label in plantCardLabels)
             {
                 label.style.color = new Color(1f, 1f, 1f, 1f); // White
             }
-            
+
             // Also set scientific name labels to white
             var scientificLabels = mainMenuRoot.Query<Label>().Where(l => l.name == "ScientificName").ToList();
             foreach (Label label in scientificLabels)
             {
                 label.style.color = new Color(1f, 1f, 1f, 1f); // White
             }
-            
+
             // Also set info labels to white (like "Species:")
             var infoLabels = mainMenuRoot.Query<Label>(className: "info-label").ToList();
             foreach (Label label in infoLabels)

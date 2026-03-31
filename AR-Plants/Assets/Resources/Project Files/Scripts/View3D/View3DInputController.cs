@@ -97,6 +97,7 @@ public class View3DInputController : MonoBehaviour
 
         selectedPlantModel = Resources.Load<GameObject>(selectedPlantData.plantInfo.scientificName); //default plant
         activePlant = Instantiate(selectedPlantModel);
+        SetIndividualActivePlantScale(ref activePlant);
         GameObject plantBase = Instantiate(Resources.Load<GameObject>("Base"));
         plantBase.transform.position = new Vector3(arCamera.transform.position.x, 0, arCamera.transform.position.z + spawnDistanceFromCamera);
         isPlantPlaced = true;
@@ -107,6 +108,40 @@ public class View3DInputController : MonoBehaviour
 
 
         soundManager = SoundManager.Instance;
+    }
+
+    private void SetIndividualActivePlantScale(ref GameObject plant)
+    {
+        //Monstera
+        if (selectedPlantData.plantInfo.scientificName == "Monstera deliciosa")
+        {
+            plant.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        }
+        //Blue Lily
+        else if (selectedPlantData.plantInfo.scientificName == "Agapanthus praecox")
+        {
+            plant.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        }
+        //Oleander
+        else if (selectedPlantData.plantInfo.scientificName == "Nerium oleander")
+        {
+            plant.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        }
+        //Dandilion
+        else if (selectedPlantData.plantInfo.scientificName == "Taraxacum officinale")
+        {
+            plant.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        }
+        //Peach Tree
+        else if (selectedPlantData.plantInfo.scientificName == "Prunus persica")
+        {
+            plant.transform.localScale = new Vector3(0.35f, 0.35f, 0.35f);
+        }
+        //Bird of paradise
+        else if (selectedPlantData.plantInfo.scientificName == "Strelitzia reginae")
+        {
+            plant.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        }
     }
 
     void Start()
@@ -166,23 +201,23 @@ public class View3DInputController : MonoBehaviour
     {
         Vector2 screenPos = finger.currentTouch.screenPosition;
 
-        if (HitActivePlant(finger.currentTouch.screenPosition))
+        // Ignore touches that start on UI buttons
+        if (aRUIController != null && aRUIController.IsScreenPointOverAnyUIButton(screenPos))
+        {
+            holdCandidate = false;
+            holdFinger = null;
+            isDragging = false;
+            return;
+        }
+
+        if (HitActivePlant(screenPos))
         {
             resizePlantModelOnPinch();
         }
-        else
-        {
 
-
-            // Tapping on empty space deselects current plant part (if any) and UI tab
-            /*DisableAllSelectionEffects(activePlant);
-            aRUIController.SetTab(ARUIController.Tab.None);
-            selectedPlantData.selectedPart = PlantPart.None;*/
-        }
-        // If plant exists and touch is on the plant -> start HOLD candidate
-        if (isPlantPlaced && activePlant != null && HitActivePlant(screenPos))
+        // If plant exists and touch is on the plant, start HOLD candidate
+        if (isPlantPlaced && activePlant != null)
         {
-            //resizePlantModelOnPinch();
             holdCandidate = true;
             holdStartTime = Time.time;
             holdStartScreenPos = screenPos;
@@ -190,10 +225,8 @@ public class View3DInputController : MonoBehaviour
             return;
         }
 
-        // Otherwise, we are NOT touching the plant here.
-        // We won't move/place immediately; we'll confirm it's a TAP on finger up.
         holdCandidate = false;
-        holdFinger = finger; // remember so we can check on FingerUp
+        holdFinger = finger;
     }
 
 
@@ -214,34 +247,31 @@ public class View3DInputController : MonoBehaviour
         if (finger != holdFinger)
             return;
 
+        Vector2 screenPos = finger.currentTouch.screenPosition;
 
+        // Ignore touches that ended on UI buttons
+        if (aRUIController != null && aRUIController.IsScreenPointOverAnyUIButton(screenPos))
+        {
+            holdCandidate = false;
+            isDragging = false;
+            holdFinger = null;
+            return;
+        }
 
-        // Case A: we were holding on the plant but never transitioned to drag -> treat as a TAP on plant
         if (holdCandidate && !isDragging)
         {
-            OnPlantTapped(finger); // placeholder behavior
+            OnPlantTapped(finger);
         }
-        // Case B: we were NOT holding on the plant (finger down wasn't on plant) -> treat as TAP on empty plane
         else if (!holdCandidate && !isDragging)
         {
-
-            Vector2 screenPos = finger.currentTouch.screenPosition;
-
             if (!HitActivePlant(screenPos))
             {
-                // Only deselect when NOT releasing over a UI button
-                bool overUIButton = aRUIController != null && aRUIController.IsScreenPointOverAnyUIButton(screenPos);
-
-                if (!overUIButton)
-                {
-                    DisableAllSelectionEffects(activePlant);
-                    aRUIController.SetTab(View3DUIController.Tab.None);
-                    selectedPlantData.selectedPart = PlantPart.None;
-                }
+                DisableAllSelectionEffects(activePlant);
+                aRUIController.SetTab(View3DUIController.Tab.None);
+                selectedPlantData.selectedPart = PlantPart.None;
             }
         }
 
-        // Reset states
         holdCandidate = false;
         isDragging = false;
         holdFinger = null;
@@ -362,6 +392,13 @@ public class View3DInputController : MonoBehaviour
             }
 
             Debug.Log(hit.collider.gameObject.name);
+        }
+
+        else
+        {
+            selectedPlantData.selectedPart = PlantPart.None;
+            DisableAllSelectionEffects(activePlant);
+            aRUIController.SetTab(View3DUIController.Tab.None);
         }
 
 

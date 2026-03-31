@@ -347,7 +347,7 @@ PrefabInstance:
     - target: {fileID: 4123138658190339066, guid: 60f2565acf21adc4eb21ba0018d356d8,
         type: 3}
       propertyPath: m_Name
-      value: ARUI (1)
+      value: ARUI
       objectReference: {fileID: 0}
     - target: {fileID: 7926573087772710698, guid: 60f2565acf21adc4eb21ba0018d356d8,
         type: 3}
@@ -399,11 +399,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2996928221299411977, guid: 60f2565acf21adc4eb21ba0018d356d8, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4123138658190339066, guid: 60f2565acf21adc4eb21ba0018d356d8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 511315454}
     - targetCorrespondingSourceObject: {fileID: 4123138658190339066, guid: 60f2565acf21adc4eb21ba0018d356d8,
         type: 3}
       insertIndex: -1
@@ -427,9 +430,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 905ec460306b80648a31b7143067bad0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::View3DUIController
-  uiDocument: {fileID: 0}
+  uiDocument: {fileID: 511315454}
   arSession: {fileID: 0}
   current: 0
+--- !u!114 &511315454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511315452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: 232015f845693d843a880bfc01ab6fea, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 483aa8b7ebd1b1541a0b41dc7a3980c6,
+    type: 3}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
 --- !u!1 &961739749
 GameObject:
   m_ObjectHideFlags: 0

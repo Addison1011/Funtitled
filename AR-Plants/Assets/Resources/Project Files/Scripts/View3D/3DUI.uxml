@@ -1,0 +1,55 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/ARUIStyle.uss?fileID=7433441132597879392&amp;guid=4cff101ae74ee14499bce7b7f5cf99ac&amp;type=3#ARUIStyle"/>
+    <ui:VisualElement name="Root" class="root" style="background-color: rgba(255, 255, 255, 0);">
+        <ui:VisualElement name="Screen" class="screen" style="background-color: rgba(215, 215, 215, 0);">
+            <ui:VisualElement name="Header" class="header" style="background-size: 22% 100%; background-color: rgba(239, 253, 237, 0.67);">
+                <ui:Button name="BackButton" icon-image="project://database/Assets/Resources/Project%20Files/Scripts/ARUI/Icons/93634.png?fileID=2800000&amp;guid=3b5b066fc7c50e94f899bdca3d7f35de&amp;type=3#93634" class="icon-btn back-btn" style="margin-right: 4px;"/>
+                <ui:VisualElement name="CenterButtons" class="center-buttons" style="width: 732px; justify-content: flex-start;">
+                    <ui:Button name="GeneralButton" icon-image="project://database/Assets/Resources/Project%20Files/Scripts/ARUI/Icons/ecology_2384469.png?fileID=2800000&amp;guid=fc62a466e1a25c54094ff050c9c21600&amp;type=3#ecology_2384469" class="icon-btn tab-btn general-btn" style="margin-right: 57px;"/>
+                    <ui:Button name="FlowerButton" icon-image="project://database/Assets/Resources/Project%20Files/Scripts/ARUI/Icons/flower_346167.png?fileID=2800000&amp;guid=9d5a82bc8c6318d4a9817773805a0814&amp;type=3#flower_346167" class="icon-btn tab-btn flower-btn" style="margin-right: 57px;"/>
+                    <ui:Button name="StemButton" icon-image="project://database/Assets/Resources/Project%20Files/Scripts/ARUI/Icons/tree-branch_4287040.png?fileID=2800000&amp;guid=21b1ef5f935107748a48d7b5e1a85d2e&amp;type=3#tree-branch_4287040" class="icon-btn tab-btn stem-btn" style="margin-right: 57px;"/>
+                    <ui:Button name="LeafButton" icon-image="project://database/Assets/Resources/Project%20Files/Scripts/ARUI/Icons/leaf4.png?fileID=2800000&amp;guid=a41ff67ae1be92348a3bae5787bb68cd&amp;type=3#leaf4" class="icon-btn tab-btn leaf-btn" style="margin-right: 4px;"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="DropdownArea" class="dropdown-area">
+                <ui:VisualElement name="GeneralDropdown" class="dropdown-card general-card">
+                    <ui:Label name="GeneralTitle" text="General Plant Info" class="dropdown-title"/>
+                    <ui:VisualElement class="info-row">
+                        <ui:Label text="Common name:" class="info-label"/>
+                        <ui:Label name="GeneralCommonName" text="—" class="info-value"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="info-row">
+                        <ui:Label text="Scientific name:" class="info-label"/>
+                        <ui:Label name="GeneralScientificName" text="—" class="info-value"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="info-row">
+                        <ui:Label text="Type:" class="info-label"/>
+                        <ui:Label name="GeneralType" text="—" class="info-value"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="info-row">
+                        <ui:Label text="Max size:" class="info-label"/>
+                        <ui:Label name="GeneralMaxSize" text="—" class="info-value"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="info-row">
+                        <ui:Label text="Watering:" class="info-label"/>
+                        <ui:Label name="GeneralWatering" text="—" class="info-value"/>
+                    </ui:VisualElement>
+                    <ui:Label text="Description:" class="info-label"/>
+                    <ui:Label name="GeneralDescription" text="—" class="dropdown-text"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="FlowerDropdown" class="dropdown-card">
+                    <ui:Label text="Flower" class="dropdown-title"/>
+                    <ui:Label name="FlowerText" text="—" class="dropdown-text"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="StemDropdown" class="dropdown-card">
+                    <ui:Label text="Stem" class="dropdown-title"/>
+                    <ui:Label name="StemText" text="—" class="dropdown-text"/>
+                </ui:VisualElement>
+                <ui:VisualElement name="LeafDropdown" class="dropdown-card">
+                    <ui:Label text="Leaf" class="dropdown-title"/>
+                    <ui:Label name="LeafText" text="—" class="dropdown-text"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

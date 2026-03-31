@@ -9,7 +9,7 @@ public class View3DUIController : MonoBehaviour
     [SerializeField] private UIDocument uiDocument;
     public ARSession arSession;
     SelectedPlantData selectedPlantData;
-    private Button backBtn, refreshBtn;
+    private Button backBtn;
     private Button generalBtn, flowerBtn, stemBtn, leafBtn;
 
     private VisualElement dropdownArea;
@@ -38,7 +38,6 @@ public class View3DUIController : MonoBehaviour
         root = uiDocument.rootVisualElement;
 
         backBtn = root.Q<Button>("BackButton");
-        refreshBtn = root.Q<Button>("RefreshButton");
 
         generalBtn = root.Q<Button>("GeneralButton");
         flowerBtn = root.Q<Button>("FlowerButton");
@@ -104,27 +103,7 @@ public class View3DUIController : MonoBehaviour
         }, TrickleDown.TrickleDown);
 
 
-        // --- Refresh Button Highlight (works on Button because TrickleDown) ---
-        refreshBtn.RegisterCallback<PointerDownEvent>(_ =>
-        {
-            refreshBtn.AddToClassList(SelectedClass);
-        }, TrickleDown.TrickleDown);
 
-        refreshBtn.RegisterCallback<PointerUpEvent>(_ =>
-        {
-            refreshBtn.RemoveFromClassList(SelectedClass);
-            inputController.RefreshSession();
-        }, TrickleDown.TrickleDown);
-
-        refreshBtn.RegisterCallback<PointerCancelEvent>(_ =>
-        {
-            refreshBtn.RemoveFromClassList(SelectedClass);
-        }, TrickleDown.TrickleDown);
-
-        refreshBtn.RegisterCallback<PointerCaptureOutEvent>(_ =>
-        {
-            refreshBtn.RemoveFromClassList(SelectedClass);
-        }, TrickleDown.TrickleDown);
 
         // Example default text (replace with DB values later)
         SetPartInfo(PlantPart.Flower, PlantPart.Stem, PlantPart.Leaf);
@@ -286,11 +265,9 @@ public class View3DUIController : MonoBehaviour
         // so we also test a flipped-Y position.
         Vector2 panelPosFlipped = RuntimePanelUtils.ScreenToPanel(panel, new Vector2(screenPos.x, Screen.height - screenPos.y));
 
-        return IsOverButton(backBtn, panelPos) || IsOverButton(refreshBtn, panelPos) ||
-               IsOverButton(generalBtn, panelPos) || IsOverButton(flowerBtn, panelPos) ||
+        return IsOverButton(backBtn, panelPos) || IsOverButton(generalBtn, panelPos) || IsOverButton(flowerBtn, panelPos) ||
                IsOverButton(stemBtn, panelPos) || IsOverButton(leafBtn, panelPos) ||
-               IsOverButton(backBtn, panelPosFlipped) || IsOverButton(refreshBtn, panelPosFlipped) ||
-               IsOverButton(generalBtn, panelPosFlipped) || IsOverButton(flowerBtn, panelPosFlipped) ||
+               IsOverButton(backBtn, panelPosFlipped) || IsOverButton(generalBtn, panelPosFlipped) || IsOverButton(flowerBtn, panelPosFlipped) ||
                IsOverButton(stemBtn, panelPosFlipped) || IsOverButton(leafBtn, panelPosFlipped);
     }
 
