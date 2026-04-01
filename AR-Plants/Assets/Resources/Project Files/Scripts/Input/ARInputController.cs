@@ -165,23 +165,18 @@ public class ARInputController : MonoBehaviour
     {
         Vector2 screenPos = finger.currentTouch.screenPosition;
 
-        if (HitActivePlant(finger.currentTouch.screenPosition))
+        // Ignore touches that start on UI buttons
+        if (aRUIController != null && aRUIController.IsScreenPointOverAnyUIButton(screenPos))
         {
-            resizePlantModelOnPinch();
+            holdCandidate = false;
+            holdFinger = null;
+            isDragging = false;
+            return;
         }
-        else
-        {
 
-
-            // Tapping on empty space deselects current plant part (if any) and UI tab
-            /*DisableAllSelectionEffects(activePlant);
-            aRUIController.SetTab(ARUIController.Tab.None);
-            selectedPlantData.selectedPart = PlantPart.None;*/
-        }
         // If plant exists and touch is on the plant -> start HOLD candidate
         if (isPlantPlaced && activePlant != null && HitActivePlant(screenPos))
         {
-            //resizePlantModelOnPinch();
             holdCandidate = true;
             holdStartTime = Time.time;
             holdStartScreenPos = screenPos;
@@ -189,17 +184,16 @@ public class ARInputController : MonoBehaviour
             return;
         }
 
-        // Otherwise, we are NOT touching the plant here.
-        // We won't move/place immediately; we'll confirm it's a TAP on finger up.
+        // Otherwise remember finger for non-plant tap handling
         holdCandidate = false;
-        holdFinger = finger; // remember so we can check on FingerUp
+        holdFinger = finger;
     }
 
 
 
     private void OnFingerMove(Finger finger)
     {
-        resizePlantModelOnPinch();
+        //resizePlantModelOnPinch();
         if (!isDragging || activePlant == null || finger != holdFinger) return;
 
         if (TryARRaycastToAllowedPlane(finger.currentTouch.screenPosition, out Pose planePose))
@@ -215,52 +209,41 @@ public class ARInputController : MonoBehaviour
         if (finger != holdFinger)
             return;
 
+        Vector2 screenPos = finger.currentTouch.screenPosition;
 
+        // Ignore touches that end on UI buttons
+        if (aRUIController != null && aRUIController.IsScreenPointOverAnyUIButton(screenPos))
+        {
+            holdCandidate = false;
+            isDragging = false;
+            holdFinger = null;
+            return;
+        }
 
-        // Case A: we were holding on the plant but never transitioned to drag -> treat as a TAP on plant
+        // Case A: short tap on plant
         if (holdCandidate && !isDragging)
         {
-            OnPlantTapped(finger); // placeholder behavior
+            OnPlantTapped(finger);
         }
-        // Case B: we were NOT holding on the plant (finger down wasn't on plant) -> treat as TAP on empty plane
+        // Case B: tap on empty space
         else if (!holdCandidate && !isDragging)
         {
-
-            Vector2 screenPos = finger.currentTouch.screenPosition;
-
             if (!HitActivePlant(screenPos))
             {
-                // Only deselect when NOT releasing over a UI button
-                bool overUIButton = aRUIController != null && aRUIController.IsScreenPointOverAnyUIButton(screenPos);
-
-                if (!overUIButton)
-                {
-                    DisableAllSelectionEffects(activePlant);
-                    aRUIController.SetTab(ARUIController.Tab.None);
-                    selectedPlantData.selectedPart = PlantPart.None;
-                }
+                DisableAllSelectionEffects(activePlant);
+                aRUIController.SetTab(ARUIController.Tab.None);
+                selectedPlantData.selectedPart = PlantPart.None;
             }
 
-            if (TryARRaycastToAllowedPlane(finger.currentTouch.screenPosition, out Pose pose))
+            if (TryARRaycastToAllowedPlane(screenPos, out Pose pose))
             {
-
                 if (!isPlantPlaced)
                 {
-                    // Place new
                     PlacePlant(pose);
-                    /*if (activePlant.GetComponent<Collider>() == null)
-                        activePlant.AddComponent<BoxCollider>();*/
-                }
-                else
-                {
-
-                    // Move existing
-                    //desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
                 }
             }
         }
 
-        // Reset states
         holdCandidate = false;
         isDragging = false;
         holdFinger = null;

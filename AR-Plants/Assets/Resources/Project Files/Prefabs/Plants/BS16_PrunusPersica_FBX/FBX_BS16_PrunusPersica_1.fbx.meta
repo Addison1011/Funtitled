@@ -1,9 +1,34 @@
 fileFormatVersion: 2
 guid: d2f08fa4aef35ca4696ad7ef7665bc0e
 ModelImporter:
-  serializedVersion: 22200
+  serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bark01_SHD
+    second: {fileID: 2100000, guid: 8b51225d4665297479e01bf36e229be2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Fruit01_su_SHD
+    second: {fileID: 2100000, guid: bfdc2d7a91e84194aa3a3ac696687688, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Leaf01_su_SHD
+    second: {fileID: 2100000, guid: 6ff6a61eecc880c44894710c46908ad1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Leaf02_su_SHD
+    second: {fileID: 2100000, guid: 8fafbeb78b57c3e48915bf4067fe0975, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Leaf03_su_SHD
+    second: {fileID: 2100000, guid: e33c09eb9e2ef5545b6fdbcb4e0bd4b7, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -56,6 +81,9 @@ ModelImporter:
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
     optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8

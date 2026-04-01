@@ -120,17 +120,17 @@ public class View3DInputController : MonoBehaviour
         //Blue Lily
         else if (selectedPlantData.plantInfo.scientificName == "Agapanthus praecox")
         {
-            plant.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            plant.transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
         }
         //Oleander
         else if (selectedPlantData.plantInfo.scientificName == "Nerium oleander")
         {
-            plant.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            plant.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
         }
         //Dandilion
         else if (selectedPlantData.plantInfo.scientificName == "Taraxacum officinale")
         {
-            plant.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            plant.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
         }
         //Peach Tree
         else if (selectedPlantData.plantInfo.scientificName == "Prunus persica")
@@ -140,7 +140,7 @@ public class View3DInputController : MonoBehaviour
         //Bird of paradise
         else if (selectedPlantData.plantInfo.scientificName == "Strelitzia reginae")
         {
-            plant.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            plant.transform.localScale = new Vector3(0.07f, 0.07f, 0.07f);
         }
     }
 
@@ -212,7 +212,7 @@ public class View3DInputController : MonoBehaviour
 
         if (HitActivePlant(screenPos))
         {
-            resizePlantModelOnPinch();
+            //resizePlantModelOnPinch();
         }
 
         // If plant exists and touch is on the plant, start HOLD candidate
@@ -233,7 +233,7 @@ public class View3DInputController : MonoBehaviour
 
     private void OnFingerMove(Finger finger)
     {
-        resizePlantModelOnPinch();
+        //resizePlantModelOnPinch();
         if (!isDragging || activePlant == null || finger != holdFinger) return;
 
         if (EnhancedTouch.Touch.activeTouches.Count == 1)
