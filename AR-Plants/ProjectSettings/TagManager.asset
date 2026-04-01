@@ -22,6 +22,8 @@ TagManager:
   - DataHolder
   - SelectedCategory
   - MainMenuPopulator
+  - MainMenu
+  - Categories
   layers:
   - Default
   - TransparentFX

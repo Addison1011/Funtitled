@@ -32,41 +32,7 @@ public class categories : MonoBehaviour
     //Chat gpt error fix. pulling database from web request for android compatibility
     void Awake()
     {
-        string dbName = "PlantInfoDB.db";
-        string persistentPath = Path.Combine(Application.persistentDataPath, dbName);
-
-        // First-run copy from StreamingAssets -> persistentDataPath
-        if (!File.Exists(persistentPath))
-        {
-#if UNITY_ANDROID
-            // StreamingAssets on Android must be read via UnityWebRequest
-            string srcPath = Path.Combine(Application.streamingAssetsPath, dbName);
-            // srcPath will be like "jar:file:///.../assets/PlantInfoDB.db"
-            var req = UnityEngine.Networking.UnityWebRequest.Get(srcPath);
-            var op = req.SendWebRequest();
-            while (!op.isDone) { }  // simple blocking copy during Awake()
-            if (req.result != UnityEngine.Networking.UnityWebRequest.Result.Success)
-            {
-                Debug.LogError("Failed to copy DB from StreamingAssets: " + req.error);
-            }
-            else
-            {
-                File.WriteAllBytes(persistentPath, req.downloadHandler.data);
-            }
-#else
-                // Desktop/editor/iOS etc.
-                string srcPath = Path.Combine(Application.streamingAssetsPath, dbName);
-                File.Copy(srcPath, persistentPath, overwrite: true);
-#endif
-        }
-
-        // Open the DB from a real filesystem location
-        _connection = new SQLite4Unity3d.SQLiteConnection(
-            persistentPath,
-            SQLite4Unity3d.SQLiteOpenFlags.ReadWrite | SQLite4Unity3d.SQLiteOpenFlags.Create
-        );
-
-        types = _connection.Table<PlantTypes>().ToList();
+        types = DatabaseManager.Instance.GetAllPlantTypes();
     }
 
     public void Start()
