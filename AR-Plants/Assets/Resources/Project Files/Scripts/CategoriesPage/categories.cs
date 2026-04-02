@@ -29,6 +29,8 @@ public class categories : MonoBehaviour
     [SerializeField] private string contentHandleName;
     [SerializeField] private GameObject MainMenuPopulator;
 
+    private VisualElement categoryMenuRoot;
+
     //Chat gpt error fix. pulling database from web request for android compatibility
     void Awake()
     {
@@ -63,11 +65,18 @@ public class categories : MonoBehaviour
         categoryButtonDataHolder = Instantiate(Resources.Load<GameObject>("categoryButtonDataHolder"));
 
         // Get the root and content container
-        var root = categMenu.GetComponent<UIDocument>().rootVisualElement;
-        var content = root.Q<VisualElement>(contentHandleName);
+        categoryMenuRoot = categMenu.GetComponent<UIDocument>().rootVisualElement;
+        var content = categoryMenuRoot.Q<VisualElement>(contentHandleName);
+
+        // Apply and listen for theme updates on the categories menu.
+        if (ColorThemeManager.Instance != null)
+        {
+            ColorThemeManager.Instance.ApplyThemeToUIDocument(categoryMenuRoot);
+            ColorThemeManager.Instance.SubscribeToThemeChange(OnThemeChanged);
+        }
 
         //add functionality to settings button
-        Button settingsButton = root.Q<Button>("settings-button");
+        Button settingsButton = categoryMenuRoot.Q<Button>("settings-button");
         if (settingsButton != null)
         {
             settingsButton.clicked += () =>
@@ -105,6 +114,7 @@ public class categories : MonoBehaviour
 
 
             categoryNameLabel.text = currentType.typeName;
+            categoryNameLabel.style.color = new Color(1f, 1f, 1f, 1f);
 
             // Add the button to the content container
             content.Add(newCategoryInstance);
@@ -122,6 +132,45 @@ public class categories : MonoBehaviour
 
             //Wire button to its corresponding data loader instance
             button.clicked += dataLoader.OnClick;
+        }
+
+        // Re-apply after dynamic cards are added so generated elements also match the active theme.
+        if (ColorThemeManager.Instance != null)
+        {
+            ColorThemeManager.Instance.ApplyThemeToUIDocument(categoryMenuRoot);
+        }
+
+        ApplyCategoryCardTextOverrides();
+    }
+
+    private void OnThemeChanged(ColorThemeManager.ColorTheme newTheme)
+    {
+        if (categoryMenuRoot != null && ColorThemeManager.Instance != null)
+        {
+            ColorThemeManager.Instance.ApplyThemeToUIDocument(categoryMenuRoot);
+            ApplyCategoryCardTextOverrides();
+        }
+    }
+
+    private void ApplyCategoryCardTextOverrides()
+    {
+        if (categoryMenuRoot == null)
+        {
+            return;
+        }
+
+        var categoryLabels = categoryMenuRoot.Query<Label>().Where(l => l.name == "CategoryName").ToList();
+        foreach (Label label in categoryLabels)
+        {
+            label.style.color = new Color(1f, 1f, 1f, 1f);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (ColorThemeManager.Instance != null)
+        {
+            ColorThemeManager.Instance.UnsubscribeFromThemeChange(OnThemeChanged);
         }
     }
 

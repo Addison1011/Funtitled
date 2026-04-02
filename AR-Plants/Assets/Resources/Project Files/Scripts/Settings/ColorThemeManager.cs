@@ -101,7 +101,7 @@ public class ColorThemeManager : MonoBehaviour
             uiTheme = new UITheme
             {
                 textColor = new Color(1f, 1f, 1f, 1f),                    // White text
-                backgroundColor = new Color(0.1f, 0.1f, 0.1f, 1f),        // Dark gray background
+                backgroundColor = new Color(0f, 0f, 0f, 1f),              // Pure black background
                 headerBackgroundColor = new Color(1f, 0.5f, 0f, 1f)       // Bright orange header
             }
         };
@@ -211,6 +211,11 @@ public class ColorThemeManager : MonoBehaviour
         VisualElement contentContainer = root.Q<VisualElement>("content");
         if (contentContainer != null)
             contentContainer.style.backgroundColor = uiTheme.backgroundColor;
+
+        // Categories page uses a dedicated container for category cards.
+        VisualElement categoryContainer = root.Q<VisualElement>("cateCont");
+        if (categoryContainer != null)
+            categoryContainer.style.backgroundColor = uiTheme.backgroundColor;
 
         VisualElement plantElement = root.Q<VisualElement>("Plant");
         if (plantElement != null)
