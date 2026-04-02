@@ -211,6 +211,12 @@ public class SettingsHandler : MonoBehaviour
 
     public void UpdateSoundManager()
     {
+        if (SoundManager.Instance == null)
+        {
+            Debug.LogWarning("SettingsHandler: SoundManager.Instance is null, cannot update sound.");
+            return;
+        }
+
         //update sound volumes
         float masterVolumeModifier = settings.masterVolume * 0.01f;
 

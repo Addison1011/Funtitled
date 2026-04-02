@@ -16,7 +16,8 @@ public class PlantTypes
 }
 public class categories : MonoBehaviour
 {
-
+    public static GameObject CurrentCategoriesMenu;
+    public static categories Instance;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private SQLiteConnection _connection;
@@ -101,10 +102,39 @@ public class categories : MonoBehaviour
 
     void OnEnable()
     {
+        Instance = this;
+        RecreateMenu();
+    }
+
+    public void RecreateMenu()
+    {
+        // Destroy old menu if it exists
+        if (CurrentCategoriesMenu != null)
+        {
+            #if UNITY_EDITOR
+            DestroyImmediate(CurrentCategoriesMenu);
+            #else
+            Destroy(CurrentCategoriesMenu);
+            #endif
+            Debug.Log("categories: RecreateMenu - Destroyed old menu.");
+        }
+
+        // Destroy old button data holder if it exists
+        if (categoryButtonDataHolder != null)
+        {
+            #if UNITY_EDITOR
+            DestroyImmediate(categoryButtonDataHolder);
+            #else
+            Destroy(categoryButtonDataHolder);
+            #endif
+            Debug.Log("categories: RecreateMenu - Destroyed old button data holder.");
+        }
 
         // Instantiate UI and data holder prefabs and keep references
         
         GameObject categMenu = Instantiate(categMenuPrefab);
+        CurrentCategoriesMenu = categMenu;
+
         categoryButtonDataHolder = Instantiate(Resources.Load<GameObject>("categoryButtonDataHolder"));
 
         // Get the root and content container
@@ -113,6 +143,9 @@ public class categories : MonoBehaviour
         if (ColorThemeManager.Instance != null)
         {
             ColorThemeManager.Instance.SubscribeToThemeChange(OnThemeChanged);
+            // Apply current theme to the newly created menu
+            ColorThemeManager.Instance.ApplyThemeToUIDocument(root);
+            Debug.Log("categories: RecreateMenu - Applied theme to new menu.");
         }
 
         var content = root.Q<VisualElement>(contentHandleName);
@@ -123,9 +156,25 @@ public class categories : MonoBehaviour
         {
             settingsButton.clicked += () =>
             {
-                SoundManager.Instance.PlayDefaultButtonSound();
-                GameObject settingsMenu = Instantiate(settingsPrefab);
+                if (SoundManager.Instance != null)
+                {
+                    SoundManager.Instance.PlayDefaultButtonSound();
+                }
+                if (settingsPrefab != null)
+                {
+                    GameObject settingsMenu = Instantiate(settingsPrefab);
+                }
+                else
+                {
+                    Debug.LogError("categories: settingsPrefab is null, cannot instantiate settings menu.");
+                }
             };
+        }
+
+        if (types == null || types.Count == 0)
+        {
+            Debug.LogWarning("categories: types list is null or empty, cannot populate menu.");
+            return;
         }
 
         for (int i = 0; i < types.Count; i++)
@@ -133,6 +182,18 @@ public class categories : MonoBehaviour
             PlantTypes currentType = types[i];
 
             // Create a new button from the template
+            if (categoryCardTemplate == null)
+            {
+                Debug.LogError("categories: categoryCardTemplate is null, cannot create category buttons.");
+                break;
+            }
+
+            if (currentType == null)
+            {
+                Debug.LogWarning($"categories: currentType at index {i} is null, skipping.");
+                continue;
+            }
+
             VisualElement newCategoryInstance = categoryCardTemplate.CloneTree();
             Label categoryNameLabel = newCategoryInstance.Q<Label>("CategoryName");
             Button button = newCategoryInstance.Q<Button>("CardButton");
@@ -158,8 +219,15 @@ public class categories : MonoBehaviour
             categoryNameLabel.text = currentType.typeName;
 
             // Add the button to the content container
-            content.Add(newCategoryInstance);
-            Debug.Log(currentType.typeName);
+            if (content != null)
+            {
+                content.Add(newCategoryInstance);
+                Debug.Log($"categories: RecreateMenu - Added button for {currentType.typeName}");
+            }
+            else
+            {
+                Debug.LogWarning($"categories: RecreateMenu - Content container is null, cannot add button for {currentType.typeName}");
+            }
 
             // Creates a new GameObject holding its own LoadDatabaseInfo script pertaining to the specific plant in the itteration
             // This allows each button to have its own data loader instance
@@ -170,6 +238,8 @@ public class categories : MonoBehaviour
 
             LoadCategoriesMenu dataLoader = dataObj.AddComponent<LoadCategoriesMenu>();
             dataLoader.plantTypes = currentType;
+            dataLoader.MainMenuPopulatorPrefab = MainMenuPopulator;
+            dataLoader.CategoriesMenuObject = categMenu;
 
             //Wire button to its corresponding data loader instance
             button.clicked += dataLoader.OnClick;
@@ -207,6 +277,11 @@ public class categories : MonoBehaviour
         if (ColorThemeManager.Instance != null)
         {
             ColorThemeManager.Instance.UnsubscribeFromThemeChange(OnThemeChanged);
+        }
+
+        if (CurrentCategoriesMenu == gameObject)
+        {
+            CurrentCategoriesMenu = null;
         }
     }
 

@@ -7,6 +7,7 @@ public class LoadCategoriesMenu : MonoBehaviour
 {
     public PlantTypes plantTypes;
     public GameObject MainMenuPopulatorPrefab;
+    public GameObject CategoriesMenuObject;
 
     void Start()
     {
@@ -17,21 +18,85 @@ public class LoadCategoriesMenu : MonoBehaviour
     public void OnClick()
     {
         //--------------------------------
-        //EDITED THIS FUNCTION TO CLEAR THE CURRENT PLANT BUTTONS AND REPOPULATE WITH THE PLANTS OF THE SELECTED CATEGORY
+        // Clear the current plant buttons and repopulate with the plants of the selected category
         //--------------------------------
-        GameObject categories = GameObject.Find("categMenu(Clone)");
-        GameObject populator = GameObject.FindGameObjectWithTag("MainMenuPopulator");
-        GameObject.FindGameObjectWithTag("MainMenu").GetComponent<UIDocument>().panelSettings.sortingOrder = 1;
-        categories.GetComponent<UIDocument>().panelSettings.sortingOrder = 0;
-
         SoundManager.Instance.PlayDefaultButtonSound();
-        SelectedCategory data = GameObject.FindGameObjectWithTag("SelectedCategory").GetComponent<SelectedCategory>();
-        data.plantTypes = this.plantTypes;
-        Debug.Log("Button clicked for " + data.plantTypes.typeName);
 
-        //Added function to clear current plant buttons and repopulate with plants of the selected category
-        populator.GetComponent<PopulateMenuTest>().ClearAndPopulateMenuWithCategoryPlants(this.plantTypes);
+        SelectedCategory data = GameObject.FindGameObjectWithTag("SelectedCategory")?.GetComponent<SelectedCategory>();
+        if (data != null)
+        {
+            data.plantTypes = this.plantTypes;
+            Debug.Log("Category clicked: " + data.plantTypes.typeName);
+        }
+        else
+        {
+            Debug.LogWarning("SelectedCategory object not found or missing component.");
+        }
 
+        var populator = FindAnyObjectByType<PopulateMenuTest>();
+        if (populator == null)
+        {
+            if (MainMenuPopulatorPrefab != null)
+            {
+                var populatorObj = Instantiate(MainMenuPopulatorPrefab);
+                populator = populatorObj.GetComponent<PopulateMenuTest>();
+                if (populator == null)
+                {
+                    Debug.LogError("MainMenuPopulatorPrefab did not contain PopulateMenuTest component.");
+                    return;
+                }
+            }
+            else
+            {
+                Debug.LogError("Populate menus: no existing PopulateMenuTest and MainMenuPopulatorPrefab is null.");
+                return;
+            }
+        }
+
+        if (populator.mainMenu != null)
+        {
+            populator.mainMenu.SetActive(true);
+            populator.mainMenu.GetComponent<UIDocument>().panelSettings.sortingOrder = 1;
+        }
+        else if (populator.MainMenuPrefab != null)
+        {
+            var newMainMenu = Instantiate(populator.MainMenuPrefab);
+            populator.SetMainMenuAndRefresh(newMainMenu);
+            if (populator.mainMenu != null)
+            {
+                populator.mainMenu.GetComponent<UIDocument>().panelSettings.sortingOrder = 1;
+                Debug.Log("PopulateMenuTest: mainMenu instantiated from MainMenuPrefab.");
+            }
+            else
+            {
+                Debug.LogError("PopulateMenuTest: instantiated mainMenu is null after SetMainMenuAndRefresh.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("PopulateMenuTest mainMenu is null and no prefab available.");
+        }
+
+        if (populator.mainMenu == null)
+        {
+            Debug.LogError("LoadCategoriesMenu.OnClick: cannot continue because mainMenu is null.");
+            return;
+        }
+
+        if (CategoriesMenuObject != null)
+        {
+            CategoriesMenuObject.SetActive(false);
+            var categoriesPanel = CategoriesMenuObject.GetComponent<UIDocument>();
+            if (categoriesPanel != null)
+            {
+                categoriesPanel.panelSettings.sortingOrder = 0;
+            }
+        }
+
+        // ensure category menu reference is preserved
+        categories.CurrentCategoriesMenu = CategoriesMenuObject;
+
+        populator.ClearAndPopulateMenuWithCategoryPlants(this.plantTypes);
     }
 
 
