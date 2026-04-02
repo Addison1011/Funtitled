@@ -2,8 +2,8 @@
     <Style src="project://database/Assets/Resources/Project%20Files/Scripts/Main%20Menu/MainMenuComponent/MainMenu.uss?fileID=7433441132597879392&amp;guid=03c63967f6e3b1b4499075883a01a6e5&amp;type=3#MainMenu"/>
     <Style src="project://database/Assets/Resources/Project%20Files/Scripts/Settings/SettingsPage.uss?fileID=7433441132597879392&amp;guid=4080579518079a54a944a0b1208c2fca&amp;type=3#SettingsPage"/>
     <ui:VisualElement name="root" class="root">
-        <ui:VisualElement name="header" class="header" style="height: 165px;">
-            <ui:Label text="Plantify" class="app-title" style="font-size: 54px;"/>
+        <ui:VisualElement name="header" class="header" style="height: 8%; align-self: auto; align-content: auto; justify-content: center;">
+            <ui:Label text="Plantify" name="title" style="width: 60%; height: 100%; -unity-font-definition: url(&quot;project://database/Assets/MobileARTemplateAssets/UI/Fonts/Inter-Regular.ttf?fileID=12800000&amp;guid=109207b3ec45446afb082067696d36e6&amp;type=3#Inter-Regular&quot;); -unity-font-style: bold; font-size: 100%; -unity-text-align: middle-center; align-items: center; align-self: center; justify-content: space-between; color: rgb(255, 255, 255); left: auto; -unity-background-image-tint-color: rgb(104, 104, 104); background-color: rgba(9, 9, 9, 0);"/>
         </ui:VisualElement>
         <ui:VisualElement name="content" style="flex-grow: 1; padding-left: 0; padding-right: 0; opacity: 1; align-items: stretch; justify-content: flex-start; align-self: auto; align-content: auto; padding-top: 15px;">
             <ui:Toggle label="High Contrast Mode" name="high-contrast-button" style="font-size: 40px; margin-bottom: 15px; opacity: 1; display: flex; visibility: visible; overflow: hidden; -unity-font-style: bold; flex-direction: row-reverse; align-self: center; align-items: stretch; margin-top: 15px;"/>
@@ -26,7 +26,7 @@
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:Label text="Information gathered from iNaturalist.&#10;Available from https://www.inaturalist.org.&#10;Accessed 2025-2026." name="iNaturalistCitation" style="font-size: 40px; -unity-font-style: bold; white-space: normal; -unity-text-align: upper-center;"/>
-        <ui:VisualElement name="footer" class="header" style="height: 165px;">
+        <ui:VisualElement name="footer" class="header" style="height: 8%;">
             <ui:Button text="Don&apos;t Save" name="cancel-button" style="align-self: auto; align-items: auto; flex-shrink: 0; font-size: 40px; -unity-font-style: bold;"/>
             <ui:Button text="Save Changes" name="save-button" style="align-self: auto; align-items: auto; flex-shrink: 0; font-size: 40px; -unity-font-style: bold;"/>
         </ui:VisualElement>
