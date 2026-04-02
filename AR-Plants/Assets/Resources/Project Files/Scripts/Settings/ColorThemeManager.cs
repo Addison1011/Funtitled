@@ -76,7 +76,7 @@ public class ColorThemeManager : MonoBehaviour
             themeName = "Normal",
             buttonTheme = new ButtonTheme
             {
-                normalColor = new Color(0.467f, 0.600f, 0.455f, 1f),    //#779974 - Medium green
+                normalColor = new Color(0.173f, 0.396f, 0.149f, 1f),    //#2C6526 - Medium green
                 hoverColor = new Color(0.937f, 0.992f, 0.929f, 1f),     //#EFFDED - Light green
                 pressedColor = new Color(0f, 0.404f, 0.106f, 1f)        //#00671B - Dark green
             },
