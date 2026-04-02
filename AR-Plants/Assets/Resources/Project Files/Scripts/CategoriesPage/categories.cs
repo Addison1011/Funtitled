@@ -31,6 +31,24 @@ public class categories : MonoBehaviour
     [SerializeField] private GameObject MainMenuPopulator;
     private VisualElement categMenuRoot;
 
+    private void DestroyRuntimeObject(ref GameObject obj)
+    {
+        if (obj == null)
+        {
+            return;
+        }
+
+        // Never destroy prefab assets referenced from the inspector.
+        if (!obj.scene.IsValid())
+        {
+            obj = null;
+            return;
+        }
+
+        Destroy(obj);
+        obj = null;
+    }
+
     //Chat gpt error fix. pulling database from web request for android compatibility
     void Awake()
     {
@@ -75,7 +93,11 @@ public class categories : MonoBehaviour
         Debug.Log("SceneCounter:" + GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter);
         if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter >= 1)
         {
-            Instantiate(Resources.Load<GameObject>("MainMenuPopulator"));
+            var existingPopulator = FindAnyObjectByType<PopulateMenuTest>();
+            if (existingPopulator == null)
+            {
+                Instantiate(Resources.Load<GameObject>("MainMenuPopulator"));
+            }
         }
         //GameObject tempSettings = Instantiate(settingsPrefab);
         //Destroy(tempSettings);
@@ -109,26 +131,12 @@ public class categories : MonoBehaviour
     public void RecreateMenu()
     {
         // Destroy old menu if it exists
-        if (CurrentCategoriesMenu != null)
-        {
-            #if UNITY_EDITOR
-            DestroyImmediate(CurrentCategoriesMenu);
-            #else
-            Destroy(CurrentCategoriesMenu);
-            #endif
-            Debug.Log("categories: RecreateMenu - Destroyed old menu.");
-        }
+        DestroyRuntimeObject(ref CurrentCategoriesMenu);
+        Debug.Log("categories: RecreateMenu - Destroyed old menu.");
 
         // Destroy old button data holder if it exists
-        if (categoryButtonDataHolder != null)
-        {
-            #if UNITY_EDITOR
-            DestroyImmediate(categoryButtonDataHolder);
-            #else
-            Destroy(categoryButtonDataHolder);
-            #endif
-            Debug.Log("categories: RecreateMenu - Destroyed old button data holder.");
-        }
+        DestroyRuntimeObject(ref categoryButtonDataHolder);
+        Debug.Log("categories: RecreateMenu - Destroyed old button data holder.");
 
         // Instantiate UI and data holder prefabs and keep references
         

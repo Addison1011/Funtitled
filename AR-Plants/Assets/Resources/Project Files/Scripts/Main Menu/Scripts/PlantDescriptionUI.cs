@@ -12,14 +12,45 @@ public class PlantDescriptionUI : MonoBehaviour
     private bool mapIsFullScreen = false; // for map to become full screen
     private VisualElement contentMask; // for darkening the background when map is full screen
     private VisualElement root; // Store root for theme updates
+    private GameObject plantDescriptionObject;
+    private Button arButton;
+    private Button backButton;
+    private Button view3DButton;
+    private Button fullScreenButton;
     
     void OnEnable()
     {
-        PlantInfo plantInfo = GameObject.FindGameObjectWithTag("SelectedPlantData").GetComponent<SelectedPlantData>().plantInfo;//references SelectedPlantData script
-        // Load the UXML and get the root VisualElement
-        root = GameObject.FindGameObjectWithTag("PlantDescription").GetComponent<UIDocument>().rootVisualElement;
+        var selectedPlantObj = GameObject.FindGameObjectWithTag("SelectedPlantData");
+        if (selectedPlantObj == null)
+        {
+            Debug.LogError("PlantDescriptionUI: SelectedPlantData object not found.");
+            return;
+        }
 
-        plantInfo = GameObject.FindGameObjectWithTag("SelectedPlantData").GetComponent<SelectedPlantData>().plantInfo;
+        var selectedPlantData = selectedPlantObj.GetComponent<SelectedPlantData>();
+        if (selectedPlantData == null)
+        {
+            Debug.LogError("PlantDescriptionUI: SelectedPlantData component missing.");
+            return;
+        }
+
+        plantInfo = selectedPlantData.plantInfo;
+        if (plantInfo == null)
+        {
+            Debug.LogError("PlantDescriptionUI: plantInfo is null.");
+            return;
+        }
+
+        plantDescriptionObject = GameObject.FindGameObjectWithTag("PlantDescription");
+        var uiDoc = plantDescriptionObject != null ? plantDescriptionObject.GetComponent<UIDocument>() : GetComponent<UIDocument>();
+        if (uiDoc == null)
+        {
+            Debug.LogError("PlantDescriptionUI: UIDocument not found on PlantDescription object.");
+            return;
+        }
+
+        // Load the UXML and get the root VisualElement
+        root = uiDoc.rootVisualElement;
         Label commonNameLabel = root.Q<Label>("CommonName");
         Label scientificNameLabel = root.Q<Label>("ScientificName");
         Label descriptionLabel = root.Q<Label>("PlantDescription");
@@ -70,18 +101,29 @@ public class PlantDescriptionUI : MonoBehaviour
             ColorThemeManager.Instance.SubscribeToThemeChange(OnThemeChanged);
         }
 
-        // Find the button by its name
-        Button arButton = root.Q<Button>("ARButton");
-        Button backButton = root.Q<Button>("BackButton");
-        Button view3DButton = root.Q<Button>("View3DButton");
-        Button fullScreenButton = root.Q<Button>("FullScreenButton");
+        // Find the buttons by name and register handlers when present.
+        arButton = root.Q<Button>("ARButton");
+        backButton = root.Q<Button>("BackButton");
+        view3DButton = root.Q<Button>("View3DButton");
+        fullScreenButton = root.Q<Button>("FullScreenButton");
 
-        // Register the event handler for the 'clicked' event
-        if (arButton != null && backButton != null)
+        if (arButton != null)
         {
             arButton.clicked += OnARButtonClicked;
+        }
+
+        if (backButton != null)
+        {
             backButton.clicked += OnBackButtonClicked;
+        }
+
+        if (view3DButton != null)
+        {
             view3DButton.clicked += OnView3DButtonClicked;
+        }
+
+        if (fullScreenButton != null)
+        {
             fullScreenButton.clicked += OnFullScreenButtonClicked;
         }
 
@@ -101,7 +143,25 @@ public class PlantDescriptionUI : MonoBehaviour
     {
         Debug.Log("Button 'myButton' was clicked!");
         SoundManager.Instance.PlayDefaultButtonSound();
-        Destroy(this.gameObject);
+
+        if (plantDescriptionObject == null)
+        {
+            plantDescriptionObject = GameObject.FindGameObjectWithTag("PlantDescription");
+        }
+
+        var targetToDestroy = plantDescriptionObject != null ? plantDescriptionObject : gameObject;
+        Destroy(targetToDestroy);
+
+        var populator = FindAnyObjectByType<PopulateMenuTest>();
+        if (populator != null && populator.mainMenu != null)
+        {
+            populator.mainMenu.SetActive(true);
+            var mainMenuDoc = populator.mainMenu.GetComponent<UIDocument>();
+            if (mainMenuDoc != null)
+            {
+                mainMenuDoc.panelSettings.sortingOrder = 1;
+            }
+        }
     }
 
     private void OnView3DButtonClicked()
@@ -170,6 +230,26 @@ public class PlantDescriptionUI : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (arButton != null)
+        {
+            arButton.clicked -= OnARButtonClicked;
+        }
+
+        if (backButton != null)
+        {
+            backButton.clicked -= OnBackButtonClicked;
+        }
+
+        if (view3DButton != null)
+        {
+            view3DButton.clicked -= OnView3DButtonClicked;
+        }
+
+        if (fullScreenButton != null)
+        {
+            fullScreenButton.clicked -= OnFullScreenButtonClicked;
+        }
+
         // Unsubscribe from theme changes to prevent memory leaks
         if (ColorThemeManager.Instance != null)
         {

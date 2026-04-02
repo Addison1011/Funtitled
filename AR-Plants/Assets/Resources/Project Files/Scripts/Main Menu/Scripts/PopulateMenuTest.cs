@@ -59,6 +59,38 @@ public class PopulateMenuTest : MonoBehaviour
 
     public GameObject mainMenu;
 
+    private void DestroyRuntimeObject(ref GameObject obj)
+    {
+        if (obj == null)
+        {
+            return;
+        }
+
+        // Never destroy prefab assets referenced from the inspector.
+        if (!obj.scene.IsValid())
+        {
+            obj = null;
+            return;
+        }
+
+        Destroy(obj);
+        obj = null;
+    }
+
+    private bool TryCreatePlantButtonDataHolder()
+    {
+        var holderPrefab = Resources.Load<GameObject>("PlantButtonDataHolder");
+        if (holderPrefab == null)
+        {
+            Debug.LogError("PopulateMenuTest: PlantButtonDataHolder prefab not found in Resources.");
+            plantButtonDataHolder = null;
+            return false;
+        }
+
+        plantButtonDataHolder = Instantiate(holderPrefab);
+        return plantButtonDataHolder != null;
+    }
+
     public void SetMainMenuAndRefresh(GameObject newMainMenu)
     {
         mainMenu = newMainMenu;
@@ -112,8 +144,24 @@ public class PopulateMenuTest : MonoBehaviour
     public void Start()
     {
         // Set sorting order on start to ensure correct menu is on top
-        GameObject.Find("categMenu(Clone)").GetComponent<UIDocument>().panelSettings.sortingOrder = 1;
-        mainMenu.GetComponent<UIDocument>().panelSettings.sortingOrder = 0;
+        var categoriesMenu = GameObject.Find("categMenu(Clone)");
+        if (categoriesMenu != null)
+        {
+            var categoriesDoc = categoriesMenu.GetComponent<UIDocument>();
+            if (categoriesDoc != null)
+            {
+                categoriesDoc.panelSettings.sortingOrder = 1;
+            }
+        }
+
+        if (mainMenu != null)
+        {
+            var mainMenuDoc = mainMenu.GetComponent<UIDocument>();
+            if (mainMenuDoc != null)
+            {
+                mainMenuDoc.panelSettings.sortingOrder = 0;
+            }
+        }
 
         if (GameManager.Instance.sceneCounter >= 1)
         {
@@ -181,23 +229,62 @@ public class PopulateMenuTest : MonoBehaviour
     void OnEnable()
     {
         // Destroy old plantButtonDataHolder if it exists
-        if (plantButtonDataHolder != null)
-        {
-            #if UNITY_EDITOR
-            DestroyImmediate(plantButtonDataHolder);
-            #else
-            Destroy(plantButtonDataHolder);
-            #endif
-            plantButtonDataHolder = null;
-        }
+        DestroyRuntimeObject(ref plantButtonDataHolder);
 
         // Instantiate UI and data holder prefabs and keep references
-        mainMenu = Instantiate(mainMenuPrefab);
-        plantButtonDataHolder = Instantiate(Resources.Load<GameObject>("PlantButtonDataHolder"));
+        if (mainMenu == null)
+        {
+            var existingMainMenu = GameObject.FindGameObjectWithTag("MainMenu");
+            if (existingMainMenu != null)
+            {
+                mainMenu = existingMainMenu;
+            }
+            else
+            {
+                mainMenu = Instantiate(mainMenuPrefab);
+            }
+        }
+
+        if (mainMenu == null)
+        {
+            Debug.LogError("PopulateMenuTest: mainMenu is null in OnEnable.");
+            return;
+        }
+
+        mainMenu.SetActive(true);
+
+        if (!TryCreatePlantButtonDataHolder())
+        {
+            Debug.LogError("PopulateMenuTest: cannot initialize plant button data holder in OnEnable.");
+            return;
+        }
 
         // Get the root and content container
-        mainMenuRoot = mainMenu.GetComponent<UIDocument>().rootVisualElement;
+        var mainMenuDocComponent = mainMenu.GetComponent<UIDocument>();
+        if (mainMenuDocComponent == null)
+        {
+            Debug.LogError("PopulateMenuTest: mainMenu has no UIDocument in OnEnable.");
+            return;
+        }
+
+        mainMenuRoot = mainMenuDocComponent.rootVisualElement;
+        if (mainMenuRoot == null)
+        {
+            Debug.LogError("PopulateMenuTest: mainMenu rootVisualElement is null in OnEnable.");
+            return;
+        }
+
         var content = mainMenuRoot.Q<VisualElement>(contentHandelName);
+        if (content == null)
+        {
+            content = mainMenuRoot.Q<VisualElement>("content");
+        }
+
+        if (content == null)
+        {
+            Debug.LogError($"PopulateMenuTest: content container '{contentHandelName}' not found in OnEnable.");
+            return;
+        }
 
         // Apply theme to main menu
         if (ColorThemeManager.Instance != null)
@@ -255,6 +342,12 @@ public class PopulateMenuTest : MonoBehaviour
 
             Button button = newPlantCardInstance.Q<Button>("PlantDescriptionButton");
 
+            if (plantNameLabel == null || scientificNameLabel == null || button == null)
+            {
+                Debug.LogWarning($"PopulateMenuTest: plant card template missing required elements for '{currentPlant.plantName}', skipping.");
+                continue;
+            }
+
             // Plant card text should always be white (displayed over image background)
             plantNameLabel.style.color = new Color(1f, 1f, 1f, 1f); // White
             scientificNameLabel.style.color = new Color(1f, 1f, 1f, 1f); // White
@@ -276,6 +369,13 @@ public class PopulateMenuTest : MonoBehaviour
             // Creates a new GameObject holding its own LoadDatabaseInfo script pertaining to the specific plant in the itteration
             // This allows each button to have its own data loader instance
             GameObject dataObj = new GameObject($"PlantData_{currentPlant.plantName}");
+            if (plantButtonDataHolder == null)
+            {
+                Debug.LogWarning($"PopulateMenuTest: plantButtonDataHolder became null while wiring '{currentPlant.plantName}'.");
+                Destroy(dataObj);
+                continue;
+            }
+
             dataObj.transform.SetParent(plantButtonDataHolder.transform, false);
 
             LoadDatabaseInfo dataLoader = dataObj.AddComponent<LoadDatabaseInfo>();
@@ -354,17 +454,31 @@ public class PopulateMenuTest : MonoBehaviour
         }
 
         // Destroy old plantButtonDataHolder before creating a new one
-        if (plantButtonDataHolder != null)
+        DestroyRuntimeObject(ref plantButtonDataHolder);
+
+        // Clean any stale runtime data holders before creating the new one.
+        var staleDataHolders = GameObject.FindGameObjectsWithTag("DataHolder");
+        for (int i = 0; i < staleDataHolders.Length; i++)
         {
-            #if UNITY_EDITOR
-            DestroyImmediate(plantButtonDataHolder);
-            #else
-            Destroy(plantButtonDataHolder);
-            #endif
-            plantButtonDataHolder = null;
+            var staleHolder = staleDataHolders[i];
+            if (staleHolder == null)
+            {
+                continue;
+            }
+
+            if (plantButtonDataHolder != null && staleHolder == plantButtonDataHolder)
+            {
+                continue;
+            }
+
+            Destroy(staleHolder);
         }
 
-        plantButtonDataHolder = Instantiate(Resources.Load<GameObject>("PlantButtonDataHolder"));
+        if (!TryCreatePlantButtonDataHolder())
+        {
+            Debug.LogError("PopulateMenuTest: cannot initialize plant button data holder in category population.");
+            return;
+        }
         var root = mainMenu.GetComponent<UIDocument>().rootVisualElement;
         mainMenuRoot = root;
 
@@ -406,15 +520,6 @@ public class PopulateMenuTest : MonoBehaviour
         Debug.Log($"PopulateMenuTest: Selected category '{category.typeName}' (ID {category.typeID}), total plants={plants.Count}, matching={selectedCount}");
 
         content.Clear();
-        var dataHolderToDestroy = GameObject.FindGameObjectWithTag("DataHolder");
-        if (dataHolderToDestroy != null)
-        {
-            #if UNITY_EDITOR
-            DestroyImmediate(dataHolderToDestroy);
-            #else
-            Destroy(dataHolderToDestroy);
-            #endif
-        }
         for (int i = 0; i < plants.Count; i++)
         {
             if (plants[i].typeID != category.typeID)
@@ -522,23 +627,11 @@ public class PopulateMenuTest : MonoBehaviour
         var dataHolder = GameObject.FindGameObjectWithTag("DataHolder");
         if (dataHolder != null)
         {
-            #if UNITY_EDITOR
-            DestroyImmediate(dataHolder);
-            #else
             Destroy(dataHolder);
-            #endif
         }
 
         // Destroy plantButtonDataHolder
-        if (plantButtonDataHolder != null)
-        {
-            #if UNITY_EDITOR
-            DestroyImmediate(plantButtonDataHolder);
-            #else
-            Destroy(plantButtonDataHolder);
-            #endif
-            plantButtonDataHolder = null;
-        }
+        DestroyRuntimeObject(ref plantButtonDataHolder);
     }
 
     private void SetupBackButton()
