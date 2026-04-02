@@ -14,9 +14,9 @@
     background-color: #00671b;
     padding-left: 20px;
     padding-right: 20px;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    min-height: 80px;
+    padding-top: 0;
+    padding-bottom: 0;
+    min-height: 0;
 }
 
 .app-title {
@@ -24,25 +24,8 @@
     -unity-font-style: bold;
 }
 
-.settings-button {
-    width: 40px;
-    height: 40px;
+.back-button {
     background-color: rgba(255, 255, 255, 0);
-    border-width: 0;
-    padding: 0;
-    margin: 0;
-    cursor: link;
-}
-
-.settings-button:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-}
-
-.settings-icon {
-    font-size: 32px;
-    color: rgb(207, 201, 201);
-    -unity-text-align: middle-center;
 }
 
 /* Content Styles */
