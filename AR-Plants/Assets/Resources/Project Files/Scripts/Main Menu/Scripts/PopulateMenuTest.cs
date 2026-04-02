@@ -155,6 +155,7 @@ public class PopulateMenuTest : MonoBehaviour
         if (ColorThemeManager.Instance != null)
         {
             ColorThemeManager.Instance.ApplyThemeToUIDocument(mainMenuRoot);
+            ApplyMainMenuBackgroundOverride();
             // Subscribe to theme changes
             ColorThemeManager.Instance.SubscribeToThemeChange(OnThemeChanged);
         }
@@ -228,27 +229,72 @@ public class PopulateMenuTest : MonoBehaviour
         if (mainMenuRoot != null && ColorThemeManager.Instance != null)
         {
             ColorThemeManager.Instance.ApplyThemeToUIDocument(mainMenuRoot);
+            ApplyMainMenuBackgroundOverride();
+            ApplyMainMenuTextOverrides();
+        }
+    }
 
-            // Plant card labels should always stay white (displayed over image background)
-            var plantCardLabels = mainMenuRoot.Query<Label>(className: "card-title").ToList();
-            foreach (Label label in plantCardLabels)
+    private void ApplyMainMenuBackgroundOverride()
+    {
+        if (mainMenuRoot == null || ColorThemeManager.Instance == null)
+        {
+            return;
+        }
+
+        var uiTheme = ColorThemeManager.Instance.GetUITheme();
+        Color mainMenuBackground = ColorThemeManager.Instance.IsHighContrast() ? Color.black : uiTheme.backgroundColor;
+
+        mainMenuRoot.style.backgroundColor = mainMenuBackground;
+
+        VisualElement rootElement = mainMenuRoot.Q<VisualElement>("root");
+        if (rootElement != null)
+        {
+            rootElement.style.backgroundColor = mainMenuBackground;
+        }
+
+        VisualElement contentElement = mainMenuRoot.Q<VisualElement>(contentHandelName) ?? mainMenuRoot.Q<VisualElement>("content");
+        if (contentElement != null)
+        {
+            contentElement.style.backgroundColor = mainMenuBackground;
+
+            var viewport = contentElement.Q<VisualElement>(className: "unity-scroll-view__content-viewport");
+            if (viewport != null)
             {
-                label.style.color = new Color(1f, 1f, 1f, 1f); // White
+                viewport.style.backgroundColor = mainMenuBackground;
             }
 
-            // Also set scientific name labels to white
-            var scientificLabels = mainMenuRoot.Query<Label>().Where(l => l.name == "ScientificName").ToList();
-            foreach (Label label in scientificLabels)
+            var container = contentElement.Q<VisualElement>(className: "unity-scroll-view__content-container");
+            if (container != null)
             {
-                label.style.color = new Color(1f, 1f, 1f, 1f); // White
+                container.style.backgroundColor = mainMenuBackground;
             }
+        }
+    }
 
-            // Also set info labels to white (like "Species:")
-            var infoLabels = mainMenuRoot.Query<Label>(className: "info-label").ToList();
-            foreach (Label label in infoLabels)
-            {
-                label.style.color = new Color(1f, 1f, 1f, 1f); // White
-            }
+    private void ApplyMainMenuTextOverrides()
+    {
+        if (mainMenuRoot == null)
+        {
+            return;
+        }
+
+        // Plant card labels should stay white in both themes because cards are image-backed.
+        var plantCardLabels = mainMenuRoot.Query<Label>(className: "card-title").ToList();
+        foreach (Label label in plantCardLabels)
+        {
+            label.style.color = new Color(1f, 1f, 1f, 1f);
+        }
+
+        var scientificLabels = mainMenuRoot.Query<Label>().Where(l => l.name == "ScientificName").ToList();
+        foreach (Label label in scientificLabels)
+        {
+            label.style.color = new Color(1f, 1f, 1f, 1f);
+        }
+
+        var infoLabels = mainMenuRoot.Query<Label>(className: "info-label").ToList();
+        foreach (Label label in infoLabels)
+        {
+            label.style.color = new Color(1f, 1f, 1f, 1f);
         }
     }
 
@@ -278,6 +324,16 @@ public class PopulateMenuTest : MonoBehaviour
                 Label scientificNameLabel = newPlantCardInstance.Q<Label>("ScientificName");
 
                 Button button = newPlantCardInstance.Q<Button>("PlantDescriptionButton");
+
+                // Keep card text white in normal and high-contrast themes.
+                plantNameLabel.style.color = new Color(1f, 1f, 1f, 1f);
+                scientificNameLabel.style.color = new Color(1f, 1f, 1f, 1f);
+
+                var infoLabels = newPlantCardInstance.Query<Label>(className: "info-label").ToList();
+                foreach (Label label in infoLabels)
+                {
+                    label.style.color = new Color(1f, 1f, 1f, 1f);
+                }
 
 
                 scientificNameLabel.text = currentPlant.scientificName;
@@ -314,6 +370,9 @@ public class PopulateMenuTest : MonoBehaviour
                 button.clicked += dataLoader.OnClick;
             }
         }
+
+        ApplyMainMenuBackgroundOverride();
+        ApplyMainMenuTextOverrides();
     }
 
     private void OnDestroy()
