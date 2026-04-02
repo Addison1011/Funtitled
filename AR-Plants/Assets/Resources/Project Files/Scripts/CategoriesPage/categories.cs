@@ -11,8 +11,8 @@ using System.Linq;
 public class PlantTypes
 {
     [PrimaryKey, AutoIncrement]
-    public int typeID { get; set; }
-    public string typeName { get; set; }
+    public int typeID{ get; set; }
+    public string typeName{ get; set; }
 }
 public class categories : MonoBehaviour
 {
@@ -28,11 +28,56 @@ public class categories : MonoBehaviour
     [SerializeField] private GameObject settingsPrefab;
     [SerializeField] private string contentHandleName;
     [SerializeField] private GameObject MainMenuPopulator;
+    private VisualElement categMenuRoot;
 
     //Chat gpt error fix. pulling database from web request for android compatibility
     void Awake()
     {
-        types = DatabaseManager.Instance.GetAllPlantTypes();
+        string dbName = "PlantInfoDB.db";
+        string persistentPath = Path.Combine(Application.persistentDataPath, dbName);
+
+        // First-run copy from StreamingAssets -> persistentDataPath
+        if (!File.Exists(persistentPath))
+        {
+#if UNITY_ANDROID
+            // StreamingAssets on Android must be read via UnityWebRequest
+            string srcPath = Path.Combine(Application.streamingAssetsPath, dbName);
+            // srcPath will be like "jar:file:///.../assets/PlantInfoDB.db"
+            var req = UnityEngine.Networking.UnityWebRequest.Get(srcPath);
+            var op = req.SendWebRequest();
+            while (!op.isDone) { }  // simple blocking copy during Awake()
+            if (req.result != UnityEngine.Networking.UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Failed to copy DB from StreamingAssets: " + req.error);
+            }
+            else
+            {
+                File.WriteAllBytes(persistentPath, req.downloadHandler.data);
+            }
+#else
+                // Desktop/editor/iOS etc.
+                string srcPath = Path.Combine(Application.streamingAssetsPath, dbName);
+                File.Copy(srcPath, persistentPath, overwrite: true);
+#endif
+        }
+
+        // Open the DB from a real filesystem location
+        _connection = new SQLite4Unity3d.SQLiteConnection(
+            persistentPath,
+            SQLite4Unity3d.SQLiteOpenFlags.ReadWrite | SQLite4Unity3d.SQLiteOpenFlags.Create
+        );
+
+        types = _connection.Table<PlantTypes>().ToList();
+
+        // goes back to previous plant description if going back to main menu from AR scene
+        //TODO: fix this going back scenario
+        Debug.Log("SceneCounter:" + GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter);
+        if (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().sceneCounter >= 1)
+        {
+            Instantiate(Resources.Load<GameObject>("MainMenuPopulator"));
+        }
+        //GameObject tempSettings = Instantiate(settingsPrefab);
+        //Destroy(tempSettings);
     }
 
     public void Start()
@@ -58,12 +103,18 @@ public class categories : MonoBehaviour
     {
 
         // Instantiate UI and data holder prefabs and keep references
-
+        
         GameObject categMenu = Instantiate(categMenuPrefab);
         categoryButtonDataHolder = Instantiate(Resources.Load<GameObject>("categoryButtonDataHolder"));
 
         // Get the root and content container
         var root = categMenu.GetComponent<UIDocument>().rootVisualElement;
+        categMenuRoot = root;
+        if (ColorThemeManager.Instance != null)
+        {
+            ColorThemeManager.Instance.SubscribeToThemeChange(OnThemeChanged);
+        }
+
         var content = root.Q<VisualElement>(contentHandleName);
 
         //add functionality to settings button
@@ -89,11 +140,11 @@ public class categories : MonoBehaviour
             //adds background images to the buttons
             VisualElement categoryImage = newCategoryInstance.Q<VisualElement>("CardButton");
 
-            if (categoryImage != null && currentType.typeName != null)
+            if(categoryImage != null && currentType.typeName != null)
             {
                 string categoryImagePath = $"Project Files/Scripts/CategoriesPage/Images/{currentType.typeName}";
                 Texture2D catTexture = Resources.Load<Texture2D>(categoryImagePath);
-                if (catTexture != null)
+                if(catTexture != null)
                 {
                     categoryImage.style.backgroundImage = new StyleBackground(catTexture);
                 }
@@ -103,7 +154,7 @@ public class categories : MonoBehaviour
                 }
             }
 
-
+            
             categoryNameLabel.text = currentType.typeName;
 
             // Add the button to the content container
@@ -122,6 +173,40 @@ public class categories : MonoBehaviour
 
             //Wire button to its corresponding data loader instance
             button.clicked += dataLoader.OnClick;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (ColorThemeManager.Instance != null)
+        {
+            ColorThemeManager.Instance.UnsubscribeFromThemeChange(OnThemeChanged);
+        }
+        categMenuRoot = null;
+    }
+
+    private void OnThemeChanged(ColorThemeManager.ColorTheme newTheme)
+    {
+        // Reapply theme when it changes
+        if (categMenuRoot != null && ColorThemeManager.Instance != null)
+        {
+            ColorThemeManager.Instance.ApplyThemeToUIDocument(categMenuRoot);
+            
+            // Category card labels should always stay white (displayed over image background)
+            var categoryLabels = categMenuRoot.Query<Label>().Where(l => l.name == "CategoryName").ToList();
+            foreach (Label label in categoryLabels)
+            {
+                label.style.color = new Color(1f, 1f, 1f, 1f); // White
+            }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // Unsubscribe from theme changes to prevent memory leaks
+        if (ColorThemeManager.Instance != null)
+        {
+            ColorThemeManager.Instance.UnsubscribeFromThemeChange(OnThemeChanged);
         }
     }
 
