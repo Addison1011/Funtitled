@@ -26,6 +26,10 @@ public enum PlantPart
 public class ARInputController : MonoBehaviour
 {
     public ARSession arSession;
+    private Vector2 startTouch0Pos;
+    private Vector2 startTouch1Pos;
+    private Vector3 initialScale;
+    private bool pinchStarted = false;
     [Header("References")]
     [SerializeField] private Camera arCamera;                   // AR Camera
     [SerializeField] private GameObject selectedPlantModel; // Prefab to place
@@ -41,8 +45,6 @@ public class ARInputController : MonoBehaviour
     [Header("Tuning")]
     [SerializeField] private float yOffsetMeters = 0.02f;       // lift to avoid z-fighting
     [SerializeField] private float followLerp = 14f;            // smoothing for drag
-    private float initialPinchDistance;
-    private Vector3 initialScale;
     public Color emissionColor = Color.white;
     public float emissionIntensity = 1f;
 
@@ -133,7 +135,7 @@ public class ARInputController : MonoBehaviour
 
     private void Update()
     {
-        ClampPlantSize();
+        //ClampPlantSize();
         // Promote hold -> drag when time & slop constraints satisfied
         if (holdCandidate && !isDragging && holdFinger != null)
         {
@@ -193,7 +195,7 @@ public class ARInputController : MonoBehaviour
 
     private void OnFingerMove(Finger finger)
     {
-        //resizePlantModelOnPinch();
+        resizePlantModelOnPinch();
         if (!isDragging || activePlant == null || finger != holdFinger) return;
 
         if (TryARRaycastToAllowedPlane(finger.currentTouch.screenPosition, out Pose planePose))
@@ -491,34 +493,43 @@ public class ARInputController : MonoBehaviour
             EnhancedTouch.Touch touch0 = EnhancedTouch.Touch.activeTouches[0];
             EnhancedTouch.Touch touch1 = EnhancedTouch.Touch.activeTouches[1];
 
-
-
-            Debug.Log("ScaleX: " + activePlant.transform.localScale.x + " ScaleY: " + activePlant.transform.localScale.y + " ScaleZ: " + activePlant.transform.localScale.z);
-            //Debug.Log("can scale: " + canScale);
-
-            if (HitActivePlant(touch0.screenPosition) || HitActivePlant(touch1.screenPosition))
+            if (touch0.phase == TouchPhase.Ended || touch0.phase == TouchPhase.Canceled ||
+                touch1.phase == TouchPhase.Ended || touch1.phase == TouchPhase.Canceled)
             {
-                // Ignore if Touch Canceled or Ended 
-                if (touch0.phase == TouchPhase.Ended || touch0.phase == TouchPhase.Canceled ||
-                   touch1.phase == TouchPhase.Ended || touch1.phase == TouchPhase.Canceled)
-                {
-                    return;
-                }
-                // if touch began, record initial distance and scale
-                if (touch0.phase == TouchPhase.Began || touch1.phase == TouchPhase.Began)
-                {
-                    initialPinchDistance = Vector2.Distance(touch0.screenPosition, touch1.screenPosition);
-                    initialScale = activePlant.transform.localScale;
-                }
-                else
-                {
-                    float currentPinchDistance = Vector2.Distance(touch0.screenPosition, touch1.screenPosition);
-                    if (Mathf.Approximately(initialPinchDistance, 0))
-                        return; // prevent division by zero
-                    float scaleFactor = currentPinchDistance / initialPinchDistance;
-                    activePlant.transform.localScale = initialScale * scaleFactor;
-                }
+                pinchStarted = false;
+                return;
             }
+
+            if (!pinchStarted || touch0.phase == TouchPhase.Began || touch1.phase == TouchPhase.Began)
+            {
+                startTouch0Pos = touch0.screenPosition;
+                startTouch1Pos = touch1.screenPosition;
+                initialScale = activePlant.transform.localScale;
+                pinchStarted = true;
+            }
+            else
+            {
+                float move0 = Vector2.Distance(touch0.screenPosition, startTouch0Pos);
+                float move1 = Vector2.Distance(touch1.screenPosition, startTouch1Pos);
+
+                //float avgMove = (move0 + move1) * 0.5f;
+
+                Vector2 startDir = (startTouch1Pos - startTouch0Pos).normalized;
+                Vector2 currentDir = (touch1.screenPosition - startTouch1Pos) - (touch0.screenPosition - startTouch0Pos);
+
+                float directionAmount = Vector2.Dot(currentDir, startDir);
+
+                float scaleSpeed = 0.005f;
+                float scaleFactor = 1f + (directionAmount * scaleSpeed);
+
+                scaleFactor = Mathf.Clamp(scaleFactor, selectedPlantData.plantInfo.minSize, selectedPlantData.plantInfo.maxSize);
+
+                activePlant.transform.localScale = initialScale * scaleFactor;
+            }
+        }
+        else
+        {
+            pinchStarted = false;
         }
     }
 }
