@@ -26,10 +26,9 @@ public enum PlantPart
 public class ARInputController : MonoBehaviour
 {
     public ARSession arSession;
-    private Vector2 startTouch0Pos;
-    private Vector2 startTouch1Pos;
-    private Vector3 initialScale;
     private bool pinchStarted = false;
+    private float startPinchDistance;
+    private Vector3 startPlantScale;
     [Header("References")]
     [SerializeField] private Camera arCamera;                   // AR Camera
     [SerializeField] private GameObject selectedPlantModel; // Prefab to place
@@ -43,8 +42,12 @@ public class ARInputController : MonoBehaviour
     private PopupToggleManager popup;
 
     [Header("Tuning")]
+    [SerializeField] private float minScale;
+    [SerializeField] private float maxScale;
+    [SerializeField] private float pinchSmoothSpeed = 12f;
     [SerializeField] private float yOffsetMeters = 0.02f;       // lift to avoid z-fighting
     [SerializeField] private float followLerp = 14f;            // smoothing for drag
+
     public Color emissionColor = Color.white;
     public float emissionIntensity = 1f;
 
@@ -96,6 +99,8 @@ public class ARInputController : MonoBehaviour
 
         //Gets the SelectedPlantData script from the SelectedPlantData GameObject
         selectedPlantData = selectedPlantDataHandle.GetComponent<SelectedPlantData>();
+        maxScale = selectedPlantData.plantInfo.maxSize;
+        minScale = selectedPlantData.plantInfo.minSize;
         aRUIController = GameObject.FindWithTag("ARUI").GetComponent<ARUIController>();
         selectedPlantModel = Resources.Load<GameObject>(selectedPlantData.plantInfo.scientificName); //default plant
         aRRaycastManager = GetComponent<ARRaycastManager>();
@@ -488,6 +493,9 @@ public class ARInputController : MonoBehaviour
 
     private void resizePlantModelOnPinch()
     {
+        if (activePlant == null)
+            return;
+
         if (EnhancedTouch.Touch.activeTouches.Count == 2)
         {
             EnhancedTouch.Touch touch0 = EnhancedTouch.Touch.activeTouches[0];
@@ -500,32 +508,30 @@ public class ARInputController : MonoBehaviour
                 return;
             }
 
+            float currentDistance = Vector2.Distance(touch0.screenPosition, touch1.screenPosition);
+
             if (!pinchStarted || touch0.phase == TouchPhase.Began || touch1.phase == TouchPhase.Began)
             {
-                startTouch0Pos = touch0.screenPosition;
-                startTouch1Pos = touch1.screenPosition;
-                initialScale = activePlant.transform.localScale;
+                startPinchDistance = currentDistance;
+                startPlantScale = activePlant.transform.localScale;
                 pinchStarted = true;
+                return;
             }
-            else
-            {
-                float move0 = Vector2.Distance(touch0.screenPosition, startTouch0Pos);
-                float move1 = Vector2.Distance(touch1.screenPosition, startTouch1Pos);
 
-                //float avgMove = (move0 + move1) * 0.5f;
+            if (Mathf.Approximately(startPinchDistance, 0f))
+                return;
 
-                Vector2 startDir = (startTouch1Pos - startTouch0Pos).normalized;
-                Vector2 currentDir = (touch1.screenPosition - startTouch1Pos) - (touch0.screenPosition - startTouch0Pos);
+            float scaleFactor = currentDistance / startPinchDistance;
+            Vector3 targetScale = startPlantScale * scaleFactor;
 
-                float directionAmount = Vector2.Dot(currentDir, startDir);
+            float clampedScale = Mathf.Clamp(targetScale.x, minScale, maxScale);
+            Vector3 finalScale = new Vector3(clampedScale, clampedScale, clampedScale);
 
-                float scaleSpeed = 0.005f;
-                float scaleFactor = 1f + (directionAmount * scaleSpeed);
-
-                scaleFactor = Mathf.Clamp(scaleFactor, selectedPlantData.plantInfo.minSize, selectedPlantData.plantInfo.maxSize);
-
-                activePlant.transform.localScale = initialScale * scaleFactor;
-            }
+            activePlant.transform.localScale = Vector3.Lerp(
+                activePlant.transform.localScale,
+                finalScale,
+                pinchSmoothSpeed * Time.deltaTime
+            );
         }
         else
         {

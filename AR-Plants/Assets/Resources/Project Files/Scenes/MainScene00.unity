@@ -913,11 +913,14 @@ MonoBehaviour:
   soundManager: {fileID: 0}
   selectedPlantDataHandle: {fileID: 8721433867133575463, guid: dc657ea7f7b3b6545892c6d6e50c5d59,
     type: 3}
+  minScale: 0
+  maxScale: 0
+  pinchSmoothSpeed: 12
   yOffsetMeters: 0.02
   followLerp: 14
   emissionColor: {r: 0.003921569, g: 0.39607844, b: 0.9882353, a: 1}
   emissionIntensity: 0.25
-  holdToDragSeconds: 0.1
+  holdToDragSeconds: 0.13
   tapSlopPixels: 12
   onPlantTapped:
     m_PersistentCalls:
