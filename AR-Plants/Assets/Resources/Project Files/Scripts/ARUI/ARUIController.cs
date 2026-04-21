@@ -55,9 +55,9 @@ public class ARUIController : MonoBehaviour
         // General multi-fields
         generalCommonName = root.Q<Label>("GeneralCommonName");
         generalScientificName = root.Q<Label>("GeneralScientificName");
-        generalType = root.Q<Label>("GeneralType");
-        generalMaxSize = root.Q<Label>("GeneralMaxSize");
-        generalWatering = root.Q<Label>("GeneralWatering");
+        //generalType = root.Q<Label>("GeneralType");
+        //generalMaxSize = root.Q<Label>("GeneralMaxSize");
+        //generalWatering = root.Q<Label>("GeneralWatering");
         generalDescription = root.Q<Label>("GeneralDescription");
 
         // Single fields
@@ -126,8 +126,8 @@ public class ARUIController : MonoBehaviour
             refreshBtn.RemoveFromClassList(SelectedClass);
         }, TrickleDown.TrickleDown);
 
-        // Example default text (replace with DB values later)
-        SetPartInfo(PlantPart.Flower, PlantPart.Stem, PlantPart.Leaf);
+        SetPartInfo();
+        SetGeneralInfo();
 
     }
 
@@ -352,17 +352,17 @@ public class ARUIController : MonoBehaviour
         }
     }
 
-    public void SetGeneralInfo(string common, string scientific, string type, string maxSize, string watering, string description)
+    public void SetGeneralInfo()
     {
-        generalCommonName.text = common;
-        generalScientificName.text = scientific;
-        generalType.text = type;
-        generalMaxSize.text = maxSize;
-        generalWatering.text = watering;
-        generalDescription.text = description;
+        generalCommonName.text = selectedPlantData.plantInfo.plantName;
+        generalScientificName.text = selectedPlantData.plantInfo.scientificName;
+        //generalType.text = selectedPlantData.plantInfo.;
+        //generalMaxSize.text = maxSize;
+        //generalWatering.text = watering;
+        generalDescription.text = selectedPlantData.plantInfo.plantDesc;
     }
 
-    public void SetPartInfo(PlantPart flower, PlantPart stem, PlantPart leaf)
+    public void SetPartInfo()
     {
         flowerText.text = selectedPlantData.plantInfo.flower;
         stemText.text = selectedPlantData.plantInfo.stem;

@@ -173,7 +173,7 @@ public class View3DInputController : MonoBehaviour
 
     private void Update()
     {
-        ClampPlantSize();
+        //ClampPlantSize();
         // Promote hold -> drag when time & slop constraints satisfied
         if (holdCandidate && !isDragging && holdFinger != null)
         {

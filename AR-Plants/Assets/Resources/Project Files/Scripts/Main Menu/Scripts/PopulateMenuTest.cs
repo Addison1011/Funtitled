@@ -24,8 +24,8 @@ public class PlantInfo
     public string flower { get; set; }
     public int typeID { get; set; }
 
-    public float maxSize = 1000f;
-    public float minSize = 0f;
+    public float maxSize = 2f;
+    public float minSize = 0.01f;
 }
 
 // public class SettingsData //data type for the settings
