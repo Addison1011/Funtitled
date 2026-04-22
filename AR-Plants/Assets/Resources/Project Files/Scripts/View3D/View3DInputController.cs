@@ -173,7 +173,6 @@ public class View3DInputController : MonoBehaviour
 
     private void Update()
     {
-        //ClampPlantSize();
         // Promote hold -> drag when time & slop constraints satisfied
         if (holdCandidate && !isDragging && holdFinger != null)
         {
@@ -413,27 +412,6 @@ public class View3DInputController : MonoBehaviour
         foreach (GameObject eff in effects)
         {
             eff.GetComponent<ParticleSystem>().Stop();
-        }
-    }
-
-    private void ClampPlantSize()
-    {
-        if (activePlant != null)
-        {
-            if (activePlant.transform.localScale.x < selectedPlantData.plantInfo.minSize &&
-                activePlant.transform.localScale.y < selectedPlantData.plantInfo.minSize &&
-                activePlant.transform.localScale.z < selectedPlantData.plantInfo.minSize)
-            {
-                float minSize = selectedPlantData.plantInfo.minSize;
-                activePlant.transform.localScale = new Vector3(minSize, minSize, minSize);
-            }
-            else if (activePlant.transform.localScale.x > selectedPlantData.plantInfo.maxSize &&
-                activePlant.transform.localScale.y > selectedPlantData.plantInfo.maxSize &&
-                activePlant.transform.localScale.z > selectedPlantData.plantInfo.maxSize)
-            {
-                float maxSize = selectedPlantData.plantInfo.maxSize;
-                activePlant.transform.localScale = new Vector3(maxSize, maxSize, maxSize);
-            }
         }
     }
 

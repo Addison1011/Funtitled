@@ -29,6 +29,12 @@ public class ARInputController : MonoBehaviour
     private bool pinchStarted = false;
     private float startPinchDistance;
     private Vector3 startPlantScale;
+    private Vector3 basePlantScale;
+
+    [SerializeField] private float minScaleMultiplier = 0.3f;
+    [SerializeField] private float maxScaleMultiplier = 2.0f;
+    [SerializeField] private float pinchSmoothSpeed = 12f;
+
     [Header("References")]
     [SerializeField] private Camera arCamera;                   // AR Camera
     [SerializeField] private GameObject selectedPlantModel; // Prefab to place
@@ -42,9 +48,6 @@ public class ARInputController : MonoBehaviour
     private PopupToggleManager popup;
 
     [Header("Tuning")]
-    [SerializeField] private float minScale;
-    [SerializeField] private float maxScale;
-    [SerializeField] private float pinchSmoothSpeed = 12f;
     [SerializeField] private float yOffsetMeters = 0.02f;       // lift to avoid z-fighting
     [SerializeField] private float followLerp = 14f;            // smoothing for drag
 
@@ -99,8 +102,6 @@ public class ARInputController : MonoBehaviour
 
         //Gets the SelectedPlantData script from the SelectedPlantData GameObject
         selectedPlantData = selectedPlantDataHandle.GetComponent<SelectedPlantData>();
-        maxScale = selectedPlantData.plantInfo.maxSize;
-        minScale = selectedPlantData.plantInfo.minSize;
         aRUIController = GameObject.FindWithTag("ARUI").GetComponent<ARUIController>();
         selectedPlantModel = Resources.Load<GameObject>(selectedPlantData.plantInfo.scientificName); //default plant
         aRRaycastManager = GetComponent<ARRaycastManager>();
@@ -276,6 +277,7 @@ public class ARInputController : MonoBehaviour
         isPlantPlaced = true;
         Debug.Log("rotation: " + pose.rotation.eulerAngles);
         activePlant = Instantiate(selectedPlantModel, pose.position, pose.rotation);
+        basePlantScale = activePlant.transform.localScale;
         activePlant.transform.position += Vector3.up * yOffsetMeters;
         desiredWorldPos = pose.position + Vector3.up * yOffsetMeters;
         soundManager.PlayPlantPlacementSound();
@@ -470,27 +472,6 @@ public class ARInputController : MonoBehaviour
         }
     }
 
-    private void ClampPlantSize()
-    {
-        if (activePlant != null)
-        {
-            if (activePlant.transform.localScale.x < selectedPlantData.plantInfo.minSize &&
-                activePlant.transform.localScale.y < selectedPlantData.plantInfo.minSize &&
-                activePlant.transform.localScale.z < selectedPlantData.plantInfo.minSize)
-            {
-                float minSize = selectedPlantData.plantInfo.minSize;
-                activePlant.transform.localScale = new Vector3(minSize, minSize, minSize);
-            }
-            else if (activePlant.transform.localScale.x > selectedPlantData.plantInfo.maxSize &&
-                activePlant.transform.localScale.y > selectedPlantData.plantInfo.maxSize &&
-                activePlant.transform.localScale.z > selectedPlantData.plantInfo.maxSize)
-            {
-                float maxSize = selectedPlantData.plantInfo.maxSize;
-                activePlant.transform.localScale = new Vector3(maxSize, maxSize, maxSize);
-            }
-        }
-    }
-
     private void resizePlantModelOnPinch()
     {
         if (activePlant == null)
@@ -524,7 +505,10 @@ public class ARInputController : MonoBehaviour
             float scaleFactor = currentDistance / startPinchDistance;
             Vector3 targetScale = startPlantScale * scaleFactor;
 
-            float clampedScale = Mathf.Clamp(targetScale.x, minScale, maxScale);
+            float minAllowed = basePlantScale.x * minScaleMultiplier;
+            float maxAllowed = basePlantScale.x * maxScaleMultiplier;
+
+            float clampedScale = Mathf.Clamp(targetScale.x, minAllowed, maxAllowed);
             Vector3 finalScale = new Vector3(clampedScale, clampedScale, clampedScale);
 
             activePlant.transform.localScale = Vector3.Lerp(
