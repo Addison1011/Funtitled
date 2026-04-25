@@ -386,6 +386,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6598815579406187026, guid: 18ddb545287c546e19cc77dc9fbb2189,
+        type: 3}
+      propertyPath: m_DeviceSimulatorUI
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6598815579406187027, guid: 18ddb545287c546e19cc77dc9fbb2189,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -907,15 +912,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arSession: {fileID: 1167446572}
+  minScaleMultiplier: 0.3
+  maxScaleMultiplier: 2
+  pinchSmoothSpeed: 12
   arCamera: {fileID: 2512387468973847745}
   selectedPlantModel: {fileID: 1226110223090914691, guid: 8b4208451c66bef4587a963ea8d6cf16,
     type: 3}
   soundManager: {fileID: 0}
   selectedPlantDataHandle: {fileID: 8721433867133575463, guid: dc657ea7f7b3b6545892c6d6e50c5d59,
     type: 3}
-  minScale: 0
-  maxScale: 0
-  pinchSmoothSpeed: 12
   yOffsetMeters: 0.02
   followLerp: 14
   emissionColor: {r: 0.003921569, g: 0.39607844, b: 0.9882353, a: 1}
